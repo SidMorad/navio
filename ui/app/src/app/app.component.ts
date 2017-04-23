@@ -24,7 +24,7 @@ export class MyApp {
           deploy.download().then(() => {
             deploy.extract().then(() => {
               console.log("New snapshot extracted.");
-//              deploy.load();
+              deploy.load();
               // TODO show app updated toast.
             })
           });
