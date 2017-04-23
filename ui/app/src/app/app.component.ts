@@ -23,13 +23,14 @@ export class MyApp {
         if (hasUpdate) {
           deploy.download().then(() => {
             deploy.extract().then(() => {
-              deploy.load();
+              console.log("New snapshot extracted.");
+//              deploy.load();
+              // TODO show app updated toast.
             })
-          })
-;        }
+          });
+        }
       });
 
     });
   }
 }
-
