@@ -1,0 +1,124 @@
+{
+    "variables": {
+        "bridged_nic_name": "",
+        "headless": "true",
+        "output_directory": "build",
+        "scripts_directory": "../scripts/",
+        "os_type": "Ubuntu_64",
+        "os_version": "1604",
+        "ubuntu_hostname": "ubuntu-opentileserver",
+        "ubuntu_username": "ubuntu",
+        "ubuntu_password": "ubuntu",
+        "ubuntu_iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.2-server-amd64.iso",
+        "ubuntu_iso_checksum_url": "http://releases.ubuntu.com/16.04/MD5SUMS",
+        "disk_size": "32000",
+        "hard_drive_interface": "sata",
+        "hard_drive_nonrotational": "true",
+        "memory": "8192",
+        "cpus": "2",
+        "video_memory": "64"
+    },
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "{{user `scripts_directory`}}/install-opentitleserver.sh",
+            "destination": "/tmp/install-opentileserver.sh"
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo {{user `ubuntu_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+            "scripts": [
+                "{{user `scripts_directory`}}/install-opentitleserver.sh"
+            ]
+        }
+    ],
+    "builders": [
+        {
+            "type": "virtualbox-iso",
+            "output_directory": "{{user `output_directory`}}",
+            "guest_os_type": "{{user `os_type`}}",
+            "vm_name": "{{user `os_type`}}-{{user `os_version`}}-{{build_type}}-{{isotime \"2006-01-02_15-04-05\"}}",
+            "disk_size": "{{user `disk_size`}}",
+            "hard_drive_interface": "{{user `hard_drive_interface`}}",
+            "hard_drive_nonrotational": "{{user `hard_drive_nonrotational`}}",
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "{{user `memory`}}"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "{{user `cpus`}}"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--vram",
+                    "{{user `video_memory`}}"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--nictype1",
+                    "Am79C973"
+                ]
+            ],
+            "vboxmanage_post": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--nic1",
+                    "bridged"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--nicpromisc1",
+                    "allow-all"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--bridgeadapter1",
+                    "{{user `bridged_nic_name`}}"
+                ]
+            ],
+            "iso_url": "{{user `ubuntu_iso_url`}}",
+            "iso_checksum_url": "{{user `ubuntu_iso_checksum_url`}}",
+            "iso_checksum_type": "md5",
+            "ssh_username": "{{user `ubuntu_username`}}",
+            "ssh_password": "{{user `ubuntu_password`}}",
+            "ssh_wait_timeout": "15m",
+            "headless": "{{user `headless`}}",
+            "boot_wait": "3s",
+            "shutdown_command": "echo {{user `ubuntu_password`}} | sudo -S shutdown -P now",
+            "shutdown_timeout": "15m",
+            "http_directory": "./",
+            "boot_command": [
+                "<enter><wait>",
+                "<f6><esc>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs>",
+                "/install/vmlinuz ",
+                "initrd=/install/initrd.gz ",
+                "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg ",
+                "net.ifnames=0 ",
+                "biosdevname=0 ",
+                "auto-install/enable=true ",
+                "debconf/priority=critical ",
+                "<enter>"
+            ]
+        }
+    ]
+}
