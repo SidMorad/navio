@@ -4,6 +4,7 @@
         "headless": "true",
         "output_directory": "build",
         "scripts_directory": "../scripts/",
+        "temp_directory": "tmp",
         "os_type": "Ubuntu_64",
         "os_version": "1604",
         "ubuntu_hostname": "ubuntu-opentileserver",
@@ -21,14 +22,15 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "{{user `scripts_directory`}}/install-opentitleserver.sh",
-            "destination": "/tmp/install-opentileserver.sh"
+            "source": "{{user `temp_directory`}}/",
+            "destination": "/tmp"
         },
         {
             "type": "shell",
             "execute_command": "echo {{user `ubuntu_password`}} | {{.Vars}} sudo -S -E bash '{{.Path}}'",
             "scripts": [
-                "{{user `scripts_directory`}}/install-opentitleserver.sh"
+                "{{user `scripts_directory`}}/ubuntu-post-installation.sh",
+                "{{user `scripts_directory`}}/application-installation.sh"
             ]
         }
     ],
@@ -92,7 +94,7 @@
             "iso_checksum_type": "md5",
             "ssh_username": "{{user `ubuntu_username`}}",
             "ssh_password": "{{user `ubuntu_password`}}",
-            "ssh_wait_timeout": "15m",
+            "ssh_wait_timeout": "60m",
             "headless": "{{user `headless`}}",
             "boot_wait": "3s",
             "shutdown_command": "echo {{user `ubuntu_password`}} | sudo -S shutdown -P now",

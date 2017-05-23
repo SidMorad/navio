@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  opentileserver:
+    build: .
+    ports:
+      - 8980:80
+    restart: unless-stopped

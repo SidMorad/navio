@@ -1,0 +1,30 @@
+version: '2'
+services:
+  #=============================================================================
+  # Nginx
+  #=============================================================================
+  nginx:
+    image: nginx:alpine
+    container_name: rahpey-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /home/www:/home/www
+    restart: unless-stopped
+  #=============================================================================
+  # Graphhopper (route engine)
+  #=============================================================================
+  graphhopper:
+    container_name: rahpey-graphhopper
+    extends:
+      file: ../graphhopper/docker-compose.yml
+      service: graphhopper
+  #=============================================================================
+  # OpenTileServer (tile server)
+  #=============================================================================
+  opentileserver:
+    container_name: rahpey-opentileserver
+    extends:
+      file: ../opentileserver/docker-compose.yml
+      service: opentileserver

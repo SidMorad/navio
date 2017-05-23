@@ -17,6 +17,21 @@ if [ -d ${temp_dir} ]; then
 fi
 mkdir ${temp_dir}
 
+# Compress backend directory into ${temp_dir}
+cd ../../
+git ls-files . | xargs tar -czf ${temp_dir}/application.tar.gz
+cd "${work_dir}"
+
+# Download latest pbf file into ~/osm directory if doesn't exist
+if [ -e "$HOME/osm/import.osm.pbf" ]
+  then
+    cp $HOME/osm/import.osm.pbf ${temp_dir}/import.osm.pbf
+  else
+    mkdir $HOME/osm
+    wget -O $HOME/osm/import.osm.pbf http://download.geofabrik.de/asia/iran-latest.osm.pbf
+    cp $HOME/osm/import.osm.pbf ${temp_dir}/import.osm.pbf
+fi
+
 nic_name=$(${work_dir}/../scripts/detect-nic.sh)
 echo "Using NIC: ${nic_name}"
 
