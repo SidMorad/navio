@@ -1,1 +1,1 @@
-ionic build android --prod --release -- --keystore="release-dev.keystore" --alias=aval_viewer
+ionic cordova build android --prod --release --buildConfig

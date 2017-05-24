@@ -1,0 +1,11 @@
+{
+    "android": {
+        "release": {
+            "keystore": "release-dev.keystore",
+            "storePassword": "",
+            "alias": "aval_viewer",
+            "password" : "",
+            "keystoreType": "jks"
+        }
+    }
+}

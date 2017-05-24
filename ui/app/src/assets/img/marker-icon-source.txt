@@ -1,0 +1,2 @@
+# Marker-icon* are used from:
+# https://github.com/pointhi/leaflet-color-markers

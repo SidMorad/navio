@@ -1,10 +1,18 @@
-# Rahpey ionic app #
+# Rahpey ionic app
 
-## Developer guide ##
-`ionic run android` runs the app in connected Android device
+## Developer guide
+`sudo npm install -g ionic cordova`
+>  Cordova CLI      : 6.5.0
+>  Ionic CLI        : 3.2.0
 
-`ionic resources` generate icons and splash screens base on resources/icon.png and resources/splash.png
+`ionic cordova run android`
+ Runs the app in connected Android device
 
-`ionic upload --note "NOTE" --deploy dev` deploys your current code to our ionic-cloud dev channel
+`ionic cordova resources`
+ Generate icons and splash screens base on resources/icon.png and resources/splash.png
 
-`ionic build android --prod --release -- --keystore="release-dev.keystore" --alias=aval_viewer` signs and release the app binary(android-release.apk)
+`ionic upload --note "NOTE" --deploy dev`
+ Deploys your current code to our ionic-cloud dev channel
+
+`ionic cordova build android --prod --release --buildConfig`
+ Signs and release the app(android-release.apk) see also `build.json`

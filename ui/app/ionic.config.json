@@ -1,6 +1,5 @@
 {
   "name": "Rahpey",
   "app_id": "a160dfe5",
-  "v2": true,
-  "typescript": true
+  "type": "ionic-angular"
 }
