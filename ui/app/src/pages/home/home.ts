@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import 'leaflet';
 
@@ -7,9 +7,12 @@ import 'leaflet';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
-  constructor(public navCtrl: NavController, private geolocation: Geolocation) {
+  watchPosition: any;
+
+  constructor(private navCtrl: NavController, private geolocation: Geolocation,
+              private platform: Platform) {
 
   }
 
@@ -51,15 +54,24 @@ export class HomePage implements OnInit {
       shadowSize: [41, 41]
     });
 
-    let watchPosition = this.geolocation.watchPosition();
-    watchPosition.subscribe((data) => {
-      console.log("Watch event ", data, " CurrentZoom ", currentZoom);
-      markersLayer.clearLayers();
-      map.setView([data.coords.latitude, data.coords.longitude], currentZoom);
-      var marker = L.marker([data.coords.latitude, data.coords.longitude], {icon: violetIcon, draggable: true});
-      markersLayer.addLayer(marker);
+    this.platform.ready().then((readySource) => {
+      let watchPosition = this.geolocation.watchPosition();
+      watchPosition.subscribe((data) => {
+        console.log("Watch event ", data, " CurrentZoom ", currentZoom);
+        markersLayer.clearLayers();
+        map.setView([data.coords.latitude, data.coords.longitude], currentZoom);
+        var marker = L.marker([data.coords.latitude, data.coords.longitude], {icon: violetIcon, draggable: true});
+        markersLayer.addLayer(marker);
+      });
+      this.watchPosition = watchPosition;
     });
 
+  }
+
+  ngOnDestroy() {
+    if (this.watchPosition) {
+      this.watchPosition.unsubscribe();
+    }
   }
 
 }
