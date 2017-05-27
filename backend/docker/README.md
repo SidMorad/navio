@@ -2,8 +2,12 @@ Some Docker & Docker-compose commands documented here
 =====================================================
 
 ### Build containers and start them.
-`sh init-production-first-time.sh`
+`./init-production-first-time.sh`
 Note: basicly we need to execute this only once in production.
+
+### Update *.osm.pbf into latest in Graphhopper and OpenTileServer containers.
+`./update-osm-pbf-file-and-restart-containers.sh`
+Note: this script fetch iran-latest.osm.pbf once and reload both Graphhopper and OpenTileServer containers with fresh downloaded file.
 
 ### Recreate specific container from an updated image.
 `docker-compose up -d --no-deps --build service_name_here`
