@@ -29,14 +29,16 @@
     "@types/leaflet": "^1.0.60",
     "ionic-angular": "3.2.1",
     "ionicons": "3.0.0",
-    "leaflet": "^1.0.3",
+    "leaflet": "1.0.3",
+    "leaflet-routing-machine": "3.2.5",
+    "lrm-graphhopper": "1.1.3",
     "rxjs": "5.1.1",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.10"
   },
   "devDependencies": {
     "@ionic/app-scripts": "1.3.7",
-    "@ionic/cli-plugin-cordova": "1.2.0",
+    "@ionic/cli-plugin-cordova": "1.2.1",
     "@ionic/cli-plugin-ionic-angular": "1.2.0",
     "typescript": "2.2.1"
   },

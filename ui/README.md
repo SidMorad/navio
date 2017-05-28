@@ -1,5 +1,5 @@
-This directory includes ui modules for our client apps:
+### UI modules:
 
-app: Hybrid solution
-android: Native Android solution
-ios: Native iOS solution
+ - **app**: Hybrid solution
+ - **android**: Native Android solution
+ - **ios**: Native iOS solution

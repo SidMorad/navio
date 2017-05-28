@@ -3,8 +3,8 @@ Rahpey: please-add-our-brand-sentence-here-!
 
 Backend
 -------
-[Documentation](backend/README.md)
+[Documentation](backend/)
 
 UI
 --
-[Documentation](ui/README.md)
+[Documentation](ui/)

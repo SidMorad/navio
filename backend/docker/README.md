@@ -3,14 +3,17 @@ Some Docker & Docker-compose commands documented here
 
 ### Build containers and start them.
 `./init-production-first-time.sh`
+
 Note: basicly we need to execute this only once in production.
 
 ### Update *.osm.pbf into latest in Graphhopper and OpenTileServer containers.
 `./update-osm-pbf-file-and-restart-containers.sh`
+
 Note: this script fetch iran-latest.osm.pbf once and reload both Graphhopper and OpenTileServer containers with fresh downloaded file.
 
 ### Recreate specific container from an updated image.
 `docker-compose up -d --no-deps --build service_name_here`
+
 Note: DO NOT USE THIS COMMAND FOR DATABASE CONTAINERS. otherwise we do lose all contained data!
 Note 2: For preventing mistakes, `recreate-app-immutable-containers.sh` can be used.
 
@@ -22,4 +25,4 @@ Note 2: For preventing mistakes, `recreate-app-immutable-containers.sh` can be u
 `docker-compose logs --tail 10 service_name_here`
 
 ### Execute a command in a container
-docker exec -it $(docker ps -aqf "name=nginx") sh
+`docker exec -it $(docker ps -aqf "name=nginx") sh`
