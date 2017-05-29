@@ -1,1 +1,28 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button icon-only color="purple" disabled>
+          <ion-icon name="settings"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title text-center>Not registered</ion-title>
+      <ion-buttons right>
+        <button ion-button icon-only color="purple" (click)="exitApp()">
+          <ion-icon name="power"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-searchbar (ionInput)="geoSearch($event)"></ion-searchbar>
+    <ion-list inset>
+      <button ion-item *ngFor="let item of items" (click)="geoSelected(item)" menuClose>
+        {{item.formatted_address}}
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackeEnabled="false"></ion-nav>

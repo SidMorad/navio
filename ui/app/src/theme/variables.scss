@@ -28,7 +28,8 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  purple:      purple
 );
 
 
@@ -76,3 +77,12 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+// Rahpey customization
+// --------------------------------------------------
+$menu-width: 90%;
+$menu-small-width: 90%;
+
+$item-md-detail-push-show: true;
+$item-wp-detail-push-show: true;
+$item-ios-detail-push-show: true;

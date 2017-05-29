@@ -5,13 +5,21 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Deploy } from '@ionic/cloud-angular';
 
 import { HomePage } from '../pages/home/home';
+import { GeocodingService, MapService } from '../services';
+
 @Component({
+  selector: 'app-page',
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = HomePage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, deploy: Deploy) {
+  rootPage:any = HomePage;
+  items: any[];
+
+  constructor(private platform: Platform, statusBar: StatusBar,
+              splashScreen: SplashScreen, deploy: Deploy,
+              private geocodingService: GeocodingService,
+              private mapService: MapService) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -33,4 +41,26 @@ export class MyApp {
 
     });
   }
+
+  geoSearch(ev: any) {
+    console.log(ev.target.value);
+    if (!ev.target.value) {
+      return;
+    }
+    this.geocodingService.geocode(ev.target.value).subscribe(result => {
+      this.items = result;
+    }, error => {
+      this.items = [{formatted_address: 'Error: unable to find address.'}];
+    });
+  }
+
+  geoSelected(item: any) {
+    console.log(item.geometry.location);
+    this.mapService.showDestination(item);
+  }
+
+  exitApp() {
+    this.platform.exitApp();
+  }
+
 }

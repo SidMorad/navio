@@ -8,6 +8,7 @@ import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
 
 import { LeafletPopupComponent } from '../../pages';
+import { MapService } from '../../services';
 
 declare var L: any;
 
@@ -23,7 +24,7 @@ export class HomePage implements OnInit, OnDestroy {
   constructor(private navCtrl: NavController, private geolocation: Geolocation,
               private platform: Platform, private zone: NgZone,
               private resolver: ComponentFactoryResolver, private injector: Injector,
-              private appRef: ApplicationRef) {
+              private appRef: ApplicationRef, private mapService: MapService) {
 
   }
 
@@ -92,7 +93,7 @@ export class HomePage implements OnInit, OnDestroy {
             this.appRef.detachView(this.compRef.hostView);
           });
 
-          marker.bindPopup(this.compRef.location.nativeElement, {closeButton: false}).openPopup();
+          marker.bindPopup(this.compRef.location.nativeElement, {closeButton: false, maxWidth: 400, minWidth: 200}).openPopup();
         });
       }
     });
@@ -111,10 +112,11 @@ export class HomePage implements OnInit, OnDestroy {
       var firstTime = true;
       let watchPosition = this.geolocation.watchPosition();
       watchPosition.subscribe((data) => {
-        console.log("watchPosition event: ", data, " currentZoom level: ", currentZoom);
+        this.mapService.currentZoom = currentZoom;
+        console.log("watchPosition event: ", data, " currentZoom level: ", this.mapService.currentZoom);
         markersLayer.clearLayers();
         if (firstTime) {
-          map.setView([data.coords.latitude, data.coords.longitude], currentZoom);
+          map.setView([data.coords.latitude, data.coords.longitude], this.mapService.currentZoom);
           firstTime = false;
         }
         markersLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
@@ -125,6 +127,10 @@ export class HomePage implements OnInit, OnDestroy {
       this.watchPosition = watchPosition;
     });
 
+    this.mapService.map = map;
+    this.mapService.routeControl = routeControl;
+    this.mapService.popupsLayer = popupsLayer;
+    this.mapService.markersLayer = markersLayer;
   }
 
   ngOnDestroy() {
