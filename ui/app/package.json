@@ -2,7 +2,7 @@
   "name": "rahpey",
   "version": "1.0.0",
   "author": "Rahpey team",
-  "homepage": "http://tile.webebook.org/",
+  "homepage": "http://rahpey.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
