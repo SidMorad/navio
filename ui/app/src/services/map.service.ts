@@ -76,12 +76,7 @@ export class MapService {
     this.map.on({
       contextmenu: (e) => {     // Long press event
         this.zone.run( () => {  // Run it in Angular zone, neccessary to make component creation to work
-          this.popupsLayer.clearLayers();
-          this.geocodingService.geocodeByLatLng(e.latlng).subscribe(result => {
-            this.showDestinationPopup(e.latlng, result[0].formatted_address, false);
-          }, error => {
-            this.showDestinationPopup(e.latlng, "Unknown", false);
-          })
+          this.showDestinationByLatLng(e.latlng);
         });
       },
       click: (e) => {
@@ -93,17 +88,43 @@ export class MapService {
       }
     });
 
+    L.polygon([
+      [35.71452, 51.38897],
+      [35.72118, 51.40765],
+      [35.72404, 51.41006],
+      [35.72465, 51.43761],
+      [35.72407, 51.44107],
+      [35.71779, 51.43946],
+      [35.71731, 51.44085],
+      [35.70698, 51.43485],
+      [35.70710, 51.44101],
+      [35.69958, 51.43884],
+      [35.70202, 51.44871],
+      [35.66032, 51.44612], // طیب
+      [35.65649, 51.40909], // شوش
+      [35.65846, 51.39509], // انتهای کارگر جنوبی
+      [35.71346, 51.38765], // ابتدای کارگر جنوبی
+    ]).addTo(this.map);
   }
 
   showDestination(item: any) {
     this.showDestinationPopup(item.geometry.location, item.formatted_address, true);
   }
 
+  showDestinationByLatLng(latlng: any) {
+    this.popupsLayer.clearLayers();
+    this.geocodingService.geocodeByLatLng(latlng).subscribe(result => {
+      this.showDestinationPopup(latlng, result[0].formatted_address + " " + latlng.lat + " " + latlng.lng, false);
+    }, error => {
+      this.showDestinationPopup(latlng, "Unknown", false);
+    })
+  }
+
   showDestinationPopup(latLng: any, address: string, centerDestination: boolean) {
     if (centerDestination) {
       this.map.setView([latLng.lat, latLng.lng], this.currentZoom);
     }
-    var marker = L.marker(latLng, {icon: this.redIcon});
+    var marker = L.marker(latLng, {icon: this.redIcon, draggable: true});
     this.popupsLayer.addLayer(marker);
 
     if (this.popupRef) { this.popupRef.destroy(); }
@@ -122,7 +143,19 @@ export class MapService {
       this.appRef.detachView(this.popupRef.hostView);
     });
 
-    marker.bindPopup(this.popupRef.location.nativeElement, {closeButton: false, maxWidth: 400, minWidth: 200}).openPopup();
+    var popup = marker.bindPopup(this.popupRef.location.nativeElement, {closeButton: false, maxWidth: 400, minWidth: 200});
+
+    var firstTime = true;
+    popup.on({
+      popupopen: (e) => {
+        if(!firstTime) {
+          this.showDestinationByLatLng(e.target._latlng);
+        }
+        firstTime = false;
+      }
+    });
+
+    popup.openPopup();
   }
 
   redIcon = new L.Icon({
