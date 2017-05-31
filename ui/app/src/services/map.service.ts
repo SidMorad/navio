@@ -1,5 +1,6 @@
 import { Injectable, ComponentFactoryResolver, Injector,
          ComponentRef, ApplicationRef, NgZone } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
@@ -16,12 +17,21 @@ export class MapService {
   routeControl: any;
   popupsLayer: any;
   markersLayer: any;
-  currentZoom: any = 18;
+  currentZoom: number;
   popupRef: ComponentRef<LeafletPopupComponent>;
+
+  public static readonly LAST_ZOOM_LEVEL_KEY: string = "lastZoomLevel";
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
-              private geocodingService: GeocodingService) {
+              private geocodingService: GeocodingService, private storage: Storage) {
+    storage.get(MapService.LAST_ZOOM_LEVEL_KEY).then((val) => {
+      if (val && Number(val) !== NaN) {
+        this.currentZoom = val;
+      } else {
+        this.currentZoom = 18;
+      }
+    });
   }
 
   init() {
@@ -77,8 +87,9 @@ export class MapService {
       click: (e) => {
         this.popupsLayer.clearLayers();
       },
-      zomeend: (e) => {
+      zoomend: (e) => {
         this.currentZoom = e.target._zoom;
+        this.storage.set(MapService.LAST_ZOOM_LEVEL_KEY, e.target._zoom);
       }
     });
 
