@@ -19,6 +19,7 @@ fi
 wget -O "${osm_file}" http://download.geofabrik.de/asia/iran-latest.osm.pbf
 
 echo "Graphhopper is updating..."
+docker cp ../graphhopper/properties/config.properties $(docker ps -aqf "name=graphhopper"):/home/graphhopper/config.properties
 docker-compose stop graphhopper
 sudo rm -rf "${osm_cache_dir}"
 docker-compose start graphhopper
