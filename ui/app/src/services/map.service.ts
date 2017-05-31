@@ -56,8 +56,12 @@ export class MapService {
 
     this.routeControl = L.Routing.control({
       router: L.Routing.graphHopper('', {
-        serviceUrl: ROUTE_API_BASE_URL
-        // urlParameters: { algorithm: 'alternative_route', 'ch.disable': true } // activating this need Graphhopper engine come up with `routing.ch.disabling_allowed=true` in it's config.properties file.
+        serviceUrl: ROUTE_API_BASE_URL,
+        urlParameters: {
+          // algorithm: 'alternative_route',
+          'ch.disable': true,
+          block_area: '35.71346,51.38765,35.66032,51.44612'
+         }
       }),
       lineOptions: {
         styles: [{color: 'blue', opacity: 0.8, weight: 2}]
