@@ -4,46 +4,79 @@ import { HttpModule } from '@angular/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { CloudModule } from '@ionic/cloud-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule, Storage } from '@ionic/storage';
 
 import { MyApp } from './app.component';
-import { HomePage, LeafletPopupComponent } from '../pages';
-import { GeocodingService, MapService } from '../services';
 
-const cloudSettings: CloudSettings = {
-  'core': {
-    'app_id': 'a160dfe5'
-  }
-};
+import { GeocodingService, MapService } from '../services';
+import { Settings } from '../providers';
+
+import { HomePage, LeafletPopupComponent } from '../pages';
+
+
+export function provideSettings(storage: Storage) {
+  /**
+   * The Settings provider takes a set of default settings for the app.
+   *
+   * You can add new settings options at any time. Once the settings are saved,
+   * these values will not overwrite the saved values.
+   */
+  return new Settings(storage, {
+    preferLanguage: 'fa',
+    country: 'IR',
+    city: 'THR',
+    highlightTehranMainTrafficZone: true,
+    hasTehranMainTrafficCertificate: 'notset',
+    isCarPlateEvenOrOdd: 'notset',
+    lastZoomLevel: 18
+  });
+}
+``
+let pages = [
+  MyApp,
+  HomePage,
+  LeafletPopupComponent
+];
+
+export function declarations() {
+  return pages;
+}
+
+export function entryComponents() {
+  return pages;
+}
+
+export function providers() {
+  return [
+    StatusBar,
+    SplashScreen,
+    Geolocation,
+    GeocodingService,
+    MapService,
+
+    { provide: Settings, useFactory: provideSettings, deps: [Storage] },
+    // Keep this to enable Ionic's runtime error handling during development
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
+  ];
+}
 
 @NgModule({
-  declarations: [
-    MyApp,
-    HomePage,
-    LeafletPopupComponent
-  ],
+  declarations: declarations(),
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
-    CloudModule.forRoot(cloudSettings),
+    CloudModule.forRoot({
+      'core': {
+        'app_id': 'a160dfe5'
+      }
+    }),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    HomePage,
-    LeafletPopupComponent
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Geolocation,
-    GeocodingService,
-    MapService
-  ]
+  entryComponents: entryComponents(),
+  providers: providers()
 })
 export class AppModule {}

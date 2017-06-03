@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Deploy } from '@ionic/cloud-angular';
 
 import { HomePage } from '../pages/home/home';
 import { GeocodingService, MapService } from '../services';
+import { Settings } from '../providers';
 
 @Component({
   selector: 'app-page',
@@ -17,14 +18,16 @@ export class MyApp {
   items: any[];
 
   constructor(private platform: Platform, statusBar: StatusBar,
-              splashScreen: SplashScreen, deploy: Deploy,
+              splashScreen: SplashScreen, deploy: Deploy, settings: Settings,
               private geocodingService: GeocodingService,
-              private mapService: MapService) {
+              private mapService: MapService, private toastCtrl: ToastController) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
-      splashScreen.hide();
+      settings.load().then(() => {
+        splashScreen.hide();
+      });
 
       deploy.channel = 'dev'; // TODO Remove this line before production release
       deploy.check().then((hasUpdate: boolean) => {
@@ -33,7 +36,12 @@ export class MyApp {
             deploy.extract().then(() => {
               console.log("New snapshot extracted.");
               deploy.load();
-              // TODO show app updated toast.
+              let toast = this.toastCtrl.create({
+                message: 'Your app updated to the latest version!',
+                duration: 3000,
+                position: 'top'
+              });
+              toast.present();
             })
           });
         }
@@ -43,7 +51,6 @@ export class MyApp {
   }
 
   geoSearch(ev: any) {
-    console.log(ev.target.value);
     if (!ev.target.value) {
       return;
     }
@@ -55,7 +62,6 @@ export class MyApp {
   }
 
   geoSelected(item: any) {
-    console.log(item.geometry.location);
     this.mapService.showDestination(item);
   }
 
