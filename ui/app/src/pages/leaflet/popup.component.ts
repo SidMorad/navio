@@ -1,18 +1,38 @@
 import { Component, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-leaflet-popup-element',
+  selector: 'page-popup',
   template: `
-    <div ion-alert>
-      {{ param }}<br /><hr/>
-      <div class="alert-button-group">
-        <button ion-button color="light" disabled>Send</button>
-        <button ion-button color="primary" (click)='goButtonClicked($event)'
-                icon-right>GO
-          <ion-icon name="arrow-dropright"></ion-icon>
-        </button>
-      </div>
-    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-2>
+         <button ion-button small icon-only color="light" outline>
+           <ion-icon name="star"></ion-icon>
+         </button>
+        </ion-col>
+        <ion-col col-7>
+        </ion-col>
+        <ion-col col-3>
+          <button ion-button small icon-only color="primary" outline (click)='infoButtonClicked($event)'>
+            <ion-icon name="information-circle"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row text-center large>
+        <ion-col>{{param}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button full color="light" disabled>Send</button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button full color="primary" (click)='goButtonClicked($event)'
+                  icon-right>GO
+            <ion-icon name="arrow-dropright"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   `
 })
 export class LeafletPopupComponent {
@@ -21,8 +41,12 @@ export class LeafletPopupComponent {
 
   onGoButtonClicked = new EventEmitter();
   goButtonClicked() {
-    console.log("Go button clicked!");
     this.onGoButtonClicked.emit(++this.counter);
+  }
+
+  onInfoButtonClicked = new EventEmitter();
+  infoButtonClicked() {
+    this.onInfoButtonClicked.emit();
   }
 
 }

@@ -1,6 +1,7 @@
 import { Injectable, ComponentFactoryResolver, Injector,
          ComponentRef, ApplicationRef, NgZone } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { ActionSheetController } from 'ionic-angular';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
@@ -15,8 +16,9 @@ declare var L: any;
 export class MapService {
   map: any;
   routeControl: any;
+  currentLocationLayer: any;
+  startLocationLayer: any;
   popupsLayer: any;
-  markersLayer: any;
   currentZoom: number;
   popupRef: ComponentRef<LeafletPopupComponent>;
 
@@ -24,7 +26,8 @@ export class MapService {
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
-              private geocodingService: GeocodingService, private storage: Storage) {
+              private geocodingService: GeocodingService, private storage: Storage,
+              private actionSheetCtrl: ActionSheetController) {
     storage.get(MapService.LAST_ZOOM_LEVEL_KEY).then((val) => {
       if (val && Number(val) !== NaN) {
         this.currentZoom = val;
@@ -66,15 +69,26 @@ export class MapService {
       lineOptions: {
         styles: [{color: 'blue', opacity: 0.8, weight: 2}]
       },
+      createMarker: function(i: number, waypoint: any, total: number) {
+        if (i === 0) {
+          return false;
+        }
+        return L.marker(waypoint.latLng, { draggable: true });
+      },
       autoRoute: true,
       show: false,
       // showAlternatives: true,
       routeWhileDragging: true
     }).addTo(this.map);
 
-    this.markersLayer = new L.LayerGroup([]);
+    this.currentLocationLayer = new L.LayerGroup([]);
+    this.startLocationLayer = new L.LayerGroup([]);
     this.popupsLayer = new L.LayerGroup([]);
-    this.markersLayer.addTo(this.map);
+    this.currentLocationLayer.setZIndex(-1);
+    this.startLocationLayer.setZIndex(-1);
+    this.popupsLayer.setZIndex(0);
+    this.currentLocationLayer.addTo(this.map);
+    this.startLocationLayer.addTo(this.map);
     this.popupsLayer.addTo(this.map);
 
     this.map.on({
@@ -118,7 +132,7 @@ export class MapService {
   showDestinationByLatLng(latlng: any) {
     this.popupsLayer.clearLayers();
     this.geocodingService.geocodeByLatLng(latlng).subscribe(result => {
-      this.showDestinationPopup(latlng, result[0].formatted_address + " " + latlng.lat + " " + latlng.lng, false);
+      this.showDestinationPopup(latlng, result[0].formatted_address, false);
     }, error => {
       this.showDestinationPopup(latlng, "Unknown", false);
     })
@@ -136,10 +150,12 @@ export class MapService {
     this.popupRef = compFactory.create(this.injector);
     this.popupRef.instance.param = address;
     this.popupRef.instance.onGoButtonClicked.subscribe(x => {
-      console.log("goButtonClicked subscribe is working. ", x);
       this.popupsLayer.clearLayers();
-      this.map.fitBounds([this.markersLayer.getLayers()[0]._latlng, latLng]);
-      this.routeControl.getPlan().spliceWaypoints(0, 2, this.markersLayer.getLayers()[0]._latlng, latLng);
+      this.map.fitBounds([this.currentLocationLayer.getLayers()[0]._latlng, latLng]);
+      this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), latLng);
+    });
+    this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
+      this.presentLocationInfoActionSheet(latLng, address, centerDestination);
     });
 
     this.appRef.attachView(this.popupRef.hostView);
@@ -147,7 +163,7 @@ export class MapService {
       this.appRef.detachView(this.popupRef.hostView);
     });
 
-    var popup = marker.bindPopup(this.popupRef.location.nativeElement, {closeButton: false, maxWidth: 400, minWidth: 200});
+    var popup = marker.bindPopup(this.popupRef.location.nativeElement, {closeButton: false, maxWidth: 500, minWidth: 250});
 
     var firstTime = true;
     popup.on({
@@ -162,8 +178,48 @@ export class MapService {
     popup.openPopup();
   }
 
+  presentLocationInfoActionSheet(latLng: any, address: string, centerPostion: boolean) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: address,
+      buttons: [
+        {
+          text: 'Set as start point',
+          handler: () => {
+            this.startLocationLayer.clearLayers();
+            this.startLocationLayer.addLayer(L.marker(latLng, {icon: this.violetIcon}));
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked.');
+        }
+      }]
+    });
+    actionSheet.present();
+  }
+
+  resolveStartingPoint() {
+    if (this.startLocationLayer.getLayers().length > 0) {
+      return this.startLocationLayer.getLayers()[0]._latlng;
+    }
+    else {
+      return this.currentLocationLayer.getLayers()[0]._latlng;
+    }
+  }
+
   redIcon = new L.Icon({
     iconUrl: 'assets/img/marker-icon-2x-red.png',
+    shadowUrl: 'assets/img/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  violetIcon = new L.Icon({
+    iconUrl: 'assets/img/marker-icon-2x-violet.png',
     shadowUrl: 'assets/img/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],

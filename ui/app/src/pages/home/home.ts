@@ -34,14 +34,14 @@ export class HomePage implements OnInit, OnDestroy {
       );
       watchPosition.subscribe((data) => {
         console.log("watchPosition event: ", data, " currentZoom level: ", this.mapService.currentZoom);
-        this.mapService.markersLayer.clearLayers();
+        this.mapService.currentLocationLayer.clearLayers();
         if (firstTime) {
           this.mapService.map.setView([data.coords.latitude, data.coords.longitude], this.mapService.currentZoom);
           firstTime = false;
         }
-        this.mapService.markersLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+        this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 50}));
-        this.mapService.markersLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+        this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
       });
       this.watchPosition = watchPosition;
