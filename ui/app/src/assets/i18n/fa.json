@@ -1,0 +1,33 @@
+{
+  "LANGUAGE": "زبان",
+  "ENGLISH": "English",
+  "FARSI": "پارسی",
+
+  "COUNTRY": "کشور",
+  "CITY": "شهر",
+
+  "SETTINGS_TITLE": "تنظیمات",
+  "TEHRAN_SETTINGS_TITLE": "تنظیمات برای تهران",
+  "HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE": "طرح ترافیک اصلی تهران را در نقشه مشخص کن",
+
+  "COUNTRIES": [
+    {
+      "LABEL": "ایران",
+      "CODE": "IR"
+    },
+    {
+      "LABEL": "کشور دیگر",
+      "CODE": "OTR"
+    }
+  ],
+  "CITIES": [
+    {
+      "LABEL": "تهران",
+      "CODE": "THR"
+    },
+    {
+      "LABEL": "شهر دیگر",
+      "CODE": "OTR"
+    }
+  ]
+}

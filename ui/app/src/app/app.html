@@ -1,8 +1,11 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" id="primary">
   <ion-header>
     <ion-toolbar>
       <ion-buttons left>
-        <button ion-button icon-only color="purple" disabled>
+        <button ion-button icon-only color="purple" menuClose>
+          <ion-icon name="close"></ion-icon>
+        </button>
+        <button ion-button icon-only color="purple" (click)="showSettingsModal()" menuClose>
           <ion-icon name="cog"></ion-icon>
         </button>
       </ion-buttons>

@@ -1,0 +1,33 @@
+{
+  "LANGUAGE": "Language",
+  "ENGLISH": "English",
+  "FARSI": "پارسی",
+
+  "COUNTRY": "Country",
+  "CITY": "City",
+
+  "SETTINGS_TITLE": "Settings",
+  "TEHRAN_SETTINGS_TITLE": "Tehran's settings",
+  "HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE": "Hightlight Tehran Main Traffic Zone",
+
+  "COUNTRIES": [
+    {
+      "LABEL": "Iran",
+      "CODE": "IR"
+    },
+    {
+      "LABEL": "Other country",
+      "CODE": "OTR"
+    }
+  ],
+  "CITIES": [
+    {
+      "LABEL": "Tehran",
+      "CODE": "THR"
+    },
+    {
+      "LABEL": "Other city",
+      "CODE": "OTR"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons left *ngIf="page === 'main'">
+      <button ion-button icon-only color="purple" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ pageTitleKey | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="form" *ngIf="settingsReady">
+    <ion-list *ngIf="page === 'main'">
+      <ion-item>
+        <ion-label>{{ 'LANGUAGE' | translate }}</ion-label>
+        <ion-select formControlName="preferLanguage">
+          <ion-option value="en">English</ion-option>
+          <ion-option value="fa">پارسی</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ 'COUNTRY' | translate }}</ion-label>
+        <ion-select formControlName="country">
+          <ion-option *ngFor="let _country of countries" [value]="_country.CODE">{{_country.LABEL}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ 'CITY' | translate }}</ion-label>
+        <ion-select formControlName="city">
+          <ion-option *ngFor="let _city of cities" [value]="_city.CODE">{{_city.LABEL}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <button ion-item [navPush]="subSettings" [navParams]="tehranProfile" *ngIf="options.city === 'THR'">
+        {{ 'TEHRAN_SETTINGS_TITLE' | translate}}
+      </button>
+    </ion-list>
+    <ion-list *ngIf="page === 'tehranSettings'">
+      <ion-item>
+        <ion-label>{{ 'HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE' | translate }}</ion-label>
+        <ion-toggle formControlName="highlightTehranMainTrafficZone"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </form>
+
+</ion-content>

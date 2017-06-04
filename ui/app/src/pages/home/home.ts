@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, MenuController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { MapService } from '../../services';
+import { Settings } from '../../providers';
 
 @Component({
   selector: 'page-home',
@@ -13,12 +14,15 @@ export class HomePage implements OnInit, OnDestroy {
   watchPosition: any;
 
   constructor(private navCtrl: NavController, private geolocation: Geolocation,
-              private platform: Platform, private mapService: MapService) {
+              private platform: Platform, private mapService: MapService,
+              private settings: Settings, private menuCtrl: MenuController) {
 
   }
 
   ngOnInit() {
-    this.mapService.init();
+    this.settings.load().then(() => {
+      this.mapService.init();
+    });
 
     this.platform.ready().then((readySource) => {
       var firstTime = true;
@@ -47,6 +51,10 @@ export class HomePage implements OnInit, OnDestroy {
       this.watchPosition = watchPosition;
     });
 
+  }
+
+  ionViewWillEnter() {
+    this.menuCtrl.swipeEnable(false, 'primary');
   }
 
   ngOnDestroy() {

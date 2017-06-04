@@ -18,25 +18,25 @@ export class MapService {
   routeControl: any;
   currentLocationLayer: any;
   startLocationLayer: any;
+  highlightLayer: any;
   popupsLayer: any;
   currentZoom: number;
   popupRef: ComponentRef<LeafletPopupComponent>;
-
-  private LAST_ZOOM_LEVEL_KEY: string = "lastZoomLevel";
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
               private geocodingService: GeocodingService, private settings: Settings,
               private actionSheetCtrl: ActionSheetController) {
-    settings.getValue(this.LAST_ZOOM_LEVEL_KEY).then(val => {
-      this.currentZoom = val;
-    });
   }
 
   init() {
     if (this.map) {
       return;
     }
+
+    this.settings.getValue(Settings.LAST_ZOOM_LEVEL_KEY).then(val => {
+      this.currentZoom = val;
+    });
 
     this.map = L.map('map', {
       attributionControl: false
@@ -80,12 +80,15 @@ export class MapService {
     this.currentLocationLayer = new L.LayerGroup([]);
     this.startLocationLayer = new L.LayerGroup([]);
     this.popupsLayer = new L.LayerGroup([]);
+    this.highlightLayer = new L.LayerGroup([]);
     this.currentLocationLayer.setZIndex(-1);
     this.startLocationLayer.setZIndex(-1);
-    this.popupsLayer.setZIndex(0);
+    this.popupsLayer.setZIndex(-1);
+    this.highlightLayer.setZIndex(-1);
     this.currentLocationLayer.addTo(this.map);
     this.startLocationLayer.addTo(this.map);
     this.popupsLayer.addTo(this.map);
+    this.highlightLayer.addTo(this.map);
 
     this.map.on({
       contextmenu: (e) => {     // Long press event
@@ -98,27 +101,25 @@ export class MapService {
       },
       zoomend: (e) => {
         this.currentZoom = e.target._zoom;
-        this.settings.setValue(this.LAST_ZOOM_LEVEL_KEY, e.target._zoom);
+        this.settings.setValue(Settings.LAST_ZOOM_LEVEL_KEY, this.currentZoom);
       }
     });
 
-    L.polygon([
-      [35.71452, 51.38897],
-      [35.72118, 51.40765],
-      [35.72404, 51.41006],
-      [35.72465, 51.43761],
-      [35.72407, 51.44107],
-      [35.71779, 51.43946],
-      [35.71731, 51.44085],
-      [35.70698, 51.43485],
-      [35.70710, 51.44101],
-      [35.69958, 51.43884],
-      [35.70202, 51.44871],
-      [35.66032, 51.44612], // طیب
-      [35.65649, 51.40909], // شوش
-      [35.65846, 51.39509], // انتهای کارگر جنوبی
-      [35.71346, 51.38765], // ابتدای کارگر جنوبی
-    ]).addTo(this.map);
+    this.addHighlightLayers();
+    this.settings.onSettingsChangeEvent.subscribe(() => {
+      this.highlightLayer.clearLayers();
+      this.addHighlightLayers();
+    });
+
+  }
+
+  addHighlightLayers() {
+    this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE).then(val => {
+      console.log("highlightTehranMainTrafficZone", val);
+      if (val === true) {
+        this.highlightLayer.addLayer(this.tehranMainTrafficZonePolygon);
+      }
+    });
   }
 
   showDestination(item: any) {
@@ -222,5 +223,23 @@ export class MapService {
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
   });
+
+  tehranMainTrafficZonePolygon = L.polygon([
+    [35.71452, 51.38897],
+    [35.72118, 51.40765],
+    [35.72404, 51.41006],
+    [35.72465, 51.43761],
+    [35.72407, 51.44107],
+    [35.71779, 51.43946],
+    [35.71731, 51.44085],
+    [35.70698, 51.43485],
+    [35.70710, 51.44101],
+    [35.69958, 51.43884],
+    [35.70202, 51.44871],
+    [35.66032, 51.44612], // طیب
+    [35.65649, 51.40909], // شوش
+    [35.65846, 51.39509], // انتهای کارگر جنوبی
+    [35.71346, 51.38765], // ابتدای کارگر جنوبی
+  ]);
 
 }

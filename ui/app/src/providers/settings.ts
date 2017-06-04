@@ -1,18 +1,22 @@
-import { Injectable } from '@angular/core';
-
+import { Injectable, EventEmitter } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 /**
- * A simple settings/config classs for storing key/value pairs with persistence.
+ * A simple settings/config class for storing key/value pairs with persistence.
  */
 @Injectable()
 export class Settings {
+
   private SETTINGS_KEY: string = 'settings_key';
+  public static readonly LAST_ZOOM_LEVEL_KEY: string = 'lastZoomLevel';
+  public static readonly PREFER_LANGUAGE: string = 'preferLanguage';
+  public static readonly HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE: string = 'highlightTehranMainTrafficZone';
 
   settings: any;
 
   _defaults: any;
   _readyPromise: Promise<any>;
+  onSettingsChangeEvent = new EventEmitter();
 
   constructor(public storage: Storage, defaults: any) {
     this._defaults = defaults;
@@ -24,9 +28,8 @@ export class Settings {
         this.settings = value;
         return this._mergeDefaults(this._defaults);
       } else {
-        return this.setAll(this._defaults).then((val) => {
-          this.settings = val;
-        })
+        this.settings = this._defaults;
+        return this.save();
       }
     });
   }
@@ -37,7 +40,7 @@ export class Settings {
         this.settings[k] = defaults[k];
       }
     }
-    return this.setAll(this.settings);
+    return this.save();
   }
 
   merge(settings: any) {
@@ -48,8 +51,9 @@ export class Settings {
   }
 
   setValue(key: string, value: any) {
+    console.log("Settings.setValue[" + value + "] for key[" + key + "]");
     this.settings[key] = value;
-    return this.storage.set(this.SETTINGS_KEY, this.settings);
+    return this.save();
   }
 
   setAll(value: any) {
@@ -64,10 +68,12 @@ export class Settings {
   }
 
   save() {
-    return this.setAll(this.settings);
+    return this.setAll(this.settings).then((val) => {
+      this.onSettingsChangeEvent.emit();
+    });
   }
 
-  getAllSettings() {
+  get allSettings() {
     return this.settings;
   }
 
