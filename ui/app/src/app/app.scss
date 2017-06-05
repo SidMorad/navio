@@ -17,6 +17,7 @@
 
 // Temporary RTL fix until https://github.com/ionic-team/ionic/issues/11211 get resolved.
 // Start------------------------------------------------------------------------
+$segment-button-ios-border-radius:              4px !default;
 html[dir=rtl] {
     .segment-ios .segment-button {
         &:last-of-type {

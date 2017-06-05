@@ -58,8 +58,6 @@ export class MapService {
         serviceUrl: ROUTE_API_BASE_URL,
         urlParameters: {
           // algorithm: 'alternative_route',
-          'ch.disable': true,
-          block_area: '35.71346,51.38765,35.66032,51.44612'
          }
       }),
       lineOptions: {
@@ -109,13 +107,27 @@ export class MapService {
     this.settings.onSettingsChangeEvent.subscribe(() => {
       this.highlightLayer.clearLayers();
       this.addHighlightLayers();
+      this.reOrganizeRouterUrlParameters();
     });
 
   }
 
+  reOrganizeRouterUrlParameters() {
+    this.settings.getValue(Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE).then(val => {
+      if (val === true) {
+        this.routeControl.getRouter().options.urlParameters = {};
+      }
+      else {
+        this.routeControl.getRouter().options.urlParameters = {
+          'ch.disable': true,
+          block_area: this.tehranMainTrafficZoneBlockedArea
+        }
+      }
+    });
+  }
+
   addHighlightLayers() {
     this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE).then(val => {
-      console.log("highlightTehranMainTrafficZone", val);
       if (val === true) {
         this.highlightLayer.addLayer(this.tehranMainTrafficZonePolygon);
       }
@@ -145,7 +157,7 @@ export class MapService {
     if (this.popupRef) { this.popupRef.destroy(); }
     const compFactory = this.resolver.resolveComponentFactory(LeafletPopupComponent);
     this.popupRef = compFactory.create(this.injector);
-    this.popupRef.instance.param = address;
+    this.popupRef.instance.param = address + " " + latLng.lat + " " + latLng.lng;
     this.popupRef.instance.onGoButtonClicked.subscribe(x => {
       this.popupsLayer.clearLayers();
       this.map.fitBounds([this.currentLocationLayer.getLayers()[0]._latlng, latLng]);
@@ -224,6 +236,11 @@ export class MapService {
     shadowSize: [41, 41]
   });
 
+  tehranMainTrafficZoneBlockedArea = '35.72397,51.38768,35.65780,51.44781';
+  tehranMainTrafficZoneRectangle = L.rectangle([
+    [35.72397, 51.38768],
+    [35.65780, 51.44781]
+  ]);
   tehranMainTrafficZonePolygon = L.polygon([
     [35.71452, 51.38897],
     [35.72118, 51.40765],
@@ -240,6 +257,10 @@ export class MapService {
     [35.65649, 51.40909], // شوش
     [35.65846, 51.39509], // انتهای کارگر جنوبی
     [35.71346, 51.38765], // ابتدای کارگر جنوبی
-  ]);
+  ], {
+    color: 'red',
+    fillColor: 'pink',
+    fillOpacity: 0.2
+  });
 
 }

@@ -59,7 +59,8 @@ export class SettingsPage implements OnInit {
         break;
       case 'tehranSettings':
         group = {
-          highlightTehranMainTrafficZone: [this.options.highlightTehranMainTrafficZone]
+          highlightTehranMainTrafficZone: [this.options.highlightTehranMainTrafficZone],
+          hasTehranMainTrafficCertificate: [this.options.hasTehranMainTrafficCertificate]
         };
         break;
     }

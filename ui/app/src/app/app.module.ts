@@ -30,7 +30,7 @@ export function provideSettings(storage: Storage) {
     country: 'IR',
     city: 'THR',
     highlightTehranMainTrafficZone: true,
-    hasTehranMainTrafficCertificate: 'notset',
+    hasTehranMainTrafficCertificate: false,
     isCarPlateEvenOrOdd: 'notset',
     lastZoomLevel: 18
   });

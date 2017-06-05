@@ -11,6 +11,7 @@ export class Settings {
   public static readonly LAST_ZOOM_LEVEL_KEY: string = 'lastZoomLevel';
   public static readonly PREFER_LANGUAGE: string = 'preferLanguage';
   public static readonly HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE: string = 'highlightTehranMainTrafficZone';
+  public static readonly HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE: string = 'hasTehranMainTrafficCertificate';
 
   settings: any;
 

@@ -31,6 +31,13 @@ export class MyApp {
         settings.getValue(Settings.PREFER_LANGUAGE).then(val => {
           translateService.setDefaultLang(val);
           translateService.use(val);
+          if (val === 'fa') {
+            platform.setDir('rtl', true);
+          }
+          else {
+            platform.setDir('ltr', true);
+          }
+          platform.setLang(val, true);
         });
         splashScreen.hide();
       });

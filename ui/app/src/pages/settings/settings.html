@@ -39,9 +39,13 @@
       </button>
     </ion-list>
     <ion-list *ngIf="page === 'tehranSettings'">
-      <ion-item>
+      <ion-item text-wrap>
         <ion-label>{{ 'HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE' | translate }}</ion-label>
         <ion-toggle formControlName="highlightTehranMainTrafficZone"></ion-toggle>
+      </ion-item>
+      <ion-item text-wrap>
+        <ion-label>{{ 'HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE' | translate}}</ion-label>
+        <ion-toggle formControlName="hasTehranMainTrafficCertificate"></ion-toggle>
       </ion-item>
     </ion-list>
   </form>
