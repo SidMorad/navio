@@ -435,6 +435,11 @@
             <scope>test</scope>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>directions-api-client-optimized</artifactId>
+            <version>0.9.0</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>

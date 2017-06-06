@@ -142,3 +142,4 @@ jhipster:
 # ===================================================================
 
 application:
+    routeEngineServiceUrl: http://graphhopper:8989/route

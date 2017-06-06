@@ -29,7 +29,8 @@ import java.util.Map;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class MicroserviceSecurityConfiguration extends ResourceServerConfigurerAdapter {
 
-    private final JHipsterProperties jHipsterProperties;
+    @SuppressWarnings("unused")
+	private final JHipsterProperties jHipsterProperties;
 
     private final DiscoveryClient discoveryClient;
 
@@ -55,9 +56,11 @@ public class MicroserviceSecurityConfiguration extends ResourceServerConfigurerA
             .authorizeRequests()
             .antMatchers("/api/profile-info").permitAll()
             .antMatchers("/api/**").authenticated()
+            .antMatchers("/v1/get").permitAll()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/swagger-resources/configuration/ui").permitAll();
+            .antMatchers("/swagger-resources/configuration/ui").permitAll()
+            ;
     }
 
     @Bean
@@ -90,4 +93,5 @@ public class MicroserviceSecurityConfiguration extends ResourceServerConfigurerA
             .get("value");
 
     }
+
 }
