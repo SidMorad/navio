@@ -3,6 +3,7 @@ version: '2'
 services:
   graphhopper:
     build: .
+    container_name: rahpey-graphhopper-dev
     ports:
       - 8989:8989
     volumes:
