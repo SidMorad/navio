@@ -157,7 +157,7 @@ export class MapService {
     if (this.popupRef) { this.popupRef.destroy(); }
     const compFactory = this.resolver.resolveComponentFactory(LeafletPopupComponent);
     this.popupRef = compFactory.create(this.injector);
-    this.popupRef.instance.param = address + " " + latLng.lat + " " + latLng.lng;
+    this.popupRef.instance.param = address;
     this.popupRef.instance.onGoButtonClicked.subscribe(x => {
       this.popupsLayer.clearLayers();
       this.map.fitBounds([this.currentLocationLayer.getLayers()[0]._latlng, latLng]);
