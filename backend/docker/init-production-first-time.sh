@@ -15,11 +15,10 @@ docker images
 printf "done.\n\n"
 sleep 1
 
-#printf "# Let's build our application (docker)images first.\n\n"
-#cd ../
-#sh build-prod-all.sh
-#printf "done.\n\n"
-#sleep 1
+printf "# Let's build our application (docker)images first.\n\n"
+./build-prod-all.sh
+printf "done.\n\n"
+sleep 1
 
 printf "# Let's bring everytings up!\n\n"
 cd "$ROOT_DIR"
@@ -42,7 +41,7 @@ docker container restart $(docker ps -aqf "name=nginx")
 printf "done.\n\n"
 sleep 1
 
-printf "# Depends to timeouts in docker-compose.yml file and your hardware, everyting must be up and ready in 2 minutes or so. to check, see http://IP or host\n\n"
+printf "# Depends to timeouts in docker-compose.yml file and your hardware, everyting must be up and ready in 2 minutes or so. to check, use docker-compose logs -f or  see http://IP or host\n\n"
 sleep 1
 
 printf "\nRahpey production depolyment was successful! \ncelebrate it with a tea or coffee if you wish! :-)\n"

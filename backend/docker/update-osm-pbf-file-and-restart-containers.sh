@@ -9,25 +9,27 @@ set -e
 osm_dir="$HOME/osm"
 osm_file="${osm_dir}/import.osm.pbf"
 osm_cache_dir="${osm_dir}/import.osm-gh"
+graphhopper_cid=$(docker inspect --format="{{.Id}}" rahpey-graphhopper)
+opentileserver_cid=$(docker inspect --format="{{.Id}}" rahpey-opentileserver)
 
 if [ ! -d "${osm_dir}" ]; then
-    mkdir "${osm_dir}";
+    mkdir "${osm_dir}"
   else
-    rm "${osm_file}";
+    rm "${osm_file}"
 fi
 
 wget -O "${osm_file}" http://download.geofabrik.de/asia/iran-latest.osm.pbf
 
-echo "Graphhopper is updating..."
-docker cp ../graphhopper/properties/config.properties $(docker ps -aqf "name=graphhopper"):/home/graphhopper/config.properties
+echo "Graphhopper is updating... ${osm_file}"
+docker cp ../graphhopper/properties/config.properties "${graphhopper_cid}:/home/graphhopper/config.properties"
 docker-compose stop graphhopper
 sudo rm -rf "${osm_cache_dir}"
 docker-compose start graphhopper
 echo "done!"
 
 echo "OpenTileServer is updating..."
-docker cp "${osm_file}" $(docker ps -aqf "name=opentileserver"):/home/tile/iran-latest.osm.pbf
-docker exec $(docker ps -aqf "name=opentileserver") /home/ots/Ubuntu-16-Reload.sh /home/tile/iran-latest.osm.pbf
+docker cp "${osm_file}" "${opentileserver_cid}:/home/tile/iran-latest.osm.pbf"
+docker exec "${opentileserver_cid}" /home/ots/Ubuntu-16-Reload.sh /home/tile/iran-latest.osm.pbf
 echo ""
 echo "done!"
 
