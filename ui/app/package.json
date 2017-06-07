@@ -45,6 +45,7 @@
     "leaflet": "1.0.3",
     "leaflet-routing-machine": "3.2.5",
     "lrm-graphhopper": "1.1.3",
+    "moment": "^2.18.1",
     "rxjs": "5.1.1",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.11"

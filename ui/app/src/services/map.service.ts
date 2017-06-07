@@ -9,6 +9,7 @@ import { LeafletPopupComponent } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL } from '../app/config';
 import { GeocodingService } from '.';
 import { Settings } from '../providers';
+import { TehranMainTrafficSpecification } from '../domain/model/tehran';
 
 declare var L: any;
 
@@ -35,7 +36,11 @@ export class MapService {
     }
 
     this.settings.getValue(Settings.LAST_ZOOM_LEVEL_KEY).then(val => {
-      this.currentZoom = val;
+      if (!val) {
+        this.currentZoom = 18;
+      } else {
+        this.currentZoom = val;
+      }
     });
 
     this.map = L.map('map', {
@@ -118,9 +123,14 @@ export class MapService {
         this.routeControl.getRouter().options.urlParameters = {};
       }
       else {
-        this.routeControl.getRouter().options.urlParameters = {
-          'ch.disable': true,
-          block_area: this.tehranMainTrafficZoneBlockedArea
+        if (new TehranMainTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
+          this.routeControl.getRouter().options.urlParameters = {
+            'ch.disable': true,
+            block_area: this.tehranMainTrafficZoneBlockedArea
+          }
+        }
+        else {
+          this.routeControl.getRouter().options.urlParameters = {};
         }
       }
     });
