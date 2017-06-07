@@ -9,7 +9,11 @@
   "SETTINGS_TITLE": "تنظیمات",
   "TEHRAN_SETTINGS_TITLE": "تنظیمات برای تهران",
   "HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE": "طرح ترافیک اصلی تهران را در نقشه مشخص کن",
+  "HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE": "طرح ترافیک زوج و فرد تهران را در نقشه مشخص کن",
   "HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE": "من مجوز طرح ترافیک اصلی تهران را دارم",
+  "CAR_PLATE_NUMBER_EVEN_OR_ODD": "شماره آخر پلاک ماشین شما، زوج است یا فرد؟",
+  "EVEN": "زوج",
+  "ODD": "فرد",
 
   "COUNTRIES": [
     {

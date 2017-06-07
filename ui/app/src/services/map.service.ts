@@ -9,7 +9,8 @@ import { LeafletPopupComponent } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL } from '../app/config';
 import { GeocodingService } from '.';
 import { Settings } from '../providers';
-import { TehranMainTrafficSpecification } from '../domain/model/tehran';
+import { TehranMainTrafficSpecification,
+         TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
 
 declare var L: any;
 
@@ -123,15 +124,30 @@ export class MapService {
         this.routeControl.getRouter().options.urlParameters = {};
       }
       else {
-        if (new TehranMainTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
-          this.routeControl.getRouter().options.urlParameters = {
-            'ch.disable': true,
-            block_area: TehranMainTrafficSpecification.blockedAreaPoints()
+        this.settings.getValue(Settings.CAR_PLATE_NUMBER_EVEN_OR_ODD).then(val => {
+          if (new TehranEvenOddTrafficSpecification().isAllowedToday(val)) {
+            if (new TehranMainTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
+              this.routeControl.getRouter().options.urlParameters = {
+                'ch.disable': true,
+                block_area: TehranMainTrafficSpecification.blockedAreaPoints()
+              }
+            }
+            else {
+              this.routeControl.getRouter().options.urlParameters = {};
+            }
           }
-        }
-        else {
-          this.routeControl.getRouter().options.urlParameters = {};
-        }
+          else {
+            if (new TehranEvenOddTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
+              this.routeControl.getRouter().options.urlParameters = {
+                'ch.disable': true,
+                block_area: TehranEvenOddTrafficSpecification.blockedAreaPoints()
+              }
+            }
+            else {
+              this.routeControl.getRouter().options.urlParameters = {};
+            }
+          }
+        });
       }
     });
   }
@@ -142,6 +158,11 @@ export class MapService {
         this.highlightLayer.addLayer(this.tehranMainTrafficZonePolygon);
       }
     });
+    this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE).then(val => {
+      if (val === true) {
+        this.highlightLayer.addLayer(this.tehranEvenOddTrafficZonePloygon);
+      }
+    })
   }
 
   showDestination(item: any) {
@@ -246,14 +267,29 @@ export class MapService {
     shadowSize: [41, 41]
   });
 
-  tehranMainTrafficZoneRectangle = L.rectangle([
-    TehranMainTrafficSpecification.rectanglePoints()
-  ]);
+  tehranMainTrafficZoneRectangle = L.rectangle(
+    TehranMainTrafficSpecification.rectanglePoints(), {
+      color: 'red'
+    }
+  );
+
   tehranMainTrafficZonePolygon = L.polygon(
     TehranMainTrafficSpecification.polygonPoints(), {
     color: 'red',
     fillColor: 'pink',
-    fillOpacity: 0.2
+    fillOpacity: 0.0
   });
 
+  tehranEvenOddTrafficZoneRectangle = L.rectangle(
+    TehranEvenOddTrafficSpecification.rectanglePoints(), {
+      color: 'red'
+    }
+  );
+
+  tehranEvenOddTrafficZonePloygon = L.polygon(
+    TehranEvenOddTrafficSpecification.polygonPoints(), {
+    color: 'brown',
+    fillColor: 'pink',
+    fillOpacity: 0.0
+  });
 }

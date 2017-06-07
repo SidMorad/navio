@@ -30,8 +30,9 @@ export function provideSettings(storage: Storage) {
     country: 'IR',
     city: 'THR',
     highlightTehranMainTrafficZone: true,
+    highlightTehranEvenOddTrafficZone: true,
     hasTehranMainTrafficCertificate: false,
-    isCarPlateEvenOrOdd: 'notset',
+    carPlateNumberEvenOrOdd: 'notset',
     lastZoomLevel: 18
   });
 }

@@ -9,7 +9,11 @@
   "SETTINGS_TITLE": "Settings",
   "TEHRAN_SETTINGS_TITLE": "Tehran's settings",
   "HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE": "Hightlight Tehran Main Traffic Zone",
+  "HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE": "Hightlight Tehran Even-Odd Traffic Zone",
   "HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE": "I have licence for crossing Tehran main traffic zone",
+  "CAR_PLATE_NUMBER_EVEN_OR_ODD": "Last number of your car's plate is Even or Odd?",
+  "EVEN": "Even",
+  "ODD": "Odd",
 
   "COUNTRIES": [
     {

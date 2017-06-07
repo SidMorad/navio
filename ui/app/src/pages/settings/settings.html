@@ -44,8 +44,19 @@
         <ion-toggle formControlName="highlightTehranMainTrafficZone"></ion-toggle>
       </ion-item>
       <ion-item text-wrap>
+        <ion-label>{{ 'HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE' | translate }}</ion-label>
+        <ion-toggle formControlName="highlightTehranEvenOddTrafficZone"></ion-toggle>
+      </ion-item>
+      <ion-item text-wrap>
         <ion-label>{{ 'HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE' | translate}}</ion-label>
         <ion-toggle formControlName="hasTehranMainTrafficCertificate"></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="options.hasTehranMainTrafficCertificate === false">
+        <ion-label>{{ 'CAR_PLATE_NUMBER_EVEN_OR_ODD' | translate }}</ion-label>
+        <ion-select formControlName="carPlateNumberEvenOrOdd">
+          <ion-option value="even">{{ 'EVEN' | translate }}</ion-option>
+          <ion-option value="odd">{{ 'ODD' | translate }}</ion-option>
+        </ion-select>
       </ion-item>
     </ion-list>
   </form>

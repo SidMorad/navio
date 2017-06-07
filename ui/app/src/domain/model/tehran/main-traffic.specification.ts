@@ -5,16 +5,12 @@ export class TehranMainTrafficSpecification {
   isCurrentTimeBetweenForbiddenTime() {
     if (moment().isoWeekday() === 5) {        // Firday, no restriction
       return false;
-    } else if (moment().isoWeekday() === 4){  // Thursday, between 6:30am and 13:00pm
-      let start = moment('6:30am', 'h:mma');
-      let end = moment('13:00pm', 'h:mma');
-      if (moment().isBetween(start, end)) {
+    } else if (moment().isoWeekday() === 4){  // Thursday
+      if (moment().isBetween(moment('6:30am', 'h:mma'), moment('13:00pm', 'h:mma'))) {
         return true;
       }
-    } else {                                  // Other days, between 6:30am and 17:00pm
-      let start = moment('6:30am', 'h:mma');
-      let end = moment('17:00pm', 'h:mma');
-      if (moment().isBetween(start, end)) {
+    } else {                                  // Other days
+      if (moment().isBetween(moment('6:30am', 'h:mma'), moment('17:00pm', 'h:mma'))) {
         return true;
       }
     }
