@@ -47,8 +47,8 @@ chmod +x /usr/local/bin/docker-compose
 # See installed version
 docker-compose --version
 
-# Install OpenJdk-8       Note: change to openjdk-8-jdk for developmet machine
-apt-get install -y openjdk-8-jre
+# Install OpenJdk-8
+apt-get install -y openjdk-8-jdk
 
 # Install Git
 apt-get install -y git
@@ -59,3 +59,4 @@ apt-get install -y nodejs
 
 # Install Npm
 apt-get install -y npm
+npm install -g npm
