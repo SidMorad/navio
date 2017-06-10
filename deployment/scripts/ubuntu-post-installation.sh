@@ -4,6 +4,9 @@
 # Docker
 #===============================================================================
 
+# Update apt
+apt-get update
+
 # Install packages to allow apt to use a repository over HTTPS
 apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
@@ -37,5 +40,22 @@ usermod -aG docker ubuntu
 curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
+#===============================================================================
+# Neccessary software for building docker images for Rahpey domain services.
+#===============================================================================
+
 # See installed version
 docker-compose --version
+
+# Install OpenJdk-8       Note: change to openjdk-8-jdk for developmet machine
+apt-get install -y openjdk-8-jre
+
+# Install Git
+apt-get install -y git
+
+# Install Node
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+apt-get install -y nodejs
+
+# Install Npm
+apt-get install -y npm
