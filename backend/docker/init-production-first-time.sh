@@ -32,12 +32,35 @@ printf "done.\n\n"
 sleep 1
 
 printf "# Let's modify nginx default configuration.\n\n"
-docker cp nginx/default.conf $(docker ps -aqf "name=nginx"):/etc/nginx/conf.d/default.conf
+nginx_cid=$(docker inspect --format="{{.Id}}" rahpey-nginx)
+docker cp nginx/default.conf "${nginx_cid}:/etc/nginx/conf.d/default.conf"
 printf "done.\n\n"
 sleep 1
 
 printf "# Let's restart nginx container for applying configs.\n\n"
-docker container restart $(docker ps -aqf "name=nginx")
+docker container restart "${nginx_cid}"
+printf "done.\n\n"
+sleep 1
+
+printf "# Let's wait for(20 seconds) until opentileserver to come up.\n\n"
+sleep 20
+printf "done.\n\n"
+sleep 1
+
+printf "# Let's check if OpenTileServer database is up!?\n\n"
+opentileserver_cid=$(docker inspect --format="{{.Id}}" rahpey-opentileserver)
+docker exec "${opentileserver_cid}" bash service postgresql status
+printf "done.\n\n"
+sleep 1
+
+printf "# Let's start OpenTileServer http server manually(it seems is not up! like a database service!)\n\n"
+docker exec "${opentileserver_cid}" bash service apache2 start
+printf "done.\n\n"
+sleep 1
+
+
+printf "# Let's update iran-latest.osm.pbf to the latest!"
+./update-osm-pbf-file-and-restart-containers.sh
 printf "done.\n\n"
 sleep 1
 
