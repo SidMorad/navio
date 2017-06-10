@@ -85,10 +85,6 @@ export class MapService {
     this.startLocationLayer = new L.LayerGroup([]);
     this.popupsLayer = new L.LayerGroup([]);
     this.highlightLayer = new L.LayerGroup([]);
-    this.currentLocationLayer.setZIndex(-1);
-    this.startLocationLayer.setZIndex(-1);
-    this.popupsLayer.setZIndex(-1);
-    this.highlightLayer.setZIndex(-1);
     this.currentLocationLayer.addTo(this.map);
     this.startLocationLayer.addTo(this.map);
     this.popupsLayer.addTo(this.map);
@@ -191,7 +187,7 @@ export class MapService {
     this.popupRef.instance.param = address;
     this.popupRef.instance.onGoButtonClicked.subscribe(x => {
       this.popupsLayer.clearLayers();
-      this.map.fitBounds([this.currentLocationLayer.getLayers()[0]._latlng, latLng]);
+      this.map.fitBounds([this.resolveStartingPoint(), latLng]);
       this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), latLng);
     });
     this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
@@ -276,6 +272,10 @@ export class MapService {
   tehranMainTrafficZonePolygon = L.polygon(
     TehranMainTrafficSpecification.polygonPoints(), {
     color: 'red',
+    weight: 8,
+    opacity: .5,
+    dashArray: '20,15',
+    lineJoin: 'round',
     fillColor: 'pink',
     fillOpacity: 0.0
   });
@@ -288,7 +288,11 @@ export class MapService {
 
   tehranEvenOddTrafficZonePloygon = L.polygon(
     TehranEvenOddTrafficSpecification.polygonPoints(), {
-    color: 'brown',
+    color: 'red',
+    weight: 8,
+    opacity: .5,
+    dashArray: '20,15',
+    lineJoin: 'round',
     fillColor: 'pink',
     fillOpacity: 0.0
   });

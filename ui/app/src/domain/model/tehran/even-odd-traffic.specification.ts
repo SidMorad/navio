@@ -18,10 +18,13 @@ export class TehranEvenOddTrafficSpecification {
   }
 
   isAllowedToday(val: string) {
+    let weekDay = moment().isoWeekday();
+    if (weekDay === 5) {            // Firday, no restriction
+      return true;
+    }
     if (!val || val === 'noset') {  // If we don't know car's plate number is even or odd, then not allowed!
       return false;
     }
-    let weekDay = moment().isoWeekday();
     if (val === 'even') {
       if (weekDay === 6 || weekDay === 1 || weekDay === 3) {  // Saturday, Monday, Wendsday
         return true;
@@ -36,13 +39,13 @@ export class TehranEvenOddTrafficSpecification {
   }
 
   static blockedAreaPoints() {
-    return '35.75506,51.37695,35.64011,51.46476';
+    return TehranEvenOddTrafficSpecification.rectanglePoints().join();
   }
 
   static rectanglePoints() {
     return [
-      [35.75506, 51.37695],
-      [35.64011, 51.46476]
+      [35.74716, 51.38786],
+      [35.65183, 51.45461]
     ];
   }
 

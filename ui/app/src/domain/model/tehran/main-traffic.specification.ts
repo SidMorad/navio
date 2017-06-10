@@ -18,7 +18,7 @@ export class TehranMainTrafficSpecification {
   }
 
   static blockedAreaPoints() {
-    return '35.72397,51.38768,35.65780,51.44781';
+    return TehranMainTrafficSpecification.rectanglePoints().join();
   }
 
   static rectanglePoints() {
