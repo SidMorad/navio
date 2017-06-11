@@ -4,9 +4,10 @@ import { ActionSheetController } from 'ionic-angular';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
+import 'leaflet-overpass-layer';
 
 import { LeafletPopupComponent } from '../pages';
-import { TILE_API_BASE_URL, ROUTE_API_BASE_URL } from '../app/config';
+import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
 import { GeocodingService } from '.';
 import { Settings } from '../providers';
 import { TehranMainTrafficSpecification,
@@ -21,7 +22,9 @@ export class MapService {
   currentLocationLayer: any;
   startLocationLayer: any;
   highlightLayer: any;
+  overpassLayer: any;
   popupsLayer: any;
+  speedCameraLayer: any;
   currentZoom: number;
   popupRef: ComponentRef<LeafletPopupComponent>;
 
@@ -51,7 +54,8 @@ export class MapService {
     L.tileLayer(TILE_API_BASE_URL + '/{z}/{x}/{y}.png', {
       attribution: 'Rahpey | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       attributionPrefix: '',
-      maxZoom: 18
+      maxZoom: 18,
+      opacity: .7
     }).addTo(this.map);
 
     this.map.addControl(L.control.attribution({
@@ -81,14 +85,27 @@ export class MapService {
       routeWhileDragging: true
     }).addTo(this.map);
 
+    this.speedCameraLayer = new L.OverPassLayer({
+       endPoint: OVERPASS_API_BASE_URL,
+       query: 'node({{bbox}})[highway=speed_camera];out qt;',
+       minZoom: 15,
+       timeout: 30 * 1000, // Milliseconds
+       retryOnTimeout: false,
+       minZoomIndicatorEnabled: false,
+       markerIcon: this.speedCameraIcon,
+       debug: false,
+    }).addTo(this.map);
+
     this.currentLocationLayer = new L.LayerGroup([]);
     this.startLocationLayer = new L.LayerGroup([]);
-    this.popupsLayer = new L.LayerGroup([]);
     this.highlightLayer = new L.LayerGroup([]);
+    this.overpassLayer = new L.LayerGroup([]);
+    this.popupsLayer = new L.LayerGroup([]);
     this.currentLocationLayer.addTo(this.map);
     this.startLocationLayer.addTo(this.map);
-    this.popupsLayer.addTo(this.map);
     this.highlightLayer.addTo(this.map);
+    this.overpassLayer.addTo(this.map);
+    this.popupsLayer.addTo(this.map);
 
     this.map.on({
       contextmenu: (e) => {     // Long press event
@@ -102,6 +119,12 @@ export class MapService {
       zoomend: (e) => {
         this.currentZoom = e.target._zoom;
         this.settings.setValue(Settings.LAST_ZOOM_LEVEL_KEY, this.currentZoom);
+        if (this.currentZoom > 14) {
+          this.overpassLayer.clearLayers();
+          this.overpassLayer.addLayer(this.speedCameraLayer);
+        } else {
+          this.overpassLayer.clearLayers();
+        }
       }
     });
 
@@ -245,22 +268,26 @@ export class MapService {
     }
   }
 
-  redIcon = new L.Icon({
-    iconUrl: 'assets/img/marker-icon-2x-red.png',
-    shadowUrl: 'assets/img/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  LeafIcon = L.Icon.extend({
+    options: {
+      shadowUrl: 'assets/img/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    }
   });
 
-  violetIcon = new L.Icon({
-    iconUrl: 'assets/img/marker-icon-2x-violet.png',
-    shadowUrl: 'assets/img/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  redIcon = new this.LeafIcon({
+    iconUrl: 'assets/img/marker-icon-2x-red.png'
+  });
+
+  violetIcon = new this.LeafIcon({
+    iconUrl: 'assets/img/marker-icon-2x-violet.png'
+  });
+
+  speedCameraIcon = new this.LeafIcon({
+    iconUrl: 'assets/img/speed-camera.png'
   });
 
   tehranMainTrafficZoneRectangle = L.rectangle(
