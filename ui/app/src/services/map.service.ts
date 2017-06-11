@@ -5,6 +5,7 @@ import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
+import 'leaflet-control-geocoder';
 
 import { LeafletPopupComponent } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
@@ -19,11 +20,11 @@ declare var L: any;
 export class MapService {
   map: any;
   routeControl: any;
-  currentLocationLayer: any;
-  startLocationLayer: any;
-  highlightLayer: any;
-  overpassLayer: any;
-  popupsLayer: any;
+  currentLocationLayer: any = new L.LayerGroup([]);
+  startLocationLayer: any = new L.LayerGroup([]);
+  highlightLayer: any = new L.LayerGroup([]);
+  overpassLayer: any = new L.LayerGroup([]);
+  popupsLayer: any = new L.LayerGroup([]);
   speedCameraLayer: any;
   currentZoom: number;
   popupRef: ComponentRef<LeafletPopupComponent>;
@@ -70,6 +71,9 @@ export class MapService {
           // algorithm: 'alternative_route',
          }
       }),
+      // geocoder: L.Control.Geocoder.nominatim({
+      //   serviceUrl: GEOCODING_API_BASE_URL
+      // }),
       lineOptions: {
         styles: [{color: 'blue', opacity: 0.8, weight: 2}]
       },
@@ -96,11 +100,6 @@ export class MapService {
        debug: false,
     }).addTo(this.map);
 
-    this.currentLocationLayer = new L.LayerGroup([]);
-    this.startLocationLayer = new L.LayerGroup([]);
-    this.highlightLayer = new L.LayerGroup([]);
-    this.overpassLayer = new L.LayerGroup([]);
-    this.popupsLayer = new L.LayerGroup([]);
     this.currentLocationLayer.addTo(this.map);
     this.startLocationLayer.addTo(this.map);
     this.highlightLayer.addTo(this.map);
@@ -185,13 +184,13 @@ export class MapService {
   }
 
   showDestination(item: any) {
-    this.showDestinationPopup(item.geometry.location, item.formatted_address, true);
+    this.showDestinationPopup({lat: item.lat, lng: item.lon}, item.display_name, true);
   }
 
   showDestinationByLatLng(latlng: any) {
     this.popupsLayer.clearLayers();
     this.geocodingService.geocodeByLatLng(latlng).subscribe(result => {
-      this.showDestinationPopup(latlng, result[0].formatted_address, false);
+      this.showDestinationPopup(latlng, result, false);
     }, error => {
       this.showDestinationPopup(latlng, "Unknown", false);
     })

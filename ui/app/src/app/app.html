@@ -21,7 +21,7 @@
     <ion-searchbar (ionInput)="geoSearch($event)"></ion-searchbar>
     <ion-list inset>
       <button ion-item *ngFor="let item of items" (click)="geoSelected(item)" menuClose>
-        {{item.formatted_address}}
+        {{item.display_name}}
       </button>
     </ion-list>
   </ion-content>

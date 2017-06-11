@@ -82,7 +82,7 @@ export class MyApp {
     this.geocodingService.geocode(ev.target.value).subscribe(result => {
       this.items = result;
     }, error => {
-      this.items = [{formatted_address: 'Error: unable to find address.'}];
+      this.items = [{display_name: 'Error: unable to find address.'}];
     });
   }
 
