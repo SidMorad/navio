@@ -77,7 +77,7 @@ sed -i.save 's/local all all.*/local all all trust/'	/etc/postgresql/${PG_VER}/m
 
 #Restart services
 service postgresql restart
-service apache2 reload
+service apache2 restart
 service renderd restart
 
 #update osmosis baseURL in configuration file
