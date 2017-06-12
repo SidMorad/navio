@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HomePage, SettingsPage } from '../pages';
 import { GeocodingService, MapService } from '../services';
 import { Settings } from '../providers';
+import { AddressDTO } from '../domain/model/geocoding';
 
 @Component({
   selector: 'app-page',
@@ -16,7 +17,7 @@ import { Settings } from '../providers';
 export class MyApp {
 
   rootPage:any = HomePage;
-  items: any[];
+  items: AddressDTO[];
 
   constructor(private platform: Platform, statusBar: StatusBar,
               splashScreen: SplashScreen, deploy: Deploy, settings: Settings,
@@ -79,14 +80,14 @@ export class MyApp {
     if (!ev.target.value) {
       return;
     }
-    this.geocodingService.geocode(ev.target.value).subscribe(result => {
+    this.geocodingService.search(ev.target.value).subscribe(result => {
       this.items = result;
     }, error => {
-      this.items = [{display_name: 'Error: unable to find address.'}];
+      this.items = [new AddressDTO({display_name: 'Error: unable to find address.'})];
     });
   }
 
-  geoSelected(item: any) {
+  geoSelected(item: AddressDTO) {
     this.mapService.showDestination(item);
   }
 

@@ -13,6 +13,7 @@ import { GeocodingService } from '.';
 import { Settings } from '../providers';
 import { TehranMainTrafficSpecification,
          TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
+import { AddressDTO } from '../domain/model/geocoding';
 
 declare var L: any;
 
@@ -183,14 +184,14 @@ export class MapService {
     })
   }
 
-  showDestination(item: any) {
-    this.showDestinationPopup({lat: item.lat, lng: item.lon}, item.display_name, true);
+  showDestination(addressDTO: AddressDTO) {
+    this.showDestinationPopup(addressDTO.latlng, addressDTO.name, true);
   }
 
   showDestinationByLatLng(latlng: any) {
     this.popupsLayer.clearLayers();
-    this.geocodingService.geocodeByLatLng(latlng).subscribe(result => {
-      this.showDestinationPopup(latlng, result, false);
+    this.geocodingService.reverse(latlng).subscribe(addressDTO => {
+      this.showDestinationPopup(latlng, addressDTO.name, false);
     }, error => {
       this.showDestinationPopup(latlng, "Unknown", false);
     })
