@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  nominatim:
+    build: .
+    container_name: rahpey-nominatim-dev
+    ports:
+      - 8981:8080
+    restart: unless-stopped
+    environment:
+      PBF_DATA: http://download.geofabrik.de/asia/iran-latest.osm.pbf
