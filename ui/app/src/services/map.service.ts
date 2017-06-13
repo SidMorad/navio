@@ -120,8 +120,9 @@ export class MapService {
         this.currentZoom = e.target._zoom;
         this.settings.setValue(Settings.LAST_ZOOM_LEVEL_KEY, this.currentZoom);
         if (this.currentZoom > 14) {
-          this.overpassLayer.clearLayers();
-          this.overpassLayer.addLayer(this.speedCameraLayer);
+          if (this.overpassLayer.getLayers().length === 0) {
+            this.overpassLayer.addLayer(this.speedCameraLayer);
+          }
         } else {
           this.overpassLayer.clearLayers();
         }
