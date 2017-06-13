@@ -1,15 +1,21 @@
 import * as moment from 'moment';
 
+import { TehranMainTrafficSpecification } from '.';
+
 export class TehranEvenOddTrafficSpecification {
 
   isCurrentTimeBetweenForbiddenTime() {
-    if (moment().isoWeekday() === 5) {        // Firday, no restriction
+    if (TehranMainTrafficSpecification.isTodayAHoliday()) {  // Holiday, no restriction
       return false;
-    } else if (moment().isoWeekday() === 4){  // Thursday
+    }
+    if (moment().isoWeekday() === 5) {                       // Firday, no restriction
+      return false;
+    }
+    if (moment().isoWeekday() === 4){                        // Thursday
       if (moment().isBetween(moment('6:30am', 'h:mma'), moment('13:00pm', 'h:mma'))) {
         return true;
       }
-    } else {                                  // Other days
+    } else {                                                 // Other days
       if (moment().isBetween(moment('6:30am', 'h:mma'), moment('19:00pm', 'h:mma'))) {
         return true;
       }
@@ -18,8 +24,11 @@ export class TehranEvenOddTrafficSpecification {
   }
 
   isAllowedToday(val: string) {
+    if (TehranMainTrafficSpecification.isTodayAHoliday()) {  // Holiday, no restriction
+      return true;
+    }
     let weekDay = moment().isoWeekday();
-    if (weekDay === 5) {            // Firday, no restriction
+    if (weekDay === 5) {                                     // Firday, no restriction
       return true;
     }
     if (!val || val === 'noset') {  // If we don't know car's plate number is even or odd, then not allowed!

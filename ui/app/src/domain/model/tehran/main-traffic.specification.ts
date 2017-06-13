@@ -3,18 +3,52 @@ import * as moment from 'moment';
 export class TehranMainTrafficSpecification {
 
   isCurrentTimeBetweenForbiddenTime() {
-    if (moment().isoWeekday() === 5) {        // Firday, no restriction
+    if (TehranMainTrafficSpecification.isTodayAHoliday()) {  // Holiday, no restriction
       return false;
-    } else if (moment().isoWeekday() === 4){  // Thursday
+    }
+    if (moment().isoWeekday() === 5) {                       // Firday, no restriction
+      return false;
+    }
+    if (moment().isoWeekday() === 4){                        // Thursday
       if (moment().isBetween(moment('6:30am', 'h:mma'), moment('13:00pm', 'h:mma'))) {
         return true;
       }
-    } else {                                  // Other days
+    } else {                                                 // Other days
       if (moment().isBetween(moment('6:30am', 'h:mma'), moment('17:00pm', 'h:mma'))) {
         return true;
       }
     }
     return false;
+  }
+
+  static isTodayAHoliday() {
+    let today = moment();
+    for (let holiday of TehranMainTrafficSpecification.iran1396Holidays()) {
+      if (today.isSame(holiday, 'day')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // TODO
+  // FIXME before 1397!
+  //
+  static iran1396Holidays() {
+    return [
+      "2017-06-26",
+      "2017-06-27",
+      "2017-07-20",
+      "2017-09-09",
+      "2017-09-30",
+      "2017-10-01",
+      "2017-11-09",
+      "2017-11-19",
+      "2017-12-06",
+      "2018-02-11",
+      "2018-02-20",
+      "2018-03-20"
+    ];
   }
 
   static blockedAreaPoints() {

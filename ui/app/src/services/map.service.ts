@@ -99,7 +99,7 @@ export class MapService {
        minZoomIndicatorEnabled: false,
        markerIcon: this.speedCameraIcon,
        debug: false,
-    }).addTo(this.map);
+    });
 
     this.currentLocationLayer.addTo(this.map);
     this.startLocationLayer.addTo(this.map);
