@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { NavParams, ViewController, Platform } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController, Platform } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Settings } from '../../providers';
 
+@IonicPage({
+  priority: 'low'
+})
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html'

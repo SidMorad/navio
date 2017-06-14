@@ -43,7 +43,7 @@ export class HomePage implements OnInit, OnDestroy {
           { radius : 50}));
         this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
-        if (firstTime) {
+        if (firstTime && this.mapService.map) {
           this.mapService.centerToCurrentLocation();
           firstTime = false;
         }

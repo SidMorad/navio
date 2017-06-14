@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Deploy } from '@ionic/cloud-angular';
 import { TranslateService } from '@ngx-translate/core';
 
-import { HomePage, SettingsPage } from '../pages';
+import { HomePage } from '../pages';
 import { GeocodingService, MapService } from '../services';
 import { Settings } from '../providers';
 import { AddressDTO } from '../domain/model/geocoding';
@@ -92,7 +92,7 @@ export class MyApp {
   }
 
   showSettingsModal() {
-    let modal = this.modalCtrl.create(SettingsPage);
+    let modal = this.modalCtrl.create('SettingsPage');
     modal.present();
   }
 
