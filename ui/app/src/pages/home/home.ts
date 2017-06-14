@@ -39,17 +39,14 @@ export class HomePage implements OnInit, OnDestroy {
       watchPosition.subscribe((data) => {
         console.log("watchPosition event: ", data, " currentZoom level: ", this.mapService.currentZoom);
         this.mapService.currentLocationLayer.clearLayers();
-        if (firstTime) {
-          if (!this.mapService.currentZoom) {
-            this.mapService.currentZoom = 18;
-          }
-          this.mapService.map.setView([data.coords.latitude, data.coords.longitude], this.mapService.currentZoom);
-          firstTime = false;
-        }
         this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 50}));
         this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
+        if (firstTime) {
+          this.mapService.centerToCurrentLocation();
+          firstTime = false;
+        }
       });
       this.watchPosition = watchPosition;
     });
@@ -58,6 +55,14 @@ export class HomePage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.menuCtrl.swipeEnable(false, 'primary');
+  }
+
+  centerToCurrentLocation() {
+    this.mapService.centerToCurrentLocation();
+  }
+
+  isNotCenterToCurrentLocation() {
+    return !this.mapService.isCenterToCurrentLocation;
   }
 
   ngOnDestroy() {

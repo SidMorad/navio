@@ -29,6 +29,7 @@ export class MapService {
   speedCameraLayer: any;
   currentZoom: number;
   popupRef: ComponentRef<LeafletPopupComponent>;
+  isCenterToCurrentLocation: boolean;
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
@@ -126,6 +127,13 @@ export class MapService {
         } else {
           this.overpassLayer.clearLayers();
         }
+      },
+      movestart: (e) => {
+        if (this.isCenterToCurrentLocation) {
+          if (!this.map.getCenter().equals(this.currentLocation())) {
+            this.isCenterToCurrentLocation = false;
+          }
+        }
       }
     });
 
@@ -136,6 +144,18 @@ export class MapService {
       this.reOrganizeRouterUrlParameters();
     });
 
+  }
+
+  currentLocation() {
+    return this.currentLocationLayer.getLayers()[0]._latlng;
+  }
+
+  centerToCurrentLocation() {
+    if (!this.currentZoom) {  // In case watchPosition callback happens sooner than getSettings callback
+      this.currentZoom = 18;
+    }
+    this.map.setView(this.currentLocation(), this.currentZoom);
+    this.isCenterToCurrentLocation = true;
   }
 
   reOrganizeRouterUrlParameters() {

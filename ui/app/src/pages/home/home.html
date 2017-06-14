@@ -1,5 +1,10 @@
 <ion-content>
   <div style="height: 100%" id="map"></div>
+  <ion-fab left bottom *ngIf="isNotCenterToCurrentLocation()">
+    <button ion-fab color="light" large (click)="centerToCurrentLocation()">
+      <ion-icon name="locate" class="custom-icon" color="dark"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
 
 <ion-footer>
