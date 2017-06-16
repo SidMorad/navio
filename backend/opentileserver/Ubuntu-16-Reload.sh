@@ -111,7 +111,11 @@ if [ -z "${LOC_LATLONG}" ]; then
 	echo "Error: Lat/Long for ${LOC_NAME} not found";
 	echo "Update manually in /var/www/html/leaflet-example.html"
 else
-	echo "Lat/Long for ${LOC_NAME} set to ${LOC_LATLONG}"
-	sed -i.save "s/\.setView(\[[0-9]\+\.[0-9]\+,[ \t]*-\?[0-9]\+\.[0-9]\+/.setView([${LOC_LATLONG}/" /var/www/html/leaflet-example.html
-	sed -i.save "s/L\.marker(\[[0-9]\+\.[0-9]\+,[ \t]*-\?[0-9]\+\.[0-9]\+/L.marker([${LOC_LATLONG}/" /var/www/html/leaflet-example.html
+    if [ -f "/var/www/html/leaflet-example.html" ]; then
+    	echo "Lat/Long for ${LOC_NAME} set to ${LOC_LATLONG}"
+    	sed -i.save "s/\.setView(\[[0-9]\+\.[0-9]\+,[ \t]*-\?[0-9]\+\.[0-9]\+/.setView([${LOC_LATLONG}/" /var/www/html/leaflet-example.html
+    	sed -i.save "s/L\.marker(\[[0-9]\+\.[0-9]\+,[ \t]*-\?[0-9]\+\.[0-9]\+/L.marker([${LOC_LATLONG}/" /var/www/html/leaflet-example.html
+    else
+        echo "!!! File not found: /var/www/html/leaflet-example.html"
+    fi
 fi

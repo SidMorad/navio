@@ -98,7 +98,7 @@
             "headless": "{{user `headless`}}",
             "boot_wait": "3s",
             "shutdown_command": "echo {{user `ubuntu_password`}} | sudo -S shutdown -P now",
-            "shutdown_timeout": "15m",
+            "shutdown_timeout": "60m",
             "http_directory": "./",
             "boot_command": [
                 "<enter><wait>",

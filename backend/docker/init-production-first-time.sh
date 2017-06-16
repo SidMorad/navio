@@ -20,7 +20,7 @@ printf "# Let's build our application (docker)images first.\n\n"
 printf "done.\n\n"
 sleep 1
 
-printf "# Let's bring everytings up!\n\n"
+printf "# Let's bring everyting up!\n\n"
 cd "$ROOT_DIR"
 docker-compose up -d
 printf "done.\n\n"
