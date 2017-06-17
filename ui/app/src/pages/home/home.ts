@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController, Platform, MenuController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import * as moment from 'moment';
+import 'moment-duration-format';
 
 import { MapService } from '../../services';
 import { Settings } from '../../providers';
@@ -12,6 +14,9 @@ import { Settings } from '../../providers';
 export class HomePage implements OnInit, OnDestroy {
 
   watchPosition: any;
+  ETA: string;
+  duration: string;
+  distance: string;
 
   constructor(private navCtrl: NavController, private geolocation: Geolocation,
               private platform: Platform, private mapService: MapService,
@@ -43,7 +48,7 @@ export class HomePage implements OnInit, OnDestroy {
           { radius : 50}));
         this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
-        if (firstTime && this.mapService.map) {
+        if (firstTime && this.mapService.map && !this.mapService.isCenterToCurrentLocation) {
           this.mapService.centerToCurrentLocation();
           firstTime = false;
         }
@@ -51,6 +56,20 @@ export class HomePage implements OnInit, OnDestroy {
       this.watchPosition = watchPosition;
     });
 
+    this.mapService.onActiveRouteChangeEvent.subscribe(() => {
+      if (this.mapService.activeRoute) {
+        let totalTime = this.mapService.activeRoute.summary.totalTime;
+        this.ETA = moment().add(moment.duration(totalTime, 'seconds')).format('h:mm A');
+        let totalDistance = this.mapService.activeRoute.summary.totalDistance / 1000;   // Meter to KiloMeter
+        this.distance = totalDistance.toFixed(1) + " km";
+        this.duration = moment.duration(totalTime, 'seconds').format('h [hrs], m [min]');
+      }
+      else {
+        this.ETA = "";
+        this.duration = "";
+        this.distance = "";
+      }
+    });
   }
 
   ionViewWillEnter() {

@@ -1,5 +1,5 @@
 import { Injectable, ComponentFactoryResolver, Injector,
-         ComponentRef, ApplicationRef, NgZone } from '@angular/core';
+         ComponentRef, ApplicationRef, NgZone, EventEmitter } from '@angular/core';
 import { ActionSheetController } from 'ionic-angular';
 import 'leaflet';
 import 'leaflet-routing-machine';
@@ -30,6 +30,8 @@ export class MapService {
   currentZoom: number;
   popupRef: ComponentRef<LeafletPopupComponent>;
   isCenterToCurrentLocation: boolean;
+  activeRoute: any;
+  onActiveRouteChangeEvent = new EventEmitter;
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
@@ -91,6 +93,13 @@ export class MapService {
       routeWhileDragging: true
     }).addTo(this.map);
 
+    this.routeControl.on({
+      routesfound: (e) => {
+        this.activeRoute = e.routes[0];
+        this.onActiveRouteChangeEvent.emit();
+      }
+    });
+
     this.speedCameraLayer = new L.OverPassLayer({
        endPoint: OVERPASS_API_BASE_URL,
        query: 'node({{bbox}})[highway=speed_camera];out qt;',
@@ -144,6 +153,7 @@ export class MapService {
       this.reOrganizeRouterUrlParameters();
     });
 
+    this.centerToCurrentLocation();
   }
 
   currentLocation() {

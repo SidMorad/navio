@@ -14,5 +14,20 @@
         <ion-icon name="search" color="primary"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-grid text-center>
+      <ion-row>
+        <ion-col col-12><ion-title>{{ ETA }}</ion-title></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-5 text-end>{{ duration }}</ion-col>
+        <ion-col col-1 *ngIf="ETA"><ion-icon name="remove" color="primary"></ion-icon></ion-col>
+        <ion-col col-5 text-start>{{ distance }}</ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-buttons right>
+      <button ion-button large icon-only [disabled]="true">
+        <ion-icon name="volume-up" color="dark"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-footer>
