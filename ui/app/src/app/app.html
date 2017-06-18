@@ -1,4 +1,4 @@
-<ion-menu [content]="content" id="primary">
+<ion-menu [content]="content" id="primary" side="start">
   <ion-header>
     <ion-toolbar>
       <ion-buttons left>
@@ -9,7 +9,13 @@
           <ion-icon name="cog"></ion-icon>
         </button>
       </ion-buttons>
-      <ion-title text-center>Not registered</ion-title>
+      <ion-title text-center>
+        <button ion-button color="purple" outline style="text-transform:none" (click)="openLoginPage()" menuClose>
+          <ion-icon name="person" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+          {{ 'NOT_REGISTERED' | translate}}
+          <ion-icon name="ios-arrow-forward" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+        </button>
+      </ion-title>
       <ion-buttons right>
         <button ion-button icon-only color="purple" (click)="exitApp()">
           <ion-icon name="power"></ion-icon>

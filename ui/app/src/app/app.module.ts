@@ -13,7 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { GeocodingService, MapService } from '../services';
 import { Settings } from '../providers';
 
-import { HomePage, LeafletPopupComponent } from '../pages';
+import { HomePage, LeafletPopupComponent, SettingsPage } from '../pages';
 
 
 export function provideSettings(storage: Storage) {
@@ -38,7 +38,8 @@ export function provideSettings(storage: Storage) {
 let pages = [
   MyApp,
   HomePage,
-  LeafletPopupComponent
+  LeafletPopupComponent,
+  SettingsPage
 ];
 
 export function declarations() {

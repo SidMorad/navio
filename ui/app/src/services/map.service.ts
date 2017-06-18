@@ -157,15 +157,20 @@ export class MapService {
   }
 
   currentLocation() {
-    return this.currentLocationLayer.getLayers()[0]._latlng;
+    if (this.currentLocationLayer.getLayers()[0]) {
+      return this.currentLocationLayer.getLayers()[0]._latlng;
+    }
+    return null;
   }
 
   centerToCurrentLocation() {
-    if (!this.currentZoom) {  // In case watchPosition callback happens sooner than getSettings callback
-      this.currentZoom = 18;
+    if (this.currentLocation()) {
+      if (!this.currentZoom) {  // In case watchPosition callback happens sooner than settings callback
+        this.currentZoom = 18;
+      }
+      this.map.setView(this.currentLocation(), this.currentZoom);
+      this.isCenterToCurrentLocation = true;
     }
-    this.map.setView(this.currentLocation(), this.currentZoom);
-    this.isCenterToCurrentLocation = true;
   }
 
   reOrganizeRouterUrlParameters() {

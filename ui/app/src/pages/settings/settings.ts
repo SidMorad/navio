@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { IonicPage, NavParams, ViewController, Platform } from 'ionic-angular';
+import { NavParams, ViewController, Platform, ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Settings } from '../../providers';
 
-@IonicPage({
-  priority: 'low'
-})
+// Ionic Lazy loading & TranslateService.use(lang) method doesn't play well togather at the moment!
+// @IonicPage({
+//   priority: 'low'
+// })
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html'
@@ -33,19 +34,13 @@ export class SettingsPage implements OnInit {
 
   constructor(private settings: Settings, private navParams: NavParams,
               private formBuilder: FormBuilder, private viewCtrl: ViewController,
-              private translateService: TranslateService, private platform: Platform) {
+              private translateService: TranslateService, private platform: Platform,
+              private toastCtrl: ToastController) {
   }
 
   ngOnInit() {
     this.loadCountriesAndCities();
     this.translateService.onLangChange.subscribe( data => {
-      if (data.lang === 'fa') {
-        this.platform.setDir('rtl', true);
-      }
-      else {
-        this.platform.setDir('ltr', true);
-      }
-      this.platform.setLang(data.lang, true);
       this.loadCountriesAndCities();
     });
   }
@@ -74,7 +69,9 @@ export class SettingsPage implements OnInit {
     // Watch the form changes
     this.form.valueChanges.subscribe((v) => {
       this.settings.merge(this.form.value);
-      this.translateService.use(this.settings.allSettings.preferLanguage);
+      if (this.settings.allSettings.preferLanguage !== this.translateService.currentLang) {
+        this.translateService.use(this.settings.allSettings.preferLanguage);
+      }
     });
   }
 

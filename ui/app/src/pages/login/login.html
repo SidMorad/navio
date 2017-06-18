@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only color="purple" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{'PAGE'| translate }} {{'LOGIN' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+ <ion-card color="danger" *ngIf="authenticationError" padding>
+   {{'USERNAME OR PASSWORD IS INCORRECT'|translate}}
+</ion-card>
+ <form (ngSubmit)="login()">
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>{{'USERNAME'|translate}}</ion-label>
+      <ion-input type="text" [(ngModel)]="username" id="username" name="username" ngDefaultControl required class="dir-ltr"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{'PASSWORD'|translate}}</ion-label>
+      <ion-input type="password" [(ngModel)]="password" id="password" name="password" ngDefaultControl required class="dir-ltr"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'REMEMBER ME'|translate}}</ion-label>
+      <ion-checkbox [(ngModel)]="rememberMe" id="rememberMe" name="rememberMe" ngDefaultControl></ion-checkbox>
+    </ion-item>
+    <button ion-button full type="submit" [disabled]="remoteCallInProgress">
+      {{'LOGIN'|translate}}
+    </button>
+  </ion-list>
+ </form>
+</ion-content>
