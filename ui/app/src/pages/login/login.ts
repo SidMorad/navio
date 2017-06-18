@@ -1,5 +1,7 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, Renderer } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+
+import { LoginService } from '../../shared';
 
 @IonicPage({
   priority: 'low'
@@ -7,30 +9,42 @@ import { IonicPage, NavController } from 'ionic-angular';
 @Component({
   templateUrl: 'login.html'
 })
-export class LoginPage implements OnInit, AfterViewInit {
+export class LoginPage implements AfterViewInit {
 
+  account: { username: string, password: string, rememberMe: boolean} = {
+    username: '', password: '', rememberMe: false
+  };
   authenticationError: boolean;
   remoteCallInProgress: boolean;
 
-  constructor(private navCtrl: NavController) {
-
+  constructor(private navCtrl: NavController, private elementRef: ElementRef,
+              private renderer: Renderer, private loginService: LoginService) {
   }
 
   login() {
-    console.log("Login clicked!");
-    this.authenticationError = true;
     this.remoteCallInProgress = true;
-  }
-
-  ngOnInit() {
-
+    this.authenticationError = false;
+    this.loginService.login({
+      username: this.account.username,
+      password: this.account.password,
+      rememberMe: this.account.rememberMe
+    }).then(() => {
+      this.remoteCallInProgress = false;
+      this.authenticationError = false;
+      this.navCtrl.pop();
+    }).catch(() => {
+      this.authenticationError = true;
+      this.remoteCallInProgress = false;
+    });
   }
 
   ngAfterViewInit() {
-
+    this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#username'), 'focus', []);
   }
 
   dismiss() {
+    this.remoteCallInProgress = false;
+    this.authenticationError = false;
     this.navCtrl.pop();
   }
 

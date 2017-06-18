@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform, ToastController, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -9,21 +9,23 @@ import { HomePage, SettingsPage } from '../pages';
 import { GeocodingService, MapService } from '../services';
 import { Settings } from '../providers';
 import { AddressDTO } from '../domain/model/geocoding';
+import { Principal } from '../shared';
 
 @Component({
   selector: 'app-page',
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
 
   rootPage:any = HomePage;
   items: AddressDTO[];
+  user: any = {};
 
   constructor(private platform: Platform, statusBar: StatusBar,
               splashScreen: SplashScreen, deploy: Deploy, settings: Settings,
               private geocodingService: GeocodingService, private modalCtrl: ModalController,
               private mapService: MapService, private toastCtrl: ToastController,
-              private translateService: TranslateService) {
+              private translateService: TranslateService, private principal: Principal) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -77,6 +79,12 @@ export class MyApp {
     });
   }
 
+  ngOnInit() {
+    this.principal.identity(true).then(account => {
+        this.user = account ? account : {};
+    });
+  }
+
   geoSearch(ev: any) {
     if (!ev.target.value) {
       return;
@@ -99,6 +107,21 @@ export class MyApp {
 
   openLoginPage() {
     this.modalCtrl.create('LoginPage').present();
+  }
+
+  isAuthenticated() {
+    return this.principal.isAuthenticated();
+  }
+
+  menuOpened() {
+    if (this.isAuthenticated()) {
+      this.principal.identity().then(account => {
+        this.user = account ? account : {};
+      });
+    }
+    else {
+      this.user = {};
+    }
   }
 
   exitApp() {

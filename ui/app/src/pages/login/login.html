@@ -5,7 +5,10 @@
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{'PAGE'| translate }} {{'LOGIN' | translate}}</ion-title>
+    <ion-title>
+      <span text-start>{{'LOGIN' | translate}}</span>
+      <span text-end>{{'PAGE'| translate }}</span>
+    </ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -17,17 +20,17 @@
   <ion-list>
     <ion-item>
       <ion-label stacked>{{'USERNAME'|translate}}</ion-label>
-      <ion-input type="text" [(ngModel)]="username" id="username" name="username" ngDefaultControl required class="dir-ltr"></ion-input>
+      <ion-input type="text" [(ngModel)]="account.username" id="username" name="username" ngDefaultControl required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>{{'PASSWORD'|translate}}</ion-label>
-      <ion-input type="password" [(ngModel)]="password" id="password" name="password" ngDefaultControl required class="dir-ltr"></ion-input>
+      <ion-input type="password" [(ngModel)]="account.password" id="password" name="password" ngDefaultControl required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>{{'REMEMBER ME'|translate}}</ion-label>
-      <ion-checkbox [(ngModel)]="rememberMe" id="rememberMe" name="rememberMe" ngDefaultControl></ion-checkbox>
+      <ion-checkbox [(ngModel)]="account.rememberMe" id="rememberMe" name="rememberMe" ngDefaultControl></ion-checkbox>
     </ion-item>
-    <button ion-button full type="submit" [disabled]="remoteCallInProgress">
+    <button ion-button full large type="submit" [disabled]="remoteCallInProgress">
       {{'LOGIN'|translate}}
     </button>
   </ion-list>

@@ -6,9 +6,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { CloudModule } from '@ionic/cloud-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { IonicStorageModule, Storage } from '@ionic/storage';
+import { Ng2Webstorage } from 'ng2-webstorage';
+import { Http } from '@angular/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { MyApp } from './app.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared';
 
 import { GeocodingService, MapService } from '../services';
 import { Settings } from '../providers';
@@ -64,6 +68,11 @@ export function providers() {
   ];
 }
 
+// The translate loader needs to know where to load i18n files
+export function httpLoaderFactory(http: Http) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: declarations(),
   imports: [
@@ -77,7 +86,13 @@ export function providers() {
         'app_id': 'a160dfe5'
       }
     }),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    Ng2Webstorage.forRoot({
+      prefix: 'rahpey'
+    }),
+    TranslateModule.forRoot({
+      loader: { provide: TranslateLoader, useFactory: httpLoaderFactory, deps: [Http] }
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),

@@ -1,4 +1,4 @@
-<ion-menu [content]="content" id="primary" side="start">
+<ion-menu [content]="content" id="primary" side="start" (ionOpen)="menuOpened()">
   <ion-header>
     <ion-toolbar>
       <ion-buttons left>
@@ -9,11 +9,17 @@
           <ion-icon name="cog"></ion-icon>
         </button>
       </ion-buttons>
-      <ion-title text-center>
-        <button ion-button color="purple" outline style="text-transform:none" (click)="openLoginPage()" menuClose>
-          <ion-icon name="person" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+      <ion-title text-center *ngIf="!isAuthenticated()">
+        <button ion-button color="purple" outline (click)="openLoginPage()" menuClose>
+          <ion-icon name="ios-person-outline" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
           {{ 'NOT_REGISTERED' | translate}}
           <ion-icon name="ios-arrow-forward" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+        </button>
+      </ion-title>
+      <ion-title text-center *ngIf="isAuthenticated()">
+        <button ion-button color="purple" clear>
+          <ion-icon name="ios-person" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+          {{ user.firstName }} {{ user.lastName }}
         </button>
       </ion-title>
       <ion-buttons right>
