@@ -22,6 +22,11 @@
   "PASSWORD": "رمزعبور",
   "REMEMBER ME": "مرا به خاطر بسپار",
   "NOT_REGISTERED": "ثبت نام نشده",
+  "REGISTERATION": "ثبت نام",
+  "ACCOUNT": "حساب کاربری",
+  "CREATE ACCOUNT": "ایجاد حساب کاربری",
+  "LOG IN TO AN EXISTING ACCOUNT": "ورود به حساب کاربری موجود",
+  "LOGOUT": "خروج",
 
   "NEW UPDATE IS AVAILABLE": "نسخه بروزتری در دسترس هست!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "برنامه شما بروزرسانی شد!",

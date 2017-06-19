@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="!isAuthenticated()">
+      <span text-start>{{'ACCOUNT' | translate}}</span>
+      <span text-end>{{'PAGE' | translate}}</span>
+    </ion-title>
+    <ion-title *ngIf="isAuthenticated()">
+      {{ user.firstName }} {{ user.lastName }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content-lbg">
+  <ion-card>
+    <ion-fab start top>
+      <button ion-fab color="secondary">
+        <ion-icon name="map"></ion-icon>
+      </button>
+    </ion-fab>
+    <ion-fab start top class="fab-between">
+      <button ion-fab color="yellow">
+        <ion-icon name="contacts"></ion-icon>
+      </button>
+    </ion-fab>
+    <ion-fab center top>
+      <button ion-fab>
+        <ion-icon name="pin"></ion-icon>
+      </button>
+    </ion-fab>
+    <ion-fab end top class="fab-between">
+      <button ion-fab color="yellow">
+        <ion-icon name="thumbs-up"></ion-icon>
+      </button>
+    </ion-fab>
+    <ion-fab end top>
+      <button ion-fab color="danger">
+        <ion-icon name="car"></ion-icon>
+      </button>
+    </ion-fab>
+    <ion-item>
+      <br />
+      <br />
+      <br />
+      <br />
+      <h1  *ngIf="!isAuthenticated()">{{'REGISTERATION' | translate}}</h1>
+      <h2 *ngIf="isAuthenticated()"> {{ user.firstName }} {{ user.lastName }} </h2>
+    </ion-item>
+  </ion-card>
+  <ion-list>
+    <button ion-item large *ngIf="!isAuthenticated()">
+      {{'CREATE ACCOUNT' | translate}}
+    </button>
+    <button ion-item large *ngIf="!isAuthenticated()" (click)="openLoginPage()">
+      {{'LOG IN TO AN EXISTING ACCOUNT' | translate}}
+    </button>
+    <button ion-item large *ngIf="isAuthenticated()" (click)="logout()">
+      {{'LOGOUT' | translate}}
+    </button>
+  </ion-list>
+</ion-content>

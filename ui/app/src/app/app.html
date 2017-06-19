@@ -3,21 +3,21 @@
     <ion-toolbar>
       <ion-buttons left>
         <button ion-button icon-only color="purple" menuClose>
-          <ion-icon name="close"></ion-icon>
+          <ion-icon name="arrow-back"></ion-icon>
         </button>
         <button ion-button icon-only color="purple" (click)="showSettingsModal()" menuClose>
           <ion-icon name="cog"></ion-icon>
         </button>
       </ion-buttons>
       <ion-title text-center *ngIf="!isAuthenticated()">
-        <button ion-button color="purple" outline (click)="openLoginPage()" menuClose>
+        <button ion-button color="purple" outline (click)="openProfilePage()" menuClose>
           <ion-icon name="ios-person-outline" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
           {{ 'NOT_REGISTERED' | translate}}
           <ion-icon name="ios-arrow-forward" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
         </button>
       </ion-title>
       <ion-title text-center *ngIf="isAuthenticated()">
-        <button ion-button color="purple" clear>
+        <button ion-button color="purple" clear (click)="openProfilePage()" menuClose>
           <ion-icon name="ios-person" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
           {{ user.firstName }} {{ user.lastName }}
         </button>
@@ -29,7 +29,7 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
+  <ion-content class="content-lbg">
     <ion-searchbar (ionInput)="geoSearch($event)"></ion-searchbar>
     <ion-list inset>
       <button ion-item *ngFor="let addressDTO of items" (click)="geoSelected(addressDTO)" menuClose>

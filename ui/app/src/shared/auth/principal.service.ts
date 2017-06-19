@@ -70,7 +70,6 @@ export class Principal {
         this.authenticated = false;
       }
       this.authenticationState.next(this.userIdentity);
-      console.log("This user identity: ", this.userIdentity);
       return this.userIdentity;
     }).catch((err) => {
       this.userIdentity = null;

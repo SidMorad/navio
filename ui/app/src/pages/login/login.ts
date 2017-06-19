@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ElementRef, Renderer } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, ViewController } from 'ionic-angular';
 
 import { LoginService } from '../../shared';
 
@@ -17,7 +17,7 @@ export class LoginPage implements AfterViewInit {
   authenticationError: boolean;
   remoteCallInProgress: boolean;
 
-  constructor(private navCtrl: NavController, private elementRef: ElementRef,
+  constructor(private viewCtrl: ViewController, private elementRef: ElementRef,
               private renderer: Renderer, private loginService: LoginService) {
   }
 
@@ -31,7 +31,7 @@ export class LoginPage implements AfterViewInit {
     }).then(() => {
       this.remoteCallInProgress = false;
       this.authenticationError = false;
-      this.navCtrl.pop();
+      this.viewCtrl.dismiss();
     }).catch(() => {
       this.authenticationError = true;
       this.remoteCallInProgress = false;
@@ -45,7 +45,7 @@ export class LoginPage implements AfterViewInit {
   dismiss() {
     this.remoteCallInProgress = false;
     this.authenticationError = false;
-    this.navCtrl.pop();
+    this.viewCtrl.dismiss();
   }
 
 }

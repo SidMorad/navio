@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Platform, ToastController, ModalController } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Platform, ToastController, ModalController, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Deploy } from '@ionic/cloud-angular';
@@ -20,6 +20,7 @@ export class MyApp implements OnInit {
   rootPage:any = HomePage;
   items: AddressDTO[];
   user: any = {};
+  @ViewChild('content') nav: NavController;
 
   constructor(private platform: Platform, statusBar: StatusBar,
               splashScreen: SplashScreen, deploy: Deploy, settings: Settings,
@@ -54,7 +55,6 @@ export class MyApp implements OnInit {
               position: 'top'
             }).present;
           });
-
 
           setTimeout(() => {
             deploy.download().then(() => {
@@ -101,12 +101,11 @@ export class MyApp implements OnInit {
   }
 
   showSettingsModal() {
-    let modal = this.modalCtrl.create(SettingsPage);
-    modal.present();
+    this.modalCtrl.create(SettingsPage).present();
   }
 
-  openLoginPage() {
-    this.modalCtrl.create('LoginPage').present();
+  openProfilePage() {
+    this.nav.push('ProfilePage');
   }
 
   isAuthenticated() {
