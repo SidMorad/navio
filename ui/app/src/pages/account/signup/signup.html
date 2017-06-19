@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only color="purple" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      <span text-start>{{ 'REGISTERATION' | translate }}</span>
+      <span text-end>{{ 'PAGE' | translate }}</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content-lbg">
+  <ion-list text-wrap>
+    <ion-item *ngIf="success" color="secondary">
+      <p [innerHtml]="'REGISTER_SUCCESS_MESSAGE' | translate"></p>
+    </ion-item>
+    <ion-item *ngIf="error">
+      <p class="error" [innerHtml]="'REGISTER_ERROR_MESSAGE' | translate"></p>
+    </ion-item>
+    <ion-item *ngIf="errorUserExists">
+      <p class="error" [innerHtml]="'REGISTER_USER_EXISTS' | translate"></p>
+    </ion-item>
+    <ion-item *ngIf="errorEmailExists">
+      <p class="error" [innerHtml]="'REGISTER_EMAIL_EXISTS' | translate"></p>
+    </ion-item>
+  </ion-list>
+
+  <form (submit)="doSignup()" *ngIf="!success" name="form" role="form" #signupForm="ngForm">
+    <ion-list text-wrap>
+      <ion-item>
+        <ion-label floating>{{ 'USERNAME' | translate }}</ion-label>
+        <ion-input type="text" [(ngModel)]="account.login" id="login" name="login" #login="ngModel"
+                   required minlength="1" maxlength="50" pattern="^[_'.@A-Za-z0-9-]*$"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="login.dirty && login.invalid">
+        <small class="error" *ngIf="login.errors.required" translate>
+          YOUR USERNAME IS REQUIRED
+        </small>
+        <small class="error" *ngIf="login.errors.minlength" translate>
+          YOUR USERNAME IS REQUIRED TO BE AT LEAST 1 CHARACTER
+        </small>
+        <small class="error" *ngIf="login.errors.maxlength" translate>
+          YOUR USERNAME CANNOT BE LONGER THAN 50 CHARACTERS
+        </small>
+        <small class="error" *ngIf="login.errors.pattern" translate>
+          YOUR USERNAME CAN ONLY CONTAIN LOWER-CASE LETTERS AND DIGITS
+        </small>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>{{ 'EMAIL' | translate }}</ion-label>
+        <ion-input type="email" [(ngModel)]="account.email" id="email" name="email"
+                   #email="ngModel" minlength=5 maxlength=100 required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="email.dirty && email.invalid">
+        <small class="error" *ngIf="email.errors.required" translate>
+          YOUR EMAIL IS REQUIRED
+        </small>
+        <small class="error" *ngIf="email.errors.minlength" translate>
+          YOUR EMAIL IS REQUIRED TO BE AT LEAST 5 CHARACTERS
+        </small>
+        <small class="error" *ngIf="email.errors.maxlength" translate>
+          YOUR EMAIL CANNOT BE LONGER THAN 100 CHARACTERS
+        </small>
+        <small class="error" *ngIf="email.errors.invalid" translate>
+          YOUR EMAIL IS INVALID
+        </small>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>{{ 'PASSWORD' | translate }}</ion-label>
+        <ion-input type="password" [(ngModel)]="account.password" id="password" name="password"
+                   #password="ngModel" minlength=4 maxlength=50 required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="password.dirty && password.invalid">
+        <small class="error" *ngIf="password.errors.required" translate>
+          YOUR PASSWORD IS REQUIRED
+        </small>
+        <small class="error" *ngIf="password.errors.minlength" translate>
+          YOUR PASSWORD IS REQUIRED TO BE AT LEAST 4 CHARACTERS
+        </small>
+        <small class="error" *ngIf="password.errors.maxlength" translate>
+          YOUR PASSWORD CANNOT BE LONGER THAN 50 CHARACTERS
+        </small>
+      </ion-item>
+
+      <div padding>
+        <button ion-button large block [disabled]="signupForm.form.invalid || remoteCallInProgress">{{ 'SIGNUP' | translate }}</button>
+      </div>
+
+    </ion-list>
+  </form>
+</ion-content>

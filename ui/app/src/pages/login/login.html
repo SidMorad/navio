@@ -30,9 +30,11 @@
       <ion-label>{{'REMEMBER ME'|translate}}</ion-label>
       <ion-checkbox [(ngModel)]="account.rememberMe" id="rememberMe" name="rememberMe" ngDefaultControl></ion-checkbox>
     </ion-item>
-    <button ion-button full large type="submit" [disabled]="remoteCallInProgress">
-      {{'LOGIN'|translate}}
-    </button>
+    <div padding>
+      <button ion-button large block [disabled]="remoteCallInProgress">
+        {{'LOGIN'|translate}}
+      </button>
+    </div>
   </ion-list>
  </form>
 </ion-content>

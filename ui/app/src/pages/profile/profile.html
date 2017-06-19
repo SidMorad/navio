@@ -47,7 +47,7 @@
     </ion-item>
   </ion-card>
   <ion-list>
-    <button ion-item large *ngIf="!isAuthenticated()">
+    <button ion-item large *ngIf="!isAuthenticated()" (click)="openSignupPage()">
       {{'CREATE ACCOUNT' | translate}}
     </button>
     <button ion-item large *ngIf="!isAuthenticated()" (click)="openLoginPage()">

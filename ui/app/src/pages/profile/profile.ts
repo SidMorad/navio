@@ -31,6 +31,11 @@ export class ProfilePage {
     this.modalCtrl.create('LoginPage').present();
   }
 
+  openSignupPage() {
+    this.viewCtrl.dismiss();
+    this.modalCtrl.create('SignupPage').present();
+  }
+
   isAuthenticated() {
     return this.principal.isAuthenticated();
   }

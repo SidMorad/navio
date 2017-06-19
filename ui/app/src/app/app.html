@@ -19,7 +19,7 @@
       <ion-title text-center *ngIf="isAuthenticated()">
         <button ion-button color="purple" clear (click)="openProfilePage()" menuClose>
           <ion-icon name="ios-person" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
-          {{ user.firstName }} {{ user.lastName }}
+          {{ user.login }}
         </button>
       </ion-title>
       <ion-buttons right>
