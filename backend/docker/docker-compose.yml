@@ -4,13 +4,10 @@ services:
   # Nginx
   #=============================================================================
   nginx:
-    image: nginx:alpine
     container_name: rahpey-nginx
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - /home/www:/home/www
+    extends:
+      file: ../nginx/docker-compose.yml
+      service: nginx
     restart: unless-stopped
   #=============================================================================
   # Graphhopper (route engine)

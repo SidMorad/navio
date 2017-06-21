@@ -26,22 +26,6 @@ docker-compose up -d
 printf "done.\n\n"
 sleep 1
 
-printf "# Let's wait for(10 seconds) until nginx service to come up.\n\n"
-sleep 10
-printf "done.\n\n"
-sleep 1
-
-printf "# Let's modify nginx default configuration.\n\n"
-nginx_cid=$(docker inspect --format="{{.Id}}" rahpey-nginx)
-docker cp nginx/default.conf "${nginx_cid}:/etc/nginx/conf.d/default.conf"
-printf "done.\n\n"
-sleep 1
-
-printf "# Let's restart nginx container for applying configs.\n\n"
-docker container restart "${nginx_cid}"
-printf "done.\n\n"
-sleep 1
-
 printf "# Let's wait for(20 seconds) until opentileserver to come up.\n\n"
 sleep 20
 printf "done.\n\n"

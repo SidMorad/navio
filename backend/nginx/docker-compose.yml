@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  nginx:
+    build: .
+    container_name: rahpey-nginx-dev
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /home/www:/home/www
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/letsencrypt-backups:/var/lib/letsencrypt
+      - ./data/dhparam-cache:/cache
+    restart: unless-stopped
+    environment:
+      DOMAIN: tile.webebook.org
+      UPSTREAM: rahpey-gateway
+      EMAIL: saeid3@gmail.com
+#     STAGING: "1"   Useful flag for testing and avoiding five certificates per doamin per seven days limit!
