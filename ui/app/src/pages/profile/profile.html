@@ -5,7 +5,7 @@
       <span text-end>{{'PAGE' | translate}}</span>
     </ion-title>
     <ion-title *ngIf="isAuthenticated()">
-      {{ user.firstName }} {{ user.lastName }}
+      {{ user.login }}
     </ion-title>
   </ion-navbar>
 </ion-header>

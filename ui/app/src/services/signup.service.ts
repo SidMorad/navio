@@ -10,7 +10,7 @@ export class SignupService {
   constructor(private http: Http) {
   }
 
-  save(account: any) {
+  save(account: any): Observable<any> {
     return this.http.post(AUTH_API_BASE_URL + '/api/register', account);
   }
 

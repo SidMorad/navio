@@ -52,6 +52,8 @@ export class HomePage implements OnInit, OnDestroy {
           this.mapService.centerToCurrentLocation();
           firstTime = false;
         }
+      }, (error) => {
+        console.log("watchPosition throw error: ", error);
       });
       this.watchPosition = watchPosition;
     });

@@ -37,20 +37,13 @@ export class MapService {
               private appRef: ApplicationRef, private zone: NgZone,
               private geocodingService: GeocodingService, private settings: Settings,
               private actionSheetCtrl: ActionSheetController) {
+    this.initCurrentZoom();
   }
 
   init() {
     if (this.map) {
       return;
     }
-
-    this.settings.getValue(Settings.LAST_ZOOM_LEVEL_KEY).then(val => {
-      if (!val) {
-        this.currentZoom = 18;
-      } else {
-        this.currentZoom = val;
-      }
-    });
 
     this.map = L.map('map', {
       attributionControl: false
@@ -156,6 +149,16 @@ export class MapService {
     this.centerToCurrentLocation();
   }
 
+  initCurrentZoom() {
+    this.settings.getValue(Settings.LAST_ZOOM_LEVEL_KEY).then(val => {
+      if (!val) {
+        this.currentZoom = 18;
+      } else {
+        this.currentZoom = val;
+      }
+    });
+  }
+
   currentLocation() {
     if (this.currentLocationLayer.getLayers()[0]) {
       return this.currentLocationLayer.getLayers()[0]._latlng;
@@ -165,11 +168,10 @@ export class MapService {
 
   centerToCurrentLocation() {
     if (this.currentLocation()) {
-      if (!this.currentZoom) {  // In case watchPosition callback happens sooner than settings callback
-        this.currentZoom = 18;
+      if (this.currentZoom) {
+        this.map.setView(this.currentLocation(), this.currentZoom);
+        this.isCenterToCurrentLocation = true;
       }
-      this.map.setView(this.currentLocation(), this.currentZoom);
-      this.isCenterToCurrentLocation = true;
     }
   }
 
