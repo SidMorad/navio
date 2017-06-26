@@ -1,3 +1,3 @@
 export { HomePage } from './home/home';
-export { LeafletPopupComponent } from './leaflet/popup.component';
+export { AddressPopup } from './address/address.popup';
 export { SettingsPage } from './settings/settings';

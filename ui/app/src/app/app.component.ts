@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { HomePage, SettingsPage } from '../pages';
 import { GeocodingService, MapService } from '../services';
-import { Settings } from '../providers';
+import { Settings, Favorites } from '../providers';
 import { AddressDTO } from '../domain/model/geocoding';
 import { Principal } from '../shared';
 
@@ -26,7 +26,8 @@ export class MyApp implements OnInit {
               splashScreen: SplashScreen, deploy: Deploy, settings: Settings,
               private geocodingService: GeocodingService, private modalCtrl: ModalController,
               private mapService: MapService, private toastCtrl: ToastController,
-              private translateService: TranslateService, private principal: Principal) {
+              private translateService: TranslateService, private principal: Principal,
+              private favorites: Favorites) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -44,6 +45,7 @@ export class MyApp implements OnInit {
         });
         splashScreen.hide();
       });
+      favorites.load();
 
       deploy.channel = 'dev'; // TODO Remove this line before production release
       deploy.check().then((hasUpdate: boolean) => {
@@ -92,7 +94,8 @@ export class MyApp implements OnInit {
     this.geocodingService.search(ev.target.value).subscribe(result => {
       this.items = result;
     }, error => {
-      this.items = [new AddressDTO({display_name: 'Error: unable to find address.'})];
+      console.log("Error on geo serach by ", ev.target.value, " was: ", error);
+      this.items = [];
     });
   }
 
@@ -106,6 +109,10 @@ export class MyApp implements OnInit {
 
   openProfilePage() {
     this.nav.push('ProfilePage');
+  }
+
+  openFavorites() {
+    this.nav.push('FavoritesPage');
   }
 
   isAuthenticated() {

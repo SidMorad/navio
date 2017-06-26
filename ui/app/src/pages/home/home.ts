@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
 import { NavController, Platform, MenuController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as moment from 'moment';
@@ -43,14 +43,28 @@ export class HomePage implements OnInit, OnDestroy {
       );
       watchPosition.subscribe((data) => {
         console.log("watchPosition event: ", data, " currentZoom level: ", this.mapService.currentZoom);
-        this.mapService.currentLocationLayer.clearLayers();
-        this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
-          { radius : 50}));
-        this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
-          { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
-        if (firstTime && this.mapService.map && !this.mapService.isCenterToCurrentLocation) {
-          this.mapService.centerToCurrentLocation();
-          firstTime = false;
+        if (data.coords) {
+          this.mapService.currentLocationLayer.clearLayers();
+          this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+            { radius : 50}));
+          this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+            { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
+          if (firstTime && this.mapService.map && !this.mapService.isCenterToCurrentLocation) {
+            this.mapService.centerToCurrentLocation();
+            firstTime = false;
+          }
+        }
+        else {
+          if (isDevMode()) {  // Workaround for `ionic cordova run android -l` command that doesn't work on latest chrome browser anymore, therefore watchPosition doesn't work either.
+              this.mapService.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
+                { radius : 50}));
+              this.mapService.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
+                { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
+              if (firstTime && this.mapService.map && !this.mapService.isCenterToCurrentLocation) {
+                this.mapService.centerToCurrentLocation();
+                firstTime = false;
+              }
+          }
         }
       }, (error) => {
         console.log("watchPosition throw error: ", error);

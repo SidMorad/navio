@@ -19,10 +19,8 @@ export class ProfilePage {
   }
 
   ionViewWillEnter() {
-    console.log("ionViewWillEnter.");
     this.principal.identity().then(account => {
       this.user = account ? account : {};
-      console.log("This user ", this.user);
     });
   }
 

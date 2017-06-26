@@ -15,9 +15,9 @@ import { MyApp } from './app.component';
 import { SharedModule } from '../shared';
 
 import { GeocodingService, MapService, SignupService } from '../services';
-import { Settings } from '../providers';
+import { Settings, Favorites } from '../providers';
 
-import { HomePage, LeafletPopupComponent, SettingsPage } from '../pages';
+import { HomePage, AddressPopup, SettingsPage } from '../pages';
 
 
 export function provideSettings(storage: Storage) {
@@ -42,7 +42,7 @@ export function provideSettings(storage: Storage) {
 let pages = [
   MyApp,
   HomePage,
-  LeafletPopupComponent,
+  AddressPopup,
   SettingsPage
 ];
 
@@ -62,6 +62,7 @@ export function providers() {
     GeocodingService,
     MapService,
     SignupService,
+    Favorites,
 
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
@@ -87,7 +88,10 @@ export function httpLoaderFactory(http: Http) {
         'app_id': 'a160dfe5'
       }
     }),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '_db',
+      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
+    }),
     Ng2Webstorage.forRoot({
       prefix: 'rahpey'
     }),

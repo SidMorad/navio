@@ -46,6 +46,19 @@
   "YOUR PASSWORD IS REQUIRED TO BE AT LEAST 4 CHARACTERS": "Your password is required to be at least 4 characters.",
   "YOUR PASSWORD CANNOT BE LONGER THAN 50 CHARACTERS": "ِYour password cannot be longer than 50 characters.",
 
+  "FAVORITE": "Favorite",
+  "FAVORITES": "Favorites",
+  "ADD": "Add",
+  "DELETE": "Delete",
+  "EDIT": "Edit",
+  "GO": "Go",
+  "SEND": "Send",
+  "CANCEL": "Cancel",
+  "SAVE": "Save",
+  "INFO": "Info",
+  "ARE_YOU_SURE_YOU_WANT_TO_DELETE": "Are you sure you want to delete?",
+  "SET_AS_START_POINT": "Set as start point",
+
   "NEW UPDATE IS AVAILABLE": "New update is available!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "Your app updated to the latest version!",
 

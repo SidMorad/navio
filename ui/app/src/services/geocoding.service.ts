@@ -26,15 +26,18 @@ export class GeocodingService {
        });
   }
 
-  reverse(latlng: any): Observable<AddressDTO> {
+  reverse(latlng: any, zoomLevel: any): Observable<AddressDTO> {
     return this.http.get(GEOCODING_API_BASE_URL + "reverse?lat=" + latlng.lat + "&lon=" + latlng.lng +
-    "&format=json&addressdetails=0&countrycodes=ir&accept-language=" + this.translateService.currentLang)
+    "&format=json&addressdetails=1&countrycodes=ir&accept-language=" + this.translateService.currentLang +
+    "&zoom=" + zoomLevel)
       .map(res => res.json())
       .map(result => {
         if (!result) {
           throw new Error("unable to reverse geocode address");
         }
-        return new AddressDTO(result);
+        let address = new AddressDTO(latlng, result.display_name);
+        address.setDetails(result.address);
+        return address;
       });
   }
 

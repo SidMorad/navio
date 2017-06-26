@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{ 'FAVORITES' | translate }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content-lbg">
+  <ion-list inset>
+    <ion-item-sliding *ngFor="let addressDTO of favs" #slidingItem>
+      <button ion-item (click)="showLocation(addressDTO)" detail-none>
+        {{ addressDTO.favLabel }}
+        <ion-icon name="ios-more" (click)="simulateClose(slidingItem)" item-end></ion-icon>
+      </button>
+      <ion-item-options>
+        <button ion-button color="primary" (click)='editBookmark(addressDTO)'>
+          <ion-icon name="create"></ion-icon>
+          {{ 'EDIT' | translate }}
+        </button>
+        <button ion-button color="light" (click)='showInfoModal(addressDTO)'>
+          <ion-icon name="information"></ion-icon>
+          {{ 'INFO' | translate }}
+        </button>
+        <button ion-button color="danger" (click)='deleteBookmark(addressDTO)'>
+          <ion-icon name="trash"></ion-icon>
+          {{ 'DELETE' | translate }}
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

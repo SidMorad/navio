@@ -7,13 +7,13 @@ import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
 import 'leaflet-control-geocoder';
 
-import { LeafletPopupComponent } from '../pages';
+import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
 import { GeocodingService } from '.';
 import { Settings } from '../providers';
 import { TehranMainTrafficSpecification,
          TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
-import { AddressDTO } from '../domain/model/geocoding';
+import { AddressDTO, LatLng } from '../domain/model/geocoding';
 
 declare var L: any;
 
@@ -28,7 +28,7 @@ export class MapService {
   popupsLayer: any = new L.LayerGroup([]);
   speedCameraLayer: any;
   currentZoom: number;
-  popupRef: ComponentRef<LeafletPopupComponent>;
+  popupRef: ComponentRef<AddressPopup>;
   isCenterToCurrentLocation: boolean;
   activeRoute: any;
   onActiveRouteChangeEvent = new EventEmitter;
@@ -223,36 +223,35 @@ export class MapService {
   }
 
   showDestination(addressDTO: AddressDTO) {
-    this.showDestinationPopup(addressDTO.latlng, addressDTO.name, true);
+    return this.showDestinationPopup(addressDTO, true);
   }
 
-  showDestinationByLatLng(latlng: any) {
+  showDestinationByLatLng(latlng: LatLng) {
     this.popupsLayer.clearLayers();
-    this.geocodingService.reverse(latlng).subscribe(addressDTO => {
-      this.showDestinationPopup(latlng, addressDTO.name, false);
+    this.geocodingService.reverse(latlng, this.currentZoom).subscribe(addressDTO => {
+      return this.showDestinationPopup(addressDTO, false);
     }, error => {
-      this.showDestinationPopup(latlng, "Unknown", false);
+      return this.showDestinationPopup(new AddressDTO(latlng, "Unknown"), false);
     })
   }
 
-  showDestinationPopup(latLng: any, address: string, centerDestination: boolean) {
+  showDestinationPopup(addressDTO: AddressDTO, centerDestination: boolean) {
     if (centerDestination) {
-      this.map.setView([latLng.lat, latLng.lng], this.currentZoom);
+      this.map.setView([addressDTO.latlng.lat, addressDTO.latlng.lng], this.currentZoom);
     }
-    var marker = L.marker(latLng, {icon: this.redIcon, draggable: true});
+    var marker = L.marker(addressDTO.latlng, {icon: this.redIcon, draggable: true});
     this.popupsLayer.addLayer(marker);
 
     if (this.popupRef) { this.popupRef.destroy(); }
-    const compFactory = this.resolver.resolveComponentFactory(LeafletPopupComponent);
+    const compFactory = this.resolver.resolveComponentFactory(AddressPopup);
     this.popupRef = compFactory.create(this.injector);
-    this.popupRef.instance.param = address;
+    this.popupRef.instance.address = addressDTO;
     this.popupRef.instance.onGoButtonClicked.subscribe(x => {
-      this.popupsLayer.clearLayers();
-      this.map.fitBounds([this.resolveStartingPoint(), latLng]);
-      this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), latLng);
+      this.navigateToAddress(addressDTO);
     });
     this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
-      this.presentLocationInfoActionSheet(latLng, address, centerDestination);
+      this.popupsLayer.clearLayers();
+      // this.presentLocationInfoActionSheet(addressDTO, centerDestination);
     });
 
     this.appRef.attachView(this.popupRef.hostView);
@@ -273,28 +272,18 @@ export class MapService {
     });
 
     popup.openPopup();
+    return marker;
   }
 
-  presentLocationInfoActionSheet(latLng: any, address: string, centerPostion: boolean) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: address,
-      buttons: [
-        {
-          text: 'Set as start point',
-          handler: () => {
-            this.startLocationLayer.clearLayers();
-            this.startLocationLayer.addLayer(L.marker(latLng, {icon: this.violetIcon}));
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked.');
-        }
-      }]
-    });
-    actionSheet.present();
+  navigateToAddress(addressDTO: AddressDTO) {
+    this.popupsLayer.clearLayers();
+    this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
+    this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
+  }
+
+  setAsStartPoint(address: AddressDTO) {
+    this.startLocationLayer.clearLayers();
+    this.startLocationLayer.addLayer(L.marker(address.latlng, {icon: this.violetIcon}));
   }
 
   resolveStartingPoint() {

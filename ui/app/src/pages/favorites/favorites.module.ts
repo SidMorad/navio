@@ -2,18 +2,16 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SettingsPage } from './settings';
+import { FavoritesPage } from './favorites';
 
 @NgModule({
-  declarations: [
-    SettingsPage
-  ],
+  declarations: [ FavoritesPage ],
   imports: [
-    IonicPageModule.forChild(SettingsPage),
+    IonicPageModule.forChild(FavoritesPage),
     TranslateModule.forChild()
   ],
-  entryComponents: [
-    SettingsPage
+  exports: [
+    FavoritesPage
   ]
 })
-export class SettingsPageModule {}
+export class FavoritesModule {}

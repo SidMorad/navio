@@ -46,6 +46,19 @@
   "YOUR PASSWORD IS REQUIRED TO BE AT LEAST 4 CHARACTERS": "رمزعبور شما باید حداقل ۴ کرکتر باشد.",
   "YOUR PASSWORD CANNOT BE LONGER THAN 50 CHARACTERS": "رمز عبور شما نباید بیش از ۵۰ کرکتر باشد.",
 
+  "FAVORITE": "مورد علاقه",
+  "FAVORITES": "مورد علاقه‌ها",
+  "ADD": "اضافه کردن",
+  "EDIT": "ویرایش",
+  "DELETE": "حذف",
+  "GO": "برو",
+  "SEND": "بفرست",
+  "CANCEL": "انصراف",
+  "SAVE": "ذخیره",
+  "INFO": "اطلاعات",
+  "ARE_YOU_SURE_YOU_WANT_TO_DELETE": "آیا مطمئن هستید برای حذف؟",
+  "SET_AS_START_POINT": "به عنوان نقطه شروع در نظر بگیر",
+
   "NEW UPDATE IS AVAILABLE": "نسخه بروزتری در دسترس هست!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "برنامه شما بروزرسانی شد!",
 
