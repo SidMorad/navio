@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { NavParams, ViewController, Platform, ToastController } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Settings } from '../../providers';
@@ -34,8 +34,7 @@ export class SettingsPage implements OnInit {
 
   constructor(private settings: Settings, private navParams: NavParams,
               private formBuilder: FormBuilder, private viewCtrl: ViewController,
-              private translateService: TranslateService, private platform: Platform,
-              private toastCtrl: ToastController) {
+              private translateService: TranslateService) {
   }
 
   ngOnInit() {

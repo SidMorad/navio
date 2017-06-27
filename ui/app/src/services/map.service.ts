@@ -1,6 +1,5 @@
 import { Injectable, ComponentFactoryResolver, Injector,
          ComponentRef, ApplicationRef, NgZone, EventEmitter } from '@angular/core';
-import { ActionSheetController } from 'ionic-angular';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
@@ -35,8 +34,7 @@ export class MapService {
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
-              private geocodingService: GeocodingService, private settings: Settings,
-              private actionSheetCtrl: ActionSheetController) {
+              private geocodingService: GeocodingService, private settings: Settings) {
     this.initCurrentZoom();
   }
 
@@ -90,6 +88,7 @@ export class MapService {
       routesfound: (e) => {
         this.activeRoute = e.routes[0];
         this.onActiveRouteChangeEvent.emit();
+        console.log("Route found: ", this.activeRoute);
       }
     });
 
@@ -143,7 +142,6 @@ export class MapService {
     this.settings.onSettingsChangeEvent.subscribe(() => {
       this.highlightLayer.clearLayers();
       this.addHighlightLayers();
-      this.reOrganizeRouterUrlParameters();
     });
 
     this.centerToCurrentLocation();
@@ -176,7 +174,7 @@ export class MapService {
   }
 
   reOrganizeRouterUrlParameters() {
-    this.settings.getValue(Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE).then(val => {
+    return this.settings.getValue(Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE).then(val => {
       if (val === true) {
         this.routeControl.getRouter().options.urlParameters = {};
       }
@@ -204,6 +202,7 @@ export class MapService {
               this.routeControl.getRouter().options.urlParameters = {};
             }
           }
+          console.log("Route params are set: ", this.routeControl.getRouter().options.urlParameters);
         });
       }
     });
@@ -251,7 +250,6 @@ export class MapService {
     });
     this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
       this.popupsLayer.clearLayers();
-      // this.presentLocationInfoActionSheet(addressDTO, centerDestination);
     });
 
     this.appRef.attachView(this.popupRef.hostView);
@@ -276,9 +274,11 @@ export class MapService {
   }
 
   navigateToAddress(addressDTO: AddressDTO) {
-    this.popupsLayer.clearLayers();
-    this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
-    this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
+    this.reOrganizeRouterUrlParameters().then(() => {
+      this.popupsLayer.clearLayers();
+      this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
+      this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
+    });
   }
 
   setAsStartPoint(address: AddressDTO) {

@@ -1,7 +1,6 @@
 import { Component, EventEmitter } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
-import { Favorites } from '../../providers';
 import { AddressDTO } from '../../domain/model/geocoding';
 
 @Component({
@@ -12,7 +11,7 @@ export class AddressPopup {
 
   address: AddressDTO;
 
-  constructor(private favorites: Favorites, private modalCtrl: ModalController) {
+  constructor(private modalCtrl: ModalController) {
   }
 
   onGoButtonClicked = new EventEmitter();

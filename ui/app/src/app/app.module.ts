@@ -28,7 +28,7 @@ export function provideSettings(storage: Storage) {
    * these values will not overwrite the saved values.
    */
   return new Settings(storage, {
-    preferLanguage: 'en',
+    preferLanguage: 'fa',
     country: 'IR',
     city: 'THR',
     highlightTehranMainTrafficZone: true,

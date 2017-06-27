@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, Renderer } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { IonicPage, ViewController } from 'ionic-angular';
 
 import { LoginService } from '../../shared';
@@ -17,8 +17,7 @@ export class LoginPage implements AfterViewInit {
   authenticationError: boolean;
   remoteCallInProgress: boolean;
 
-  constructor(private viewCtrl: ViewController, private elementRef: ElementRef,
-              private renderer: Renderer, private loginService: LoginService) {
+  constructor(private viewCtrl: ViewController, private loginService: LoginService) {
   }
 
   login() {
@@ -39,7 +38,7 @@ export class LoginPage implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#username'), 'focus', []);
+    // this.renderer.invokeElementMethod(this.elementRef.nativeElement.querySelector('#username'), 'focus', []);
   }
 
   dismiss() {

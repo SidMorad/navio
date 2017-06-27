@@ -27,7 +27,7 @@ export class MyApp implements OnInit {
               private geocodingService: GeocodingService, private modalCtrl: ModalController,
               private mapService: MapService, private toastCtrl: ToastController,
               private translateService: TranslateService, private principal: Principal,
-              private favorites: Favorites) {
+              favorites: Favorites) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

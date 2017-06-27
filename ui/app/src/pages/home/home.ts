@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
-import { NavController, Platform, MenuController } from 'ionic-angular';
+import { Platform, MenuController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as moment from 'moment';
 import 'moment-duration-format';
@@ -18,7 +18,7 @@ export class HomePage implements OnInit, OnDestroy {
   duration: string;
   distance: string;
 
-  constructor(private navCtrl: NavController, private geolocation: Geolocation,
+  constructor(private geolocation: Geolocation,
               private platform: Platform, private mapService: MapService,
               private settings: Settings, private menuCtrl: MenuController) {
 

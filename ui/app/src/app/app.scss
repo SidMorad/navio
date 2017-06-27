@@ -19,6 +19,8 @@
   background: lightblue;
 }
 
-// ion-icon {
-//   color: color($colors, orange);
-// }
+// OpenStreetMap attribution text, takes entire header in some small phones,
+// let's fix it by set font size to 9px.
+.leaflet-control-attribution {
+  font-size: 9px !important;
+}

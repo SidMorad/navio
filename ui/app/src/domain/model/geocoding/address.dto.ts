@@ -8,6 +8,8 @@ export class AddressDTO {
              county: string, state: string, country: string, country_code: string,
              postcode: string };
   favLabel: string;
+  shortName: string;
+  shortAreaName: string;
 
   constructor(latlng: LatLng, address: string) {
     this.name = address;
@@ -24,19 +26,45 @@ export class AddressDTO {
 
   setDetails(details: any) {
     this.details = details;
+    this.resolveShortName();
+    this.resolveShortAreaName();
   }
 
-  get shortName() {
+  detailOrder: string[] = [
+    'road', 'neighbourhood', 'suburb', 'city', 'county', 'state', 'country', 'postcode'
+  ];
+
+  resolveShortName() {
+    console.log("Order: ", this.detailOrder);
+    this.detailOrder.forEach(name => {
+      console.log(name, " = ", this.details[name]);
+    });
     if (this.favLabel) {
-      return this.favLabel;
+      this.shortName = this.favLabel;
     }
     else {
-      return this.details.road + ' - ' + this.details.neighbourhood;
+      let counter = 0;
+      this.shortName = '';
+      this.detailOrder.forEach(name => {
+        if (this.details[name] && counter < 2) {
+          this.shortName += this.details[name] + ((counter === 0) ? ' - ' : '');
+          counter++;
+        }
+      });
     }
   }
 
-  get shortAreaName() {
-    return this.details.suburb + ' - ' + this.details.city;
+  resolveShortAreaName() {
+    let counter = 0;
+    this.shortAreaName = '';
+    this.detailOrder.forEach(name => {
+      if (this.details[name]) {
+        counter++;
+        if (counter > 2 && counter < 5) {
+          this.shortAreaName += this.details[name] + ((counter === 3) ? ' - ' : '');
+        }
+      }
+    });
   }
 
 }

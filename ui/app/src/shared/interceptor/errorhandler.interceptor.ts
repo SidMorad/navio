@@ -18,7 +18,7 @@ export class ErrorHandlerInterceptor extends HttpInterceptor {
     return <Observable<Response>>observable.catch((error) => {
       if (!(error.status === 401 && (error.text() === '' ||
         (error.json().path && error.json().path.indexOf('/api/account') === 0)))) {
-        // this.errorHandler.handleError({ name: 'gatewayApp.httpError', message: error });
+        this.errorHandler.handleError({ name: error.status, message: error });
       }
       return Observable.throw(error);
     });
