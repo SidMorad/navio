@@ -37,7 +37,7 @@ export class UserService {
     }
 
     authorities(): Observable<string[]> {
-        return this.http.get('api/users/authorities').map((res: Response) => {
+        return this.http.get('uaa/api/users/authorities').map((res: Response) => {
             const json = res.json();
             return <string[]> json;
         });
