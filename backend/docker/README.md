@@ -15,7 +15,7 @@ Note: this script fetch iran-latest.osm.pbf once and reload both Graphhopper and
 `docker-compose up -d --no-deps --build service_name_here`
 
 Note: DO NOT USE THIS COMMAND FOR DATABASE CONTAINERS. otherwise we do lose all contained data!
-Note 2: For preventing mistakes, `recreate-app-immutable-containers.sh` can be used.
+Note 2: For preventing mistakes, `recreate-immutable-docker-containers.sh` can be used.
 
 ### Docker stats
 `docker stats $(docker ps | awk '{if(NR>1) print $NF}')`
