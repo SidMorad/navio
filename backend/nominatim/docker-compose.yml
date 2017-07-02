@@ -3,7 +3,7 @@ version: '2'
 services:
   nominatim:
     build: .
-    container_name: rahpey-nominatim-dev
+    container_name: rahpey-nominatim-standalone
     ports:
       - 8981:8080
     restart: unless-stopped

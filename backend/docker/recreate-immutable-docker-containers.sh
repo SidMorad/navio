@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker-compose up -d --no-deps --build rahpey-route rahpey-uaa rahpey-gateway
+docker-compose up -d --no-deps --build rahpey-route rahpey-traffic rahpey-uaa rahpey-gateway

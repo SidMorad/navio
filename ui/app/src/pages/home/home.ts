@@ -4,8 +4,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import * as moment from 'moment';
 import 'moment-duration-format';
 
-import { MapService } from '../../services';
+import { MapService, CarSpeedService } from '../../services';
 import { Settings } from '../../providers';
+import { CarSpeedDTO } from '../../domain/model/car';
 
 @Component({
   selector: 'page-home',
@@ -18,10 +19,9 @@ export class HomePage implements OnInit, OnDestroy {
   duration: string;
   distance: string;
 
-  constructor(private geolocation: Geolocation,
-              private platform: Platform, private mapService: MapService,
-              private settings: Settings, private menuCtrl: MenuController) {
-
+  constructor(private platform: Platform, private geolocation: Geolocation,
+              private settings: Settings, private carSpeedService: CarSpeedService,
+              private menuCtrl: MenuController, private mapService: MapService) {
   }
 
   ngOnInit() {
@@ -52,6 +52,14 @@ export class HomePage implements OnInit, OnDestroy {
           if (firstTime && this.mapService.map && !this.mapService.isCenterToCurrentLocation) {
             this.mapService.centerToCurrentLocation();
             firstTime = false;
+          }
+          if (this.mapService.shouldWeSendCarSpeed()) {
+            // Send car speed
+            this.carSpeedService.save(CarSpeedDTO.toDTO(data.coords)).subscribe((response) => {
+              console.log("Car speed [", data.coords, "] sent successfully [", response, "]");
+            }, (error) => {
+              console.log("Error on saving car speed: ", error);
+            });
           }
         }
         else {

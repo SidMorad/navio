@@ -14,7 +14,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MyApp } from './app.component';
 import { SharedModule } from '../shared';
 
-import { GeocodingService, MapService, SignupService } from '../services';
+import { GeocodingService, MapService, SignupService, CarSpeedService } from '../services';
 import { Settings, Favorites } from '../providers';
 
 import { HomePage, AddressPopup, SettingsPage } from '../pages';
@@ -63,6 +63,7 @@ export function providers() {
     MapService,
     SignupService,
     Favorites,
+    CarSpeedService,
 
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development

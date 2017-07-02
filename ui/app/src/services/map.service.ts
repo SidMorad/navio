@@ -5,6 +5,7 @@ import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
 import 'leaflet-control-geocoder';
+import * as moment from 'moment';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
@@ -31,6 +32,8 @@ export class MapService {
   isCenterToCurrentLocation: boolean;
   activeRoute: any;
   onActiveRouteChangeEvent = new EventEmitter;
+  isInDrivingMode: boolean = false;
+  lastTimeCarSpeedSent: any = moment();
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
@@ -61,7 +64,7 @@ export class MapService {
 
     this.routeControl = L.Routing.control({
       router: L.Routing.graphHopper('', {
-        serviceUrl: ROUTE_API_BASE_URL,
+        serviceUrl: ROUTE_API_BASE_URL + '/get',
         urlParameters: {
           // algorithm: 'alternative_route',
          }
@@ -88,6 +91,7 @@ export class MapService {
       routesfound: (e) => {
         this.activeRoute = e.routes[0];
         this.onActiveRouteChangeEvent.emit();
+        this.isInDrivingMode = true;
         console.log("Route found: ", this.activeRoute);
       }
     });
@@ -292,6 +296,19 @@ export class MapService {
     }
     else {
       return this.currentLocationLayer.getLayers()[0]._latlng;
+    }
+  }
+
+  shouldWeSendCarSpeed(): boolean {
+    if (!this.isInDrivingMode) {
+      return false;
+    }
+    if (moment().diff(this.lastTimeCarSpeedSent, 'seconds') > 60) {  // 60 seconds is our sending frequency for now.
+      this.lastTimeCarSpeedSent = moment();
+      return true;
+    }
+    else {
+      return false;
     }
   }
 
