@@ -432,6 +432,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cloud-connectors</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.isuper</groupId>
+            <artifactId>s2-geometry-library-java</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!-- security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -691,7 +696,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker-maven-plugin.version}</version>
                 <configuration>
-                    <imageName>traffic</imageName>
+                    <imageName>rahpey_traffic</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <resources>
                         <resource>

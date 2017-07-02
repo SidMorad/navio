@@ -26,6 +26,10 @@ The JHipster Console is a monitoring & alerting console, based on the ELK stack.
 
 This microservice is responsible for providing road routing apis.
 
+### Traffic
+
+This microservice is responsible for receving/sending geo evens on a road.
+
 ## Rahpey Domain Open-Source Microservices
 
 ### Graphhopper
@@ -35,3 +39,7 @@ We use Graphhopper-web server as our Route Engine.
 ### OpenTileServer
 
 We use OpenTileServer for rendering OpenStreetMap tiles.
+
+### Nominatim
+
+We use Nominatim server for Geocoding search and reverse lookups.

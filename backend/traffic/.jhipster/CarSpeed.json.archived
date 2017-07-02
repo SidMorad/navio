@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "speed",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": "0"
+        },
+        {
+            "fieldName": "cellId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "heading",
+            "fieldType": "Float"
+        }
+    ],
+    "changelogDate": "20170701142350",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "car_speed",
+    "pagination": "pager",
+    "microserviceName": "traffic",
+    "searchEngine": false
+}
