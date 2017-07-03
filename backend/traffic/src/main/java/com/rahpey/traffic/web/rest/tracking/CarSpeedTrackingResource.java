@@ -1,7 +1,5 @@
 package com.rahpey.traffic.web.rest.tracking;
 
-import java.security.Principal;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -20,7 +18,6 @@ import com.rahpey.traffic.domain.model.car.CarSpeed;
 import com.rahpey.traffic.repository.CarSpeedRepository;
 
 /**
- * 
  * An end-point(/traffic/v1/carspeed) for tracking speed of cars.
  *
  */
@@ -36,7 +33,7 @@ public class CarSpeedTrackingResource {
 
 	@PostMapping("/record")
 	@Timed
-	public ResponseEntity<?> record(@Valid @RequestBody CarSpeedCommand command, Principal principal) {
+	public ResponseEntity<?> record(@Valid @RequestBody CarSpeedCommand command) {
 		logger.debug("Car speed event received: {}", command.toString());
 		S2CellId id = S2CellId.fromLatLng(S2LatLng.fromDegrees(command.lat(), command.lng()));
 		if (command.speed() != null) {
