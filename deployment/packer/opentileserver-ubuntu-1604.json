@@ -1,5 +1,9 @@
 {
     "variables": {
+        "aws_region": "eu-west-1",
+        "aws_access_key": "",
+        "aws_secret_key": "",
+        "aws_s3_bucket_name": "rahpey-test",
         "bridged_nic_name": "",
         "headless": "true",
         "output_directory": "build",
@@ -40,6 +44,7 @@
             "output_directory": "{{user `output_directory`}}",
             "guest_os_type": "{{user `os_type`}}",
             "vm_name": "{{user `os_type`}}-{{user `os_version`}}-{{build_type}}-{{isotime \"2006-01-02_15-04-05\"}}",
+            "format": "ova",
             "disk_size": "{{user `disk_size`}}",
             "hard_drive_interface": "{{user `hard_drive_interface`}}",
             "hard_drive_nonrotational": "{{user `hard_drive_nonrotational`}}",
@@ -121,6 +126,23 @@
                 "debconf/priority=critical ",
                 "<enter>"
             ]
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "amazon-import",
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "region": "{{user `aws_region`}}",
+            "s3_bucket_name": "{{user `aws_s3_bucket_name`}}",
+            "s3_key_name": "packer-import-{{isotime \"2006-01-02_15-04-05\"}}",
+            "ami_name": "rahpey-ami-{{isotime \"2006-01-02_15-04-05\"}}",
+            "skip_clean": false
+        },
+        {
+            "type": "manifest",
+            "output": "manifest.json",
+            "strip_path": true
         }
     ]
 }

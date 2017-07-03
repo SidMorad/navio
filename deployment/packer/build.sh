@@ -44,4 +44,6 @@ PACKER_LOG=1 PACKER_LOG_PATH=${PACKER_LOG_FILE} \
   build \
   -var bridged_nic_name=${nic_name} \
   -var headless=true \
+  -var aws_access_key=$AWS_ACCESS_KEY \
+  -var aws_secret_key=$AWS_SECRET_KEY \
   opentileserver-ubuntu-1604.json
