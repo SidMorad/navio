@@ -23,7 +23,7 @@ export class TrackingService {
   }
 
   trackUserLocation(dto: UserLocationDTO): Observable<any> {
-    if (!this.settings.allSettings[Settings.USER_GO_INVISIBLE]) {
+    if (this.settings.allSettings && !this.settings.allSettings[Settings.USER_GO_INVISIBLE]) {
       if (moment().diff(this.lastTimeUserLocationSent, 'seconds') > 60) { // 60 seconds dealy in case watchPosition event happends rapidly
         this.lastTimeUserLocationSent = moment();
         return this.http.post(TRAFFIC_API_BASE_URL + '/usertrack/save', dto);
