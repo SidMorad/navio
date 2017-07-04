@@ -1,5 +1,5 @@
 import { Injectable, ComponentFactoryResolver, Injector,
-         ComponentRef, ApplicationRef, NgZone, EventEmitter } from '@angular/core';
+         ComponentRef, ApplicationRef, EventEmitter } from '@angular/core';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
@@ -37,9 +37,8 @@ export class MapService {
   lastTimeCarSpeedSent: any = moment();
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
-              private appRef: ApplicationRef, private zone: NgZone,
-              private geocodingService: GeocodingService, private settings: Settings,
-              private trackingService: TrackingService) {
+              private appRef: ApplicationRef, private trackingService: TrackingService,
+              private geocodingService: GeocodingService, private settings: Settings) {
     this.initCurrentZoom();
   }
 
@@ -118,9 +117,9 @@ export class MapService {
 
     this.map.on({
       contextmenu: (e) => {     // Long press event
-        this.zone.run( () => {  // Run it in Angular zone, neccessary to make component creation to work
-          this.showDestinationByLatLng(e.latlng);
-        });
+        // this.zone.run( () => {  // Run it in Angular zone, necessary to make component creation to work, but it seems is not necessary anymore!
+        this.showDestinationByLatLng(e.latlng);
+        // });
       },
       click: (e) => {
         this.popupsLayer.clearLayers();
@@ -326,8 +325,8 @@ export class MapService {
   }
 
   refreshOnlineUsersLayer(uls: UserLocationDTO[]) {
+    this.onlineUserLayer.clearLayers();
     if (uls) {
-      this.onlineUserLayer.clearLayers();
       uls.forEach(ul => {
         this.onlineUserLayer.addLayer(L.marker({ lat: ul.latitude, lng: ul.longitude}, {icon: this.onlinUserIcon})
             .bindPopup(ul.userId ? ul.userId : 'Driver'));

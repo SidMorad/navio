@@ -35,7 +35,8 @@ export function provideSettings(storage: Storage) {
     highlightTehranEvenOddTrafficZone: true,
     hasTehranMainTrafficCertificate: false,
     carPlateNumberEvenOrOdd: 'notset',
-    lastZoomLevel: 18
+    lastZoomLevel: 18,
+    userGoInvisible: false
   });
 }
 

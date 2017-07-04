@@ -32,6 +32,7 @@ export class MyApp implements OnInit {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
+      splashScreen.hide();
       settings.load().then(() => {
         settings.getValue(Settings.PREFER_LANGUAGE).then(val => {
           this.translateService.onLangChange.subscribe( data => {
@@ -43,7 +44,6 @@ export class MyApp implements OnInit {
           translateService.setDefaultLang(val);
           translateService.use(val);
         });
-        splashScreen.hide();
       });
       favorites.load();
 

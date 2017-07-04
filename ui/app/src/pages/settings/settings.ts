@@ -48,7 +48,8 @@ export class SettingsPage implements OnInit {
     let group: any = {
       preferLanguage: [this.options.preferLanguage],
       country: new FormControl({value: this.options.country, disabled: true}),
-      city: [this.options.city]
+      city: [this.options.city],
+      userGoInvisible: [this.options.userGoInvisible]
     };
 
     switch(this.page) {

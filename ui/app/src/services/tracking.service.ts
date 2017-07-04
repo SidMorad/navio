@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { TRAFFIC_API_BASE_URL } from '../app/config';
 import { CarSpeedDTO } from '../domain/model/car';
 import { UserLocationDTO } from '../domain/model/userlocation';
+import { Settings } from '../providers';
 
 @Injectable()
 export class TrackingService {
@@ -14,7 +15,7 @@ export class TrackingService {
   allUserLocationsQueryInProgress: boolean = false;
   allUserLocationsCached: UserLocationDTO[];
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private settings: Settings) {
   }
 
   trackCarSpeed(dto: CarSpeedDTO): Observable<any> {
@@ -22,12 +23,17 @@ export class TrackingService {
   }
 
   trackUserLocation(dto: UserLocationDTO): Observable<any> {
-    if (moment().diff(this.lastTimeUserLocationSent, 'seconds') > 60) { // 60 seconds dealy in case watchPosition event happends rapidly
-      this.lastTimeUserLocationSent = moment();
-      return this.http.post(TRAFFIC_API_BASE_URL + '/usertrack/save', dto);
+    if (!this.settings.allSettings[Settings.USER_GO_INVISIBLE]) {
+      if (moment().diff(this.lastTimeUserLocationSent, 'seconds') > 60) { // 60 seconds dealy in case watchPosition event happends rapidly
+        this.lastTimeUserLocationSent = moment();
+        return this.http.post(TRAFFIC_API_BASE_URL + '/usertrack/save', dto);
+      }
+      else {
+        return Observable.of(null);
+      }
     }
     else {
-      return Observable.of(false);
+      return Observable.of(null);
     }
   }
 

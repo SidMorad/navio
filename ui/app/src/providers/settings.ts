@@ -14,6 +14,7 @@ export class Settings {
   public static readonly HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE: string = 'highlightTehranEvenOddTrafficZone';
   public static readonly HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE: string = 'hasTehranMainTrafficCertificate';
   public static readonly CAR_PLATE_NUMBER_EVEN_OR_ODD: string = 'carPlateNumberEvenOrOdd';
+  public static readonly USER_GO_INVISIBLE: string = 'userGoInvisible';
 
   settings: any;
 
