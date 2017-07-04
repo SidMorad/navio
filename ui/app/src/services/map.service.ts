@@ -9,11 +9,11 @@ import * as moment from 'moment';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
-import { GeocodingService } from '.';
+import { GeocodingService, TrackingService } from '.';
 import { Settings } from '../providers';
 import { TehranMainTrafficSpecification,
          TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
-import { AddressDTO, LatLng } from '../domain/model/geocoding';
+import { AddressDTO, LatLng, UserLocationDTO } from '../domain/model';
 
 declare var L: any;
 
@@ -23,6 +23,7 @@ export class MapService {
   routeControl: any;
   currentLocationLayer: any = new L.LayerGroup([]);
   startLocationLayer: any = new L.LayerGroup([]);
+  onlineUserLayer: any = new L.LayerGroup([]);
   highlightLayer: any = new L.LayerGroup([]);
   overpassLayer: any = new L.LayerGroup([]);
   popupsLayer: any = new L.LayerGroup([]);
@@ -37,7 +38,8 @@ export class MapService {
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private zone: NgZone,
-              private geocodingService: GeocodingService, private settings: Settings) {
+              private geocodingService: GeocodingService, private settings: Settings,
+              private trackingService: TrackingService) {
     this.initCurrentZoom();
   }
 
@@ -109,6 +111,7 @@ export class MapService {
 
     this.currentLocationLayer.addTo(this.map);
     this.startLocationLayer.addTo(this.map);
+    this.onlineUserLayer.addTo(this.map);
     this.highlightLayer.addTo(this.map);
     this.overpassLayer.addTo(this.map);
     this.popupsLayer.addTo(this.map);
@@ -138,6 +141,16 @@ export class MapService {
           if (!this.map.getCenter().equals(this.currentLocation())) {
             this.isCenterToCurrentLocation = false;
           }
+        }
+      },
+      moveend: (e) => {
+        if (this.currentZoom > 14) {
+          this.trackingService.allUserLocations(this.map.getBounds()).subscribe((res) => {
+            this.refreshOnlineUsersLayer(res);
+          });
+        }
+        else {
+          this.onlineUserLayer.clearLayers();
         }
       }
     });
@@ -312,6 +325,16 @@ export class MapService {
     }
   }
 
+  refreshOnlineUsersLayer(uls: UserLocationDTO[]) {
+    if (uls) {
+      this.onlineUserLayer.clearLayers();
+      uls.forEach(ul => {
+        this.onlineUserLayer.addLayer(L.marker({ lat: ul.latitude, lng: ul.longitude}, {icon: this.onlinUserIcon})
+            .bindPopup(ul.userId ? ul.userId : 'Driver'));
+      });
+    }
+  }
+
   LeafIcon = L.Icon.extend({
     options: {
       shadowUrl: 'assets/img/marker-shadow.png',
@@ -332,6 +355,11 @@ export class MapService {
 
   speedCameraIcon = new this.LeafIcon({
     iconUrl: 'assets/img/speed-camera.png'
+  });
+
+  onlinUserIcon = new this.LeafIcon({
+    iconUrl: 'assets/img/car.png',
+    iconSize: [41, 25]
   });
 
   tehranMainTrafficZoneRectangle = L.rectangle(

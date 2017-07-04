@@ -16,22 +16,22 @@
  <ion-card color="danger" *ngIf="authenticationError" padding>
    {{'USERNAME OR PASSWORD IS INCORRECT'|translate}}
 </ion-card>
- <form (ngSubmit)="login()">
+ <form (ngSubmit)="login()" name="form" role="form" #loginForm="ngForm">
   <ion-list>
     <ion-item>
       <ion-label stacked>{{'USERNAME'|translate}}</ion-label>
-      <ion-input type="text" [(ngModel)]="account.username" id="username" name="username" ngDefaultControl required></ion-input>
+      <ion-input type="text" [(ngModel)]="account.username" id="username" name="username" dir="ltr" ngDefaultControl required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>{{'PASSWORD'|translate}}</ion-label>
-      <ion-input type="password" [(ngModel)]="account.password" id="password" name="password" ngDefaultControl required></ion-input>
+      <ion-input type="password" [(ngModel)]="account.password" id="password" name="password" dir="ltr" ngDefaultControl required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>{{'REMEMBER ME'|translate}}</ion-label>
       <ion-checkbox [(ngModel)]="account.rememberMe" id="rememberMe" name="rememberMe" ngDefaultControl></ion-checkbox>
     </ion-item>
     <div padding>
-      <button ion-button large block [disabled]="remoteCallInProgress">
+      <button ion-button large block [disabled]="loginForm.form.invalid || remoteCallInProgress">
         {{'LOGIN'|translate}}
       </button>
     </div>

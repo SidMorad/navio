@@ -4,9 +4,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import * as moment from 'moment';
 import 'moment-duration-format';
 
-import { MapService, CarSpeedService } from '../../services';
+import { MapService, TrackingService } from '../../services';
 import { Settings } from '../../providers';
-import { CarSpeedDTO } from '../../domain/model/car';
+import { CarSpeedDTO , UserLocationDTO } from '../../domain/model';
 
 @Component({
   selector: 'page-home',
@@ -20,7 +20,7 @@ export class HomePage implements OnInit, OnDestroy {
   distance: string;
 
   constructor(private platform: Platform, private geolocation: Geolocation,
-              private settings: Settings, private carSpeedService: CarSpeedService,
+              private settings: Settings, private trackingService: TrackingService,
               private menuCtrl: MenuController, private mapService: MapService) {
   }
 
@@ -55,12 +55,9 @@ export class HomePage implements OnInit, OnDestroy {
           }
           if (this.mapService.shouldWeSendCarSpeed()) {
             // Send car speed
-            this.carSpeedService.save(CarSpeedDTO.toDTO(data.coords)).subscribe((response) => {
-              console.log("Car speed [", data.coords, "] sent successfully [", response, "]");
-            }, (error) => {
-              console.log("Error on saving car speed: ", error);
-            });
+            this.trackingService.trackCarSpeed(CarSpeedDTO.toDTO(data.coords)).subscribe();
           }
+          this.trackingService.trackUserLocation(UserLocationDTO.toDTO(data.coords)).subscribe();
         }
         else {
           if (isDevMode()) {  // Workaround for `ionic cordova run android -l` command that doesn't work on latest chrome browser anymore, therefore watchPosition doesn't work either.
