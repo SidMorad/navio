@@ -10,7 +10,12 @@ services:
                 soft: 68719476736
                 hard: 68719476736
         volumes:
-           - ./log-data:/usr/share/elasticsearch/data
+            - ./log-data:/usr/share/elasticsearch/data
+        environment:
+            - bootstrap.memory_lock=true
+            - ES_JAVA_OPTS=-Xmx512m -Xms512m
+            - ES_HEAP_SIZE=1g
+        mem_limit: 1g
     jhipster-logstash:
         image: jhipster/jhipster-logstash
         command: logstash -f /conf/logstash.conf

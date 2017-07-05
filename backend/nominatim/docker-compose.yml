@@ -9,3 +9,8 @@ services:
     restart: unless-stopped
     environment:
       PBF_DATA: http://download.geofabrik.de/asia/iran-latest.osm.pbf
+
+networks:
+  default:
+    external:
+      name: docker_default
