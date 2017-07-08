@@ -1,4 +1,5 @@
 {
+  "private": true,
   "devDependencies": {
     "generator-jhipster": "4.5.6"
   }
