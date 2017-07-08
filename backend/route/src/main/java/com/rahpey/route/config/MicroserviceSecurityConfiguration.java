@@ -30,7 +30,7 @@ import java.util.Map;
 public class MicroserviceSecurityConfiguration extends ResourceServerConfigurerAdapter {
 
     @SuppressWarnings("unused")
-	private final JHipsterProperties jHipsterProperties;
+    private final JHipsterProperties jHipsterProperties;
 
     private final DiscoveryClient discoveryClient;
 
@@ -93,5 +93,4 @@ public class MicroserviceSecurityConfiguration extends ResourceServerConfigurerA
             .get("value");
 
     }
-
 }

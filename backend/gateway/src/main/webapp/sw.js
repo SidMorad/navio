@@ -1,5 +1,5 @@
-var dataCacheName = '"Gateway-v1';
-var cacheName = '"Gateway-1';
+var dataCacheName = 'Gateway-v1';
+var cacheName = 'Gateway-1';
 var filesToCache = [
     '/',
     '/index.html'
