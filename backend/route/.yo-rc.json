@@ -34,7 +34,8 @@
     "skipUserManagement": true,
     "nativeLanguage": "en",
     "languages": [
-      "en"
+      "en",
+      "fa"
     ],
     "clientPackageManager": "yarn"
   }

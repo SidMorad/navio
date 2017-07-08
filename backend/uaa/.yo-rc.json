@@ -29,7 +29,8 @@
     "skipClient": true,
     "nativeLanguage": "en",
     "languages": [
-      "en"
+      "en",
+      "fa"
     ],
     "clientPackageManager": "yarn"
   }

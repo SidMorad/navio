@@ -19,6 +19,7 @@ import {
         JhiAlertErrorComponent
     ],
     providers: [
+        FindLanguageFromKeyPipe,
         JhiLanguageHelper,
         Title
     ],

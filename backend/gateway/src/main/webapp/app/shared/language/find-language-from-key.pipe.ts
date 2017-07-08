@@ -41,4 +41,7 @@ export class FindLanguageFromKeyPipe implements PipeTransform {
     transform(lang: string): string {
         return this.languages[lang].name;
     }
+    isRTL(lang: string): boolean {
+        return this.languages[lang].rtl;
+    }
 }

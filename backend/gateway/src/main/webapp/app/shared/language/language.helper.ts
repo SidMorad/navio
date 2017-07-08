@@ -4,6 +4,7 @@ import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import { LANGUAGES } from './language.constants';
+import { FindLanguageFromKeyPipe } from './find-language-from-key.pipe';
 
 @Injectable()
 export class JhiLanguageHelper {
@@ -12,6 +13,7 @@ export class JhiLanguageHelper {
     constructor(
         private translateService: TranslateService,
         private rootRenderer: RendererFactory2,
+        private findLanguageFromKeyPipe: FindLanguageFromKeyPipe,
         private titleService: Title,
         private router: Router
     ) {
@@ -44,6 +46,7 @@ export class JhiLanguageHelper {
         this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
             this.renderer.setAttribute(document.querySelector('html'), 'lang', this.translateService.currentLang);
             this.updateTitle();
+            this.updatePageDirection();
         });
     }
 
@@ -53,5 +56,9 @@ export class JhiLanguageHelper {
             title = this.getPageTitle(routeSnapshot.firstChild) || title;
         }
         return title;
+    }
+
+    private updatePageDirection() {
+        this.renderer.setAttribute(document.querySelector('html'), 'dir', this.findLanguageFromKeyPipe.isRTL(this.translateService.currentLang) ? 'rtl' : 'ltr');
     }
 }
