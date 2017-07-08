@@ -13,7 +13,7 @@ The build:
 ## Usage
 
 * Run:
-```bash 
+```bash
 $ ./build.sh
 ```
 

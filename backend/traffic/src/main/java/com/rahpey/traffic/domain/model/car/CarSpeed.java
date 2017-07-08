@@ -47,13 +47,13 @@ public class CarSpeed implements Serializable {
     }
 
     public CarSpeed(S2CellId s2CellId, CarSpeedCommand command) {
-    	this.cellId = s2CellId.id(); 
-    	this.speed = command.speed();
-    	this.heading = command.heading();
-    	this.created = Instant.now();
-	}
+        this.cellId = s2CellId.id();
+        this.speed = command.speed();
+        this.heading = command.heading();
+        this.created = Instant.now();
+    }
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -12,5 +12,4 @@ import org.springframework.data.jpa.repository.*;
  */
 @Repository
 public interface CarSpeedRepository extends JpaRepository<CarSpeed,Long> {
-    
 }

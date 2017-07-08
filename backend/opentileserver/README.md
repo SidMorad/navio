@@ -59,4 +59,3 @@ You should see a page as below:
 
 
 Click on both the OpenLayer and Leaflet Examples and check your installation is rendering
-
