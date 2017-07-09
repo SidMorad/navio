@@ -3,12 +3,12 @@ import { RouterModule } from '@angular/router';
 
 import { GatewaySharedModule } from '../shared';
 
-import { HOME_ROUTE, HomeComponent } from './';
+import { HOME_ROUTE, DOWNLOAD_ROUTE, HomeComponent } from './';
 
 @NgModule({
     imports: [
         GatewaySharedModule,
-        RouterModule.forRoot([ HOME_ROUTE ], { useHash: true })
+        RouterModule.forRoot([ HOME_ROUTE, DOWNLOAD_ROUTE ], { useHash: true })
     ],
     declarations: [
         HomeComponent,

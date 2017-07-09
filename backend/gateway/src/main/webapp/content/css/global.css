@@ -32,9 +32,12 @@ Generic styles
 /* other generic styles */
 
 .jh-card {
+    border: none;
+}
+
+.page-card {
     padding: 1.5%;
     margin-top: 20px;
-    border: none;
 }
 
 .error {
@@ -66,6 +69,8 @@ Generic styles
 
 .footer {
     border-top: 1px solid rgba(0,0,0,.125);
+    background-color: #353d47;
+    color: white;
 }
 
 /* ==========================================================================
@@ -218,3 +223,7 @@ html[dir=rtl] .modal-footer {
     text-align: left;
 }
 /* jhipster-needle-css-add-main JHipster will add new css style */
+
+.force-ltr {
+  direction: ltr;
+}

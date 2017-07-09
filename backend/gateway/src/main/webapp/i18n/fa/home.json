@@ -1,19 +1,23 @@
 {
     "home": {
-        "title": "خوش آمدید, Java Hipster!",
+        "title": "به ره‌پی خوش آمدید",
         "subtitle": "این صفحه اصلی شماست",
+        "branding": {
+            "sentence": "با ره‌پی آسان‌تر، سریع‌تر و ایمن‌تر به مقصدتون برسید",
+            "startnow": "از ره‌پی مجانی استفاده کنید!",
+            "discover": "کاشف آنچه اینروزها صحبتش هست باشید!",
+            "downloadnow": "اپ ما در همه گوشی‌های هوشمند کار می‌کند! از لینک‌های پایین برای دانلود استفاده کنید!"
+        },
         "logged": {
-            "message": "شما وارد شدید با کاربر \"{{username}}\"."
+          "message": "شما وارد شدید با کاربر \"{{username}}\"."
         },
-        "question": "اگر سوالی دارید؟ در مورد JHipster:",
+        "question": "اگر در مورد ره‌پی سوالی دارید؟",
         "link": {
-            "homepage": "JHipster صفحه اصلی",
-            "stackoverflow": "JHipster در Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "chat": "JHipster public chat room",
-            "follow": "دنبال کنید @java_hipster در Twitter"
+            "homepage": " صفحه اصلی ره‌پی",
+            "bugtracker": "Rahpey bug tracker",
+            "follow": "ما را با @rahpey در تویتر دنبال کنید"
         },
-        "like": "اگر JHipster را دوست دارید، فراموش نکنید بهش ستاره بدید در",
-        "github": "GitHub"
+        "like": "اگر از ره‌پی خوشتون آمده؟ فراموش نکنید بهش ستاره بدید در",
+        "googleplay": "گوگل پلی"
     }
 }
