@@ -8,6 +8,7 @@
     "node_modules"
   ],
   "dependencies": {
+    "@angular/animations": "4.2.4",
     "@angular/common": "4.2.4",
     "@angular/compiler": "4.2.4",
     "@angular/core": "4.2.4",
@@ -22,6 +23,7 @@
     "font-awesome": "4.7.0",
     "jquery": "3.2.1",
     "ng-jhipster": "0.2.6",
+    "ng2-page-scroll": "^4.0.0-beta.9",
     "ng2-webstorage": "1.8.0",
     "ngx-cookie": "1.0.0",
     "ngx-infinite-scroll": "0.5.1",

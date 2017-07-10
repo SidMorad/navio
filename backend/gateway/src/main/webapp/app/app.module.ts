@@ -3,7 +3,9 @@ import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Ng2Webstorage } from 'ng2-webstorage';
+import { Ng2PageScrollModule } from 'ng2-page-scroll';
 
 import { GatewaySharedModule, UserRouteAccessService } from './shared';
 import { GatewayHomeModule } from './home/home.module';
@@ -30,8 +32,10 @@ import {
 @NgModule({
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         LayoutRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
+        Ng2PageScrollModule.forRoot(),
         GatewaySharedModule,
         GatewayHomeModule,
         GatewayAdminModule,

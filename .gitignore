@@ -3,3 +3,6 @@
 deployment/packer/packer_cache/
 deployment/packer/tmp
 deployment/packer/build
+
+# Yarn
+backend/**/yarn.lock
