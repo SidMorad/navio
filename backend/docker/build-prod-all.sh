@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd ../uaa && ./mvnw clean package -Pprod docker:build
-cd ../gateway && ./mvnw clean package -Pprod docker:build
-cd ../route && ./mvnw clean package -Pprod docker:build
-cd ../traffic && ./mvnw clean package -Pprod docker:build
+cd ../uaa && ./mvnw clean package -Pprod,zipkin docker:build -DskipTests
+cd ../gateway && ./mvnw clean package -Pprod,zipkin docker:build -DskipTests
+cd ../route && ./mvnw clean package -Pprod,zipkin docker:build -DskipTests
+cd ../traffic && ./mvnw clean package -Pprod,zipkin docker:build -DskipTests
 
 echo "built all!"

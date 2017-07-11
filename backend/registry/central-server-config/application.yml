@@ -18,7 +18,7 @@ jhipster:
             report-frequency: 60 # in seconds
 spring:
     zipkin:
-        base-url: http://jhipster-zipkin:9411
+        baseUrl: http://jhipster-zipkin:9411
         enabled: true
 
 eureka:
