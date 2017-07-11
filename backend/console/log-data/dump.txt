@@ -1,1 +1,0 @@
-# If docker create this directory, then jhipster-elasticsearch service can not have write access. So we do include this directory in git repository to avoid this.
