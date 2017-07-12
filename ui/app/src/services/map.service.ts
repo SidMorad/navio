@@ -302,6 +302,7 @@ export class MapService {
   stopTheRoute() {
     this.popupsLayer.clearLayers();
     this.routeControl.getPlan().spliceWaypoints(0, this.routeControl.getPlan().getWaypoints().length);
+    this.isInDrivingMode = false;
   }
 
   setAsStartPoint(address: AddressDTO) {
