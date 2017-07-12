@@ -526,6 +526,7 @@
                 <configuration>
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
+                    <projectNameTemplate>rahpey-gateway</projectNameTemplate>
                 </configuration>
             </plugin>
             <plugin>

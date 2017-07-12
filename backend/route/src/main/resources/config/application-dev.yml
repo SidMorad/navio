@@ -154,4 +154,3 @@ jhipster:
 # ===================================================================
 
 application:
-    routeEngineServiceUrl: http://localhost:8989/route

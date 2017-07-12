@@ -447,6 +447,7 @@
                 <configuration>
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
+                    <projectNameTemplate>rahpey-uaa</projectNameTemplate>
                 </configuration>
             </plugin>
             <plugin>

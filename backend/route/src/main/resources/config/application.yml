@@ -131,3 +131,7 @@ jhipster:
 # ===================================================================
 
 application:
+    routeEngine:
+        serviceUrl: http://localhost:8989/route
+        connectTimeout: 30
+        readTimeout: 30

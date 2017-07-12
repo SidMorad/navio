@@ -142,4 +142,7 @@ jhipster:
 # ===================================================================
 
 application:
-    routeEngineServiceUrl: http://graphhopper:8989/route
+    routeEngine:
+        serviceUrl: http://graphhopper:8989/route
+        connectTimeout: 30
+        readTimeout: 30

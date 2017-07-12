@@ -14,16 +14,23 @@ import okhttp3.OkHttpClient;
 @Service
 public class RouteEngineService {
 
-	@Value("${application.routeEngineServiceUrl}")
-	public String routeEngineServiceUrl;
+	@Value("${application.routeEngine.serviceUrl}")
+	public String serviceUrl;
+
+	@Value("${application.routeEngine.connectTimeout}")
+	public Integer connectTimeout;
+
+   @Value("${application.routeEngine.readTimeout}")
+    public Integer readTimeout;
 
 	private GraphHopperWeb graphHopperWeb;
 
 	public GraphHopperWeb routingApi() {
 		if (graphHopperWeb == null) {
-			graphHopperWeb = new GraphHopperWeb(routeEngineServiceUrl);
+			graphHopperWeb = new GraphHopperWeb(serviceUrl);
 			graphHopperWeb.setDownloader(new OkHttpClient.Builder()
-					.connectTimeout(5, TimeUnit.SECONDS).readTimeout(5, TimeUnit.SECONDS).build());
+					.connectTimeout(connectTimeout, TimeUnit.SECONDS)
+					.readTimeout(readTimeout, TimeUnit.SECONDS).build());
 		}
 		return graphHopperWeb;
 	}
