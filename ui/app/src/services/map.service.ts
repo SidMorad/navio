@@ -35,6 +35,7 @@ export class MapService {
   onActiveRouteChangeEvent = new EventEmitter;
   isInDrivingMode: boolean = false;
   lastTimeCarSpeedSent: any = moment();
+  destination: AddressDTO;
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private appRef: ApplicationRef, private trackingService: TrackingService,
@@ -294,7 +295,13 @@ export class MapService {
       this.popupsLayer.clearLayers();
       this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
       this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
+      this.destination = addressDTO;
     });
+  }
+
+  stopTheRoute() {
+    this.popupsLayer.clearLayers();
+    this.routeControl.getPlan().spliceWaypoints(0, this.routeControl.getPlan().getWaypoints().length);
   }
 
   setAsStartPoint(address: AddressDTO) {

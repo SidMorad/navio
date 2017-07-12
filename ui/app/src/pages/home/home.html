@@ -25,8 +25,12 @@
       </ion-row>
     </ion-grid>
     <ion-buttons right>
-      <button ion-button large icon-only [disabled]="true">
-        <ion-icon name="volume-up" color="dark"></ion-icon>
+<!--  <button ion-button icon-only [disabled]="true">
+        <ion-icon name="volume-up" color="dark" small [ngStyle]="{'font-size': true ? '16px': ''}"></ion-icon>
+      </button>
+-->
+      <button ion-button icon-only *ngIf="isInDrivingMode()" (click)="openDestinationModal()">
+        <ion-icon name="arrow-dropdown-circle" color="primary"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>

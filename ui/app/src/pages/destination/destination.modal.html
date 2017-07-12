@@ -1,0 +1,44 @@
+<ion-content class="main-view" text-center>
+  <div class="overlay">
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button clear (click)="dismiss()" icon-start>
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="modal-view">
+    <ion-toolbar>
+      <ion-title text-center>
+        Title
+      </ion-title>
+    </ion-toolbar>
+    <h3> {{ address.favLabel || address.shortName }}</h3>
+    <p> {{ address.shortAreaName }}</p>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-4></ion-col>
+        <ion-col col-4></ion-col>
+        <ion-col col-4>
+          <button ion-button end round icon-only color="danger" (click)="stopTheRoute()">
+            <ion-icon name="hand"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button start block color="light" (click)="dismiss()">
+            {{ 'CANCEL' | translate }}
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button end block icon-end (click)="navigateToAddress()">
+            {{ 'GO' | translate }}
+            <ion-icon name="arrow-dropright"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
-import { Platform, MenuController } from 'ionic-angular';
+import { Platform, MenuController, ModalController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import * as moment from 'moment';
 import 'moment-duration-format';
@@ -21,7 +21,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(private platform: Platform, private geolocation: Geolocation,
               private settings: Settings, private trackingService: TrackingService,
-              private menuCtrl: MenuController, private mapService: MapService) {
+              private menuCtrl: MenuController, private mapService: MapService,
+              private modalCtrl: ModalController) {
   }
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.platform.ready().then((readySource) => {
       var firstTime = true;
       let watchPosition = this.geolocation.watchPosition(
-        { enableHighAccuracy: true }
+        { enableHighAccuracy: true,
         // Is a Boolean that indicates the application would like to receive the best possible results.
         // If true and if the device is able to provide a more accurate position, it will do so.
         // Note that this can result in slower response times or increased power consumption
@@ -40,6 +41,8 @@ export class HomePage implements OnInit, OnDestroy {
         // the device can take the liberty to save resources by responding more quickly and/or using less power.
         // Default: false.
         // Note: Android emulator mock location feature is not working if set to false.
+          maximumAge: 30000
+        }
       );
       watchPosition.subscribe((data) => {
         console.log("watchPosition event: ", data, " currentZoom level: ", this.mapService.currentZoom);
@@ -103,6 +106,14 @@ export class HomePage implements OnInit, OnDestroy {
 
   isNotCenterToCurrentLocation() {
     return !this.mapService.isCenterToCurrentLocation;
+  }
+
+  isInDrivingMode(): boolean {
+    return this.mapService.isInDrivingMode;
+  }
+
+  openDestinationModal() {
+    this.modalCtrl.create('DestinationModal', { address: this.mapService.destination }).present();
   }
 
   ngOnDestroy() {
