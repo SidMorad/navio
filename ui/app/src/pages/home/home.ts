@@ -82,11 +82,9 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.mapService.onActiveRouteChangeEvent.subscribe(() => {
       if (this.mapService.activeRoute) {
-        let totalTime = this.mapService.activeRoute.summary.totalTime;
-        this.ETA = moment().add(moment.duration(totalTime, 'seconds')).format('h:mm A');
-        let totalDistance = this.mapService.activeRoute.summary.totalDistance / 1000;   // Meter to KiloMeter
-        this.distance = totalDistance.toFixed(1) + " km";
-        this.duration = moment.duration(totalTime, 'seconds').format('h [hrs], m [min]');
+        this.ETA = this.mapService.activeRoute.ETA;
+        this.distance = this.mapService.activeRoute.distance;
+        this.duration = this.mapService.activeRoute.duration;
       }
       else {
         this.ETA = "";

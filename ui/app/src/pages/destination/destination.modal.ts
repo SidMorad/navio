@@ -14,10 +14,26 @@ import { MapService } from '../../services';
 export class DestinationModal {
 
   address: AddressDTO;
+  duration: string;
+  ETA: string;
+  distance: string;
 
   constructor(navParams: NavParams, private viewCtrl: ViewController,
               private mapService: MapService) {
     this.address = navParams.get('address');
+  }
+
+  ionViewWillEnter() {
+    if (this.mapService.activeRoute) {
+      this.ETA = this.mapService.activeRoute.ETA;
+      this.distance = this.mapService.activeRoute.distance;
+      this.duration = this.mapService.activeRoute.duration;
+    }
+    else {
+      this.ETA = "";
+      this.duration = "";
+      this.distance = "";
+    }
   }
 
   navigateToAddress() {

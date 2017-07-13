@@ -10,11 +10,15 @@
   </div>
   <div class="modal-view">
     <ion-toolbar>
-      <ion-title text-center>
-        Title
-      </ion-title>
+      <ion-grid text-center class="force-ltr">
+        <ion-row>
+          <ion-col col-4 text-end>{{ duration }}</ion-col>
+          <ion-col col-4><ion-title>{{ ETA }}</ion-title></ion-col>
+          <ion-col col-4 text-start>{{ distance }}</ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-toolbar>
-    <h3> {{ address.favLabel || address.shortName }}</h3>
+    <h4> {{ address.favLabel || address.shortName }}</h4>
     <p> {{ address.shortAreaName }}</p>
     <ion-grid>
       <ion-row>
@@ -24,6 +28,10 @@
           <button ion-button end round large icon-only color="danger" (click)="stopTheRoute()">
             <ion-icon name="hand"></ion-icon>
           </button>
+          <br />
+          <div>
+            {{ 'STOP' | translate }}
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>

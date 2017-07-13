@@ -92,9 +92,11 @@ export class MapService {
     this.routeControl.on({
       routesfound: (e) => {
         this.activeRoute = e.routes[0];
-        this.onActiveRouteChangeEvent.emit();
+        this.activeRoute.ETA = moment().add(moment.duration(this.activeRoute.summary.totalTime, 'seconds')).format('h:mm A');
+        this.activeRoute.duration = moment.duration(this.activeRoute.summary.totalTime, 'seconds').format('h [hrs], m [min]');
+        this.activeRoute.distance = (this.activeRoute.summary.totalDistance / 1000).toFixed(1) + ' km';
         this.isInDrivingMode = true;
-        console.log("Route found: ", this.activeRoute);
+        this.onActiveRouteChangeEvent.emit();
       }
     });
 
@@ -303,6 +305,8 @@ export class MapService {
     this.popupsLayer.clearLayers();
     this.routeControl.getPlan().spliceWaypoints(0, this.routeControl.getPlan().getWaypoints().length);
     this.isInDrivingMode = false;
+    this.activeRoute = null;
+    this.onActiveRouteChangeEvent.emit();
   }
 
   setAsStartPoint(address: AddressDTO) {
