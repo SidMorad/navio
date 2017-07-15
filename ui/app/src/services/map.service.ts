@@ -147,9 +147,11 @@ export class MapService {
       },
       moveend: (e) => {
         if (this.currentZoom > 14) {
-          this.trackingService.allUserLocations(this.map.getBounds()).subscribe((res) => {
-            this.refreshOnlineUsersLayer(res);
-          });
+          // Issue #24 Online users visiable on the map, is deactivated for now. refs: https://trello.com/c/bgPyzw51/51-display-online-users
+          // For activating it again? uncomment following lines:
+          // this.trackingService.allUserLocations(this.map.getBounds()).subscribe((res) => {
+          //   this.refreshOnlineUsersLayer(res);
+          // });
         }
         else {
           this.onlineUserLayer.clearLayers();
