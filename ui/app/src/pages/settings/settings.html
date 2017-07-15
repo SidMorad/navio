@@ -37,10 +37,11 @@
       <button ion-item [navPush]="subSettings" [navParams]="tehranProfile" *ngIf="options.city === 'THR'">
         {{ 'TEHRAN_SETTINGS_TITLE' | translate}}
       </button>
-      <ion-item>
+<!--  <ion-item>
         <ion-label>{{ 'GO_INVISIBLE' | translate }}</ion-label>
         <ion-toggle formControlName="userGoInvisible"></ion-toggle>
       </ion-item>
+-->
     </ion-list>
     <ion-list *ngIf="page === 'tehranSettings'">
       <ion-item text-wrap>
