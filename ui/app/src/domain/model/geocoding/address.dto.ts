@@ -35,10 +35,6 @@ export class AddressDTO {
   ];
 
   resolveShortName() {
-    console.log("Order: ", this.detailOrder);
-    this.detailOrder.forEach(name => {
-      console.log(name, " = ", this.details[name]);
-    });
     if (this.favLabel) {
       this.shortName = this.favLabel;
     }

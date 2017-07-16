@@ -87,6 +87,7 @@ export class TehranEvenOddTrafficSpecification {
       [35.72464, 51.38076], // شهید گمنام - چمران
       [35.72803, 51.38247],
       [35.74231, 51.38273], // بزرگراه حکیم - چمران
+      [35.75113, 51.38468]  // Last point = First point
     ];
   }
 

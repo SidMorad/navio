@@ -9,8 +9,8 @@ import * as moment from 'moment';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
-import { GeocodingService, TrackingService } from '.';
-import { Settings } from '../providers';
+import { GeocodingService } from '.';
+import { Settings, GeoUtil } from '../providers';
 import { TehranMainTrafficSpecification,
          TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
 import { AddressDTO, LatLng, UserLocationDTO } from '../domain/model';
@@ -38,7 +38,7 @@ export class MapService {
   destination: AddressDTO;
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
-              private appRef: ApplicationRef, private trackingService: TrackingService,
+              private appRef: ApplicationRef,
               private geocodingService: GeocodingService, private settings: Settings) {
     this.initCurrentZoom();
   }
@@ -90,6 +90,9 @@ export class MapService {
     }).addTo(this.map);
 
     this.routeControl.on({
+      routingstart: (e) => {
+        this.reOrganizeRouterUrlParameters();
+      },
       routesfound: (e) => {
         this.activeRoute = e.routes[0];
         this.activeRoute.ETA = moment().add(moment.duration(this.activeRoute.summary.totalTime, 'seconds')).format('h:mm A');
@@ -97,6 +100,7 @@ export class MapService {
         this.activeRoute.distance = (this.activeRoute.summary.totalDistance / 1000).toFixed(1) + ' km';
         this.isInDrivingMode = true;
         this.onActiveRouteChangeEvent.emit();
+        this.destination = new AddressDTO(e.waypoints[1].latLng, '');
       }
     });
 
@@ -195,38 +199,32 @@ export class MapService {
   }
 
   reOrganizeRouterUrlParameters() {
-    return this.settings.getValue(Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE).then(val => {
-      if (val === true) {
-        this.routeControl.getRouter().options.urlParameters = {};
+    this.routeControl.getRouter().options.urlParameters = {};
+    // let destinationPoints = [[this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]];
+    let destinationPoints = GeoUtil.aPolygonWithTwoPoints([this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]);
+    if (!this.settings.allSettings[Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE]) {
+      if (new TehranEvenOddTrafficSpecification().isAllowedToday(this.settings.allSettings[Settings.CAR_PLATE_NUMBER_EVEN_OR_ODD])) {
+        if (GeoUtil.intersectPolygon(destinationPoints, TehranMainTrafficSpecification.polygonPoints())) {
+          if (new TehranMainTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
+            this.routeControl.getRouter().options.urlParameters = {
+              'ch.disable': true,
+              block_area: TehranMainTrafficSpecification.blockedAreaPoints()
+            }
+          }
+        }
       }
       else {
-        this.settings.getValue(Settings.CAR_PLATE_NUMBER_EVEN_OR_ODD).then(val => {
-          if (new TehranEvenOddTrafficSpecification().isAllowedToday(val)) {
-            if (new TehranMainTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
-              this.routeControl.getRouter().options.urlParameters = {
-                'ch.disable': true,
-                block_area: TehranMainTrafficSpecification.blockedAreaPoints()
-              }
-            }
-            else {
-              this.routeControl.getRouter().options.urlParameters = {};
+        if (GeoUtil.intersectPolygon(destinationPoints, TehranEvenOddTrafficSpecification.polygonPoints())) {
+          if (new TehranEvenOddTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
+            this.routeControl.getRouter().options.urlParameters = {
+              'ch.disable': true,
+              block_area: TehranEvenOddTrafficSpecification.blockedAreaPoints()
             }
           }
-          else {
-            if (new TehranEvenOddTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
-              this.routeControl.getRouter().options.urlParameters = {
-                'ch.disable': true,
-                block_area: TehranEvenOddTrafficSpecification.blockedAreaPoints()
-              }
-            }
-            else {
-              this.routeControl.getRouter().options.urlParameters = {};
-            }
-          }
-          console.log("Route params are set: ", this.routeControl.getRouter().options.urlParameters);
-        });
+        }
       }
-    });
+    }
+    console.log("Route params are set: ", this.routeControl.getRouter().options.urlParameters);
   }
 
   addHighlightLayers() {
@@ -295,12 +293,11 @@ export class MapService {
   }
 
   navigateToAddress(addressDTO: AddressDTO) {
-    this.reOrganizeRouterUrlParameters().then(() => {
-      this.popupsLayer.clearLayers();
-      this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
-      this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
-      this.destination = addressDTO;
-    });
+    this.destination = addressDTO;
+    this.reOrganizeRouterUrlParameters();
+    this.popupsLayer.clearLayers();
+    this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
+    this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
   }
 
   stopTheRoute() {
