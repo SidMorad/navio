@@ -34,16 +34,16 @@ export class MyApp implements OnInit {
       statusBar.styleDefault();
       splashScreen.hide();
       settings.load().then(() => {
-        settings.getValue(Settings.PREFER_LANGUAGE).then(val => {
-          this.translateService.onLangChange.subscribe( data => {
-            if (data.lang !== this.platform.lang()) {
-              this.platform.setLang(data.lang, true);
-              this.platform.setDir((data.lang === 'fa') ? 'rtl': 'ltr', true);
-            }
-          });
-          translateService.setDefaultLang(val);
-          translateService.use(val);
+        console.log("Application settings loaded.");
+        this.translateService.onLangChange.subscribe( data => {
+          if (data.lang !== this.platform.lang()) {
+            this.platform.setLang(data.lang, true);
+            this.platform.setDir((data.lang === 'fa') ? 'rtl': 'ltr', true);
+          }
         });
+        translateService.setDefaultLang(settings.allSettings[Settings.PREFER_LANGUAGE]);
+        translateService.use(settings.allSettings[Settings.PREFER_LANGUAGE]);
+        console.log("Translate service is set with prefer language: ", settings.allSettings[Settings.PREFER_LANGUAGE]);
       });
       favorites.load();
 

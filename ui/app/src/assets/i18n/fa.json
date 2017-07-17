@@ -62,6 +62,10 @@
   "DESTINATION": "مقصد",
   "STOP": "توقف",
 
+  "ENABLE_LOCATION_ALERT_TITLE": "سرویس موقعیت مکانی مورد نیاز است",
+  "ENABLE_LOCATION_ALERT_MESSAGE": "برای استفاده از اپلیکیشن ما سرویس موقعیت مکانی باید فعال باشد",
+  "SWITCH_ON": "روشن کن",
+
   "NEW UPDATE IS AVAILABLE": "نسخه بروزتری در دسترس هست!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "برنامه شما بروزرسانی شد!",
 

@@ -6,6 +6,14 @@ Home page styles
   padding-right: 0px;
 }
 
+.img-fluid {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% -10vh;
+  background-color: #f2f2f2;
+}
+
 /*!
  * Start Bootstrap - New Age v3.3.7 (http://startbootstrap.com/template-overviews/new-age)
  * Copyright 2013-2016 Start Bootstrap

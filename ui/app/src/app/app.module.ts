@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { CloudModule } from '@ionic/cloud-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic';
 import { IonicStorageModule, Storage } from '@ionic/storage';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { Http } from '@angular/http';
@@ -60,6 +61,7 @@ export function providers() {
     StatusBar,
     SplashScreen,
     Geolocation,
+    Diagnostic,
     GeocodingService,
     TrackingService,
     MapService,

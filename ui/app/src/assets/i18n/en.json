@@ -62,6 +62,10 @@
   "DESTINATION": "Destination",
   "STOP": "Stop",
 
+  "ENABLE_LOCATION_ALERT_TITLE": "Location service needed",
+  "ENABLE_LOCATION_ALERT_MESSAGE": "For using this app your location service must be enabled",
+  "SWITCH_ON": "Switch on",
+
   "NEW UPDATE IS AVAILABLE": "New update is available!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "Your app updated to the latest version!",
 
