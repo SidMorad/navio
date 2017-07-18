@@ -6,6 +6,7 @@ import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
 import 'leaflet-control-geocoder';
 import * as moment from 'moment';
+import 'moment-duration-format';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
