@@ -39,7 +39,7 @@ export class MapService {
   destination: AddressDTO;
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
-              private appRef: ApplicationRef,
+              private applicationRef: ApplicationRef,
               private geocodingService: GeocodingService, private settings: Settings) {
     this.initCurrentZoom();
   }
@@ -105,15 +105,36 @@ export class MapService {
       }
     });
 
+    let me = this;
     this.speedCameraLayer = new L.OverPassLayer({
        endPoint: OVERPASS_API_BASE_URL,
-       query: 'node({{bbox}})[highway=speed_camera];out qt;',
+       query: '(node({{bbox}})[highway=speed_camera];node({{bbox}})[highway=traffic_signals];node({{bbox}})[amenity=fuel];);(._;>;);out qt;',
        minZoom: 15,
-       timeout: 30 * 1000, // Milliseconds
+       timeout: 60 * 1000, // Milliseconds
        retryOnTimeout: false,
        minZoomIndicatorEnabled: false,
-       markerIcon: this.speedCameraIcon,
        debug: false,
+       onSuccess: function(data) {
+         for (let i=0; i < data.elements.length; i++) {
+           let pos, popupContent, popup, marker,
+           e = data.elements[i];
+           if (e.id in this._ids) continue;
+           this._ids[e.id] = true;
+
+           pos = new L.LatLng(e.lat, e.lon);
+           popupContent = this._getPoiPopupHTML(e.tags, e.id);
+           popup = L.popup().setContent(popupContent);
+           if (e.tags['highway'] === 'traffic_signals') {
+             this._markers.addLayer(L.marker(pos, { icon: me.trafficLightsIcon}).bindPopup(popup));
+           }
+           else if (e.tags['amenity'] === 'fuel') {
+             this._markers.addLayer(L.marker(pos, { icon: me.amenityFuelIcon})).bindPopup(popup)
+           }
+           else {
+             this._markers.addLayer(L.marker(pos, { icon: me.speedCameraIcon}).bindPopup(popup));
+           }
+         }
+       }
     });
 
     this.currentLocationLayer.addTo(this.map);
@@ -272,9 +293,9 @@ export class MapService {
       this.popupsLayer.clearLayers();
     });
 
-    this.appRef.attachView(this.popupRef.hostView);
+    this.applicationRef.attachView(this.popupRef.hostView);
     this.popupRef.onDestroy(() => {
-      this.appRef.detachView(this.popupRef.hostView);
+      this.applicationRef.detachView(this.popupRef.hostView);
     });
 
     var popup = marker.bindPopup(this.popupRef.location.nativeElement, {closeButton: false, maxWidth: 500, minWidth: 250});
@@ -371,6 +392,15 @@ export class MapService {
   onlinUserIcon = new this.LeafIcon({
     iconUrl: 'assets/img/car.png',
     iconSize: [41, 25]
+  });
+
+  trafficLightsIcon = new this.LeafIcon({
+    iconUrl: 'assets/img/traffic-lights.png',
+    iconSize: [15, 41]
+  });
+
+  amenityFuelIcon = new this.LeafIcon({
+    iconUrl: 'assets/img/amenity-fuel.png'
   });
 
   tehranMainTrafficZoneRectangle = L.rectangle(

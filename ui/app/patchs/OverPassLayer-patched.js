@@ -273,7 +273,7 @@ var OverPassLayer = L.FeatureGroup.extend({
         /**
          * START Patch
         */
-        coordinates = [sw.lat.toFixed(3), sw.lng.toFixed(3), ne.lat.toFixed(3), ne.lng.toFixed(3)].join(',');
+        coordinates = [sw.lat.toFixed(4), sw.lng.toFixed(4), ne.lat.toFixed(4), ne.lng.toFixed(4)].join(',');
         console.log("OverPass query is using these coordinates: ", coordinates);
         /**
          * END Patch

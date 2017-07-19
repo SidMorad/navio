@@ -85,7 +85,7 @@ export function httpLoaderFactory(http: Http) {
     BrowserModule,
     SharedModule,
     IonicModule.forRoot(MyApp, {
-      preloadModules: true
+      preloadModules: false
     }),
     CloudModule.forRoot({
       'core': {
