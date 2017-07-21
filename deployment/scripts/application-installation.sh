@@ -5,10 +5,13 @@ user_home="/home/ubuntu"
 # Create default directories
 mkdir /home/www
 mkdir "${user_home}/osm"
-mkdir "${user_home}/src"
 ls /tmp
 cp /tmp/import.osm.pbf "${user_home}/osm/"
-tar -xzf /tmp/application.tar.gz -C "${user_home}/src"
+
+if [ ! -d "${user_home}/src" ]; then
+    mkdir "${user_home}/src"
+    tar -xzf /tmp/application.tar.gz -C "${user_home}/src"
+fi
 
 cd "${user_home}/src/backend/docker/"
 ./init-production-first-time.sh

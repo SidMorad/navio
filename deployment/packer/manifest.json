@@ -55,7 +55,20 @@
       ],
       "artifact_id": "VM",
       "packer_run_uuid": "8fa3e64a-e557-8e44-adc1-6ac65b29120d"
+    },
+    {
+      "name": "virtualbox-iso",
+      "builder_type": "virtualbox-iso",
+      "build_time": 1500627183,
+      "files": [
+        {
+          "name": "Ubuntu_64-1604-virtualbox-iso-2017-07-21_07-36-47.ova",
+          "size": 9480624640
+        }
+      ],
+      "artifact_id": "VM",
+      "packer_run_uuid": "954eddce-a24c-b359-c80b-a9fe36efdf99"
     }
   ],
-  "last_run_uuid": "8fa3e64a-e557-8e44-adc1-6ac65b29120d"
+  "last_run_uuid": "954eddce-a24c-b359-c80b-a9fe36efdf99"
 }

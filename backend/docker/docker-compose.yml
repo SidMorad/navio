@@ -7,7 +7,6 @@ services:
     extends:
       file: ../nginx-http/docker-compose.yml
       service: nginx
-    restart: unless-stopped
   #=============================================================================
   # Graphhopper (route engine)
   #=============================================================================
@@ -16,7 +15,6 @@ services:
     extends:
       file: ../graphhopper/docker-compose.yml
       service: graphhopper
-    restart: unless-stopped
   #=============================================================================
   # OpenTileServer (tile server)
   #=============================================================================
@@ -25,7 +23,6 @@ services:
     extends:
       file: ../opentileserver/docker-compose.yml
       service: opentileserver
-    restart: unless-stopped
   #=============================================================================
   # JHipster registry
   #=============================================================================
@@ -37,7 +34,6 @@ services:
     environment:
       - JAVA_OPTS=-Xmx768m -Xms256m
       - _JAVA_OPTIONS=-Xmx768m -Xms256m
-    restart: unless-stopped
   #=============================================================================
   # JHipster console
   #=============================================================================
@@ -46,25 +42,21 @@ services:
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-elasticsearch
-    restart: unless-stopped
   jhipster-logstash:
     container_name: rahpey-console-logstash
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-logstash
-    restart: unless-stopped
   jhipster-console:
     container_name: rahpey-console
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-console
-    restart: unless-stopped
   jhipster-zipkin:
     container_name: rahpey-console-zipkin
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-zipkin
-    restart: unless-stopped
   #=============================================================================
   # UAA server
   #============================================================================
@@ -83,7 +75,6 @@ services:
     depends_on:
       - rahpey-postgres-uaa
       - jhipster-registry
-    restart: unless-stopped
   rahpey-postgres-uaa:
     image: postgres:9.6.2
     container_name: rahpey-postgres-uaa
@@ -92,7 +83,6 @@ services:
     environment:
       - POSTGRES_USER=uaa
       - POSTGRES_PASSWORD=
-    restart: unless-stopped
   #=============================================================================
   # Route service
   #=============================================================================
@@ -113,7 +103,6 @@ services:
       - jhipster-registry
       - rahpey-uaa
       - graphhopper
-    restart: unless-stopped
   rahpey-postgres-route:
     image: postgres:9.6.2
     container_name: rahpey-postgres-route
@@ -122,7 +111,6 @@ services:
     environment:
       - POSTGRES_USER=route
       - POSTGRES_PASSWORD=
-    restart: unless-stopped
   #=============================================================================
   # Traffic service
   #=============================================================================
@@ -142,7 +130,6 @@ services:
       - rahpey-postgres-traffic
       - jhipster-registry
       - rahpey-uaa
-    restart: unless-stopped
   rahpey-postgres-traffic:
     image: postgres:9.6.2
     container_name: rahpey-postgres-traffic
@@ -151,7 +138,6 @@ services:
     environment:
       - POSTGRES_USER=traffic
       - POSTGRES_PASSWORD=
-    restart: unless-stopped
   #=============================================================================
   # Gateway
   #=============================================================================
@@ -173,7 +159,6 @@ services:
       - rahpey-postgres-gateway
       - jhipster-registry
       - rahpey-uaa
-    restart: unless-stopped
   rahpey-postgres-gateway:
     image: postgres:9.6.2
     container_name: rahpey-postgres-gateway
@@ -182,4 +167,3 @@ services:
     environment:
       - POSTGRES_USER=gateway
       - POSTGRES_PASSWORD=
-    restart: unless-stopped
