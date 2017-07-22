@@ -26,3 +26,6 @@ Note 2: For preventing mistakes, `recreate-immutable-docker-containers.sh` can b
 
 ### Execute a command in a container
 `docker exec -it $(docker ps -aqf "name=nginx") sh`
+
+### Removes unused docker images, which will free disk space & speed up docker
+`docker rmi $(docker images --quiet --filter "dangling=true")`

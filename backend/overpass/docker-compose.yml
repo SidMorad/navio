@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  overpass:
+    build: .
+    container_name: rahpey-overpass-standalone
+    ports:
+      - 8982:80
+    restart: unless-stopped
+    volumes:
+      - ./planet.osm.bz2:/usr/src/app/planet.osm.bz2
+
+networks:
+  default:
+    external:
+      name: docker_default
