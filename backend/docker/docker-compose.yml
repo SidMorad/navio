@@ -4,7 +4,6 @@ services:
   # Nginx
   #=============================================================================
   nginx:
-    container_name: rahpey-nginx
     extends:
       file: ../nginx/docker-compose.yml
       service: nginx
