@@ -11,7 +11,7 @@ import 'moment-duration-format';
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
 import { GeocodingService } from '.';
-import { Settings, GeoUtil } from '../providers';
+import { Settings, GeoUtil, OverpassUtil } from '../providers';
 import { TehranMainTrafficSpecification,
          TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
 import { AddressDTO, LatLng, UserLocationDTO } from '../domain/model';
@@ -28,7 +28,7 @@ export class MapService {
   highlightLayer: any = new L.LayerGroup([]);
   overpassLayer: any = new L.LayerGroup([]);
   popupsLayer: any = new L.LayerGroup([]);
-  speedCameraLayer: any;
+  overpassQuery: any = new L.LayerGroup([]);
   currentZoom: number;
   popupRef: ComponentRef<AddressPopup>;
   isCenterToCurrentLocation: boolean;
@@ -39,7 +39,7 @@ export class MapService {
   destination: AddressDTO;
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
-              private applicationRef: ApplicationRef,
+              private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
               private geocodingService: GeocodingService, private settings: Settings) {
     this.initCurrentZoom();
   }
@@ -105,36 +105,13 @@ export class MapService {
       }
     });
 
-    let me = this;
-    this.speedCameraLayer = new L.OverPassLayer({
-       endPoint: OVERPASS_API_BASE_URL,
-       query: '(node({{bbox}})[highway=speed_camera];node({{bbox}})[highway=traffic_signals];node({{bbox}})[amenity=fuel];);(._;>;);out qt;',
-       minZoom: 15,
-       timeout: 60 * 1000, // Milliseconds
-       retryOnTimeout: false,
-       minZoomIndicatorEnabled: false,
-       debug: false,
-       onSuccess: function(data) {
-         for (let i=0; i < data.elements.length; i++) {
-           let pos, popupContent, popup, marker,
-           e = data.elements[i];
-           if (e.id in this._ids) continue;
-           this._ids[e.id] = true;
-
-           pos = new L.LatLng(e.lat, e.lon);
-           popupContent = this._getPoiPopupHTML(e.tags, e.id);
-           popup = L.popup().setContent(popupContent);
-           if (e.tags['highway'] === 'traffic_signals') {
-             this._markers.addLayer(L.marker(pos, { icon: me.trafficLightsIcon}).bindPopup(popup));
-           }
-           else if (e.tags['amenity'] === 'fuel') {
-             this._markers.addLayer(L.marker(pos, { icon: me.amenityFuelIcon})).bindPopup(popup)
-           }
-           else {
-             this._markers.addLayer(L.marker(pos, { icon: me.speedCameraIcon}).bindPopup(popup));
-           }
-         }
-       }
+    this.initalizeOverpassQuery();
+    this.overpassUtil.onOverpassSettingsChangeEvent.subscribe(() => {
+      this.initalizeOverpassQuery();
+      this.overpassLayer.clearLayers();
+      if (this.currentZoom > 14) {
+        this.overpassLayer.addLayer(this.overpassQuery);
+      }
     });
 
     this.currentLocationLayer.addTo(this.map);
@@ -158,7 +135,7 @@ export class MapService {
         this.settings.setValue(Settings.LAST_ZOOM_LEVEL_KEY, this.currentZoom);
         if (this.currentZoom > 14) {
           if (this.overpassLayer.getLayers().length === 0) {
-            this.overpassLayer.addLayer(this.speedCameraLayer);
+            this.overpassLayer.addLayer(this.overpassQuery);
           }
         } else {
           this.overpassLayer.clearLayers();
@@ -367,6 +344,44 @@ export class MapService {
     }
   }
 
+  initalizeOverpassQuery() {
+    let me = this;
+    if (this.overpassUtil.isNecessary()) {
+      this.overpassQuery = new L.OverPassLayer({
+         endPoint: OVERPASS_API_BASE_URL,
+         query: this.overpassUtil.resolveQuery(),
+         minZoom: 15,
+         timeout: 60 * 1000, // Milliseconds
+         retryOnTimeout: false,
+         minZoomIndicatorEnabled: false,
+         debug: false,
+         onSuccess: function(data) {
+           for (let i=0; i < data.elements.length; i++) {
+             let pos, popupContent, popup, marker,
+             e = data.elements[i];
+             if (e.id in this._ids) continue;
+             this._ids[e.id] = true;
+
+             pos = new L.LatLng(e.lat, e.lon);
+             popupContent = this._getPoiPopupHTML(e.tags, e.id);
+             popup = L.popup().setContent(popupContent);
+             if (e.tags['highway'] === 'traffic_signals') {
+               this._markers.addLayer(L.marker(pos, { icon: me.trafficLightsIcon}).bindPopup(popup));
+             }
+             else if (e.tags['amenity'] === 'fuel') {
+               this._markers.addLayer(L.marker(pos, { icon: me.amenityFuelIcon})).bindPopup(popup)
+             }
+             else {
+               this._markers.addLayer(L.marker(pos, { icon: me.speedCameraIcon}).bindPopup(popup));
+             }
+           }
+         }
+      });
+    } else {
+      this.overpassQuery = new L.LayerGroup([]);
+    }
+  }
+
   LeafIcon = L.Icon.extend({
     options: {
       shadowUrl: 'assets/img/marker-shadow.png',
@@ -400,7 +415,8 @@ export class MapService {
   });
 
   amenityFuelIcon = new this.LeafIcon({
-    iconUrl: 'assets/img/amenity-fuel.png'
+    iconUrl: 'assets/img/amenity-fuel.png',
+    iconSize: [30, 41]
   });
 
   tehranMainTrafficZoneRectangle = L.rectangle(

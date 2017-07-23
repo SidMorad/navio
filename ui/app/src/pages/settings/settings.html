@@ -37,6 +37,9 @@
       <button ion-item [navPush]="subSettings" [navParams]="tehranProfile" *ngIf="options.city === 'THR'">
         {{ 'TEHRAN_SETTINGS_TITLE' | translate}}
       </button>
+      <button ion-item [navPush]="subSettings" [navParams]="mapSettings">
+        {{ 'MAP_SETTINGS_TITLE' | translate}}
+      </button>
 <!--  <ion-item>
         <ion-label>{{ 'GO_INVISIBLE' | translate }}</ion-label>
         <ion-toggle formControlName="userGoInvisible"></ion-toggle>
@@ -62,6 +65,20 @@
           <ion-option value="even">{{ 'EVEN' | translate }}</ion-option>
           <ion-option value="odd">{{ 'ODD' | translate }}</ion-option>
         </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-list *ngIf="page === 'mapSettings'">
+      <ion-item text-wrap>
+        <ion-label>{{ 'MAP_SHOW_SPEED_CAMERA' | translate }}</ion-label>
+        <ion-toggle formControlName="overpassShowSpeedCamera"></ion-toggle>
+      </ion-item>
+      <ion-item text-wrap>
+        <ion-label>{{ 'MAP_SHOW_FUEL_STATION' | translate }}</ion-label>
+        <ion-toggle formControlName="overpassShowFuelStation"></ion-toggle>
+      </ion-item>
+      <ion-item text-wrap>
+        <ion-label>{{ 'MAP_SHOW_TRAFFIC_LIGHT' | translate}}</ion-label>
+        <ion-toggle formControlName="overpassShowTrafficLight"></ion-toggle>
       </ion-item>
     </ion-list>
   </form>

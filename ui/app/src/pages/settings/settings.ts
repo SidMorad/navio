@@ -27,6 +27,11 @@ export class SettingsPage implements OnInit {
     pageTitleKey: 'TEHRAN_SETTINGS_TITLE'
   }
 
+  mapSettings = {
+    page: 'mapSettings',
+    pageTitleKey: 'MAP_SETTINGS_TITLE'
+  }
+
   subSettings: any = SettingsPage;
 
   countries: string[];
@@ -61,6 +66,13 @@ export class SettingsPage implements OnInit {
           highlightTehranEvenOddTrafficZone: [this.options.highlightTehranEvenOddTrafficZone],
           hasTehranMainTrafficCertificate: [this.options.hasTehranMainTrafficCertificate],
           carPlateNumberEvenOrOdd: [this.options.carPlateNumberEvenOrOdd]
+        };
+        break;
+      case 'mapSettings':
+        group = {
+          overpassShowSpeedCamera: [this.options.overpassShowSpeedCamera],
+          overpassShowFuelStation: [this.options.overpassShowFuelStation],
+          overpassShowTrafficLight: [this.options.overpassShowTrafficLight]
         };
         break;
     }

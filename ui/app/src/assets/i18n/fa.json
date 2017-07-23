@@ -8,6 +8,7 @@
 
   "SETTINGS_TITLE": "تنظیمات",
   "TEHRAN_SETTINGS_TITLE": "تنظیمات برای تهران",
+  "MAP_SETTINGS_TITLE": "تنظیمات برای نقشه",
   "HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE": "طرح ترافیک اصلی تهران را در نقشه مشخص کن",
   "HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE": "طرح ترافیک زوج و فرد تهران را در نقشه مشخص کن",
   "HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE": "من مجوز طرح ترافیک اصلی تهران را دارم",
@@ -15,6 +16,9 @@
   "EVEN": "زوج",
   "ODD": "فرد",
   "GO_INVISIBLE": "نامرئی شو",
+  "MAP_SHOW_SPEED_CAMERA": "نمایش دوربین محدودیت سرعت در نقشه",
+  "MAP_SHOW_FUEL_STATION": "نمایش جایگاه پمپ بنزین در نقشه",
+  "MAP_SHOW_TRAFFIC_LIGHT": "نمایش چراغ های قرمز در نقشه",
 
   "LOGIN": "ورود",
   "PAGE": "صفحه",
