@@ -15,7 +15,7 @@ import { Principal } from '../shared';
   selector: 'app-page',
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
 
   rootPage:any = HomePage;
   items: AddressDTO[];
@@ -30,7 +30,7 @@ export class MyApp {
               private splashScreen: SplashScreen) {
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

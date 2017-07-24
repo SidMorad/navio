@@ -10,26 +10,26 @@ export class OverpassUtil implements OnInit {
   onOverpassSettingsChangeEvent = new EventEmitter();
 
   constructor(private settings: Settings) {
-    settings.onSettingsChangeEvent.subscribe(() => {
-      if (this.overpassShowSpeedCamera != settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA]) {
-        this.overpassShowSpeedCamera = settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA];
-        this.onOverpassSettingsChangeEvent.emit();
-      }
-      if (this.overpassShowFuelStation != settings.allSettings[Settings.OVERPASS_SHOW_FUEL_STATION]) {
-        this.overpassShowFuelStation = settings.allSettings[Settings.OVERPASS_SHOW_FUEL_STATION];
-        this.onOverpassSettingsChangeEvent.emit();
-      }
-      if (this.overpassShowTrafficLight != settings.allSettings[Settings.OVERPASS_SHOW_TRAFFIC_LIGHT]) {
-        this.overpassShowTrafficLight = settings.allSettings[Settings.OVERPASS_SHOW_TRAFFIC_LIGHT];
-        this.onOverpassSettingsChangeEvent.emit();
-      }
-    });
   }
 
   ngOnInit() {
     this.overpassShowSpeedCamera = this.settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA];
     this.overpassShowFuelStation = this.settings.allSettings[Settings.OVERPASS_SHOW_FUEL_STATION];
     this.overpassShowTrafficLight = this.settings.allSettings[Settings.OVERPASS_SHOW_TRAFFIC_LIGHT];
+    this.settings.onSettingsChangeEvent.subscribe(() => {
+      if (this.overpassShowSpeedCamera != this.settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA]) {
+        this.overpassShowSpeedCamera = this.settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA];
+        this.onOverpassSettingsChangeEvent.emit();
+      }
+      if (this.overpassShowFuelStation != this.settings.allSettings[Settings.OVERPASS_SHOW_FUEL_STATION]) {
+        this.overpassShowFuelStation = this.settings.allSettings[Settings.OVERPASS_SHOW_FUEL_STATION];
+        this.onOverpassSettingsChangeEvent.emit();
+      }
+      if (this.overpassShowTrafficLight != this.settings.allSettings[Settings.OVERPASS_SHOW_TRAFFIC_LIGHT]) {
+        this.overpassShowTrafficLight = this.settings.allSettings[Settings.OVERPASS_SHOW_TRAFFIC_LIGHT];
+        this.onOverpassSettingsChangeEvent.emit();
+      }
+    });
   }
 
   /**
