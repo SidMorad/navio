@@ -15,25 +15,28 @@ import { Principal } from '../shared';
   selector: 'app-page',
   templateUrl: 'app.html'
 })
-export class MyApp implements OnInit {
+export class MyApp {
 
   rootPage:any = HomePage;
   items: AddressDTO[];
   user: any = {};
   @ViewChild('content') nav: NavController;
 
-  constructor(private platform: Platform, statusBar: StatusBar,
-              splashScreen: SplashScreen, deploy: Deploy, settings: Settings,
+  constructor(private platform: Platform, private statusBar: StatusBar,
+              private favorites: Favorites, private deploy: Deploy, private settings: Settings,
               private geocodingService: GeocodingService, private modalCtrl: ModalController,
               private mapService: MapService, private toastCtrl: ToastController,
               private translateService: TranslateService, private principal: Principal,
-              favorites: Favorites) {
-    platform.ready().then(() => {
+              private splashScreen: SplashScreen) {
+  }
+
+  ionViewDidLoad() {
+    this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
-      settings.load().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+      this.settings.load().then(() => {
         console.log("Application settings loaded.");
         this.translateService.onLangChange.subscribe( data => {
           if (data.lang !== this.platform.lang()) {
@@ -41,47 +44,45 @@ export class MyApp implements OnInit {
             this.platform.setDir((data.lang === 'fa') ? 'rtl': 'ltr', true);
           }
         });
-        translateService.setDefaultLang(settings.allSettings[Settings.PREFER_LANGUAGE]);
-        translateService.use(settings.allSettings[Settings.PREFER_LANGUAGE]);
-        console.log("Translate service is set with prefer language: ", settings.allSettings[Settings.PREFER_LANGUAGE]);
-      });
-      favorites.load();
+        this.translateService.setDefaultLang(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+        this.translateService.use(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+        console.log("Translate service is set with prefer language: ", this.settings.allSettings[Settings.PREFER_LANGUAGE]);
 
-      deploy.channel = 'dev'; // TODO Remove this line before production release
-      deploy.check().then((hasUpdate: boolean) => {
-        if (hasUpdate) {
-          this.translateService.get('NEW UPDATE IS AVAILABLE').subscribe((trans) => {
-            this.toastCtrl.create({
-              message: trans,
-              duration: 3000,
-              position: 'top'
-            }).present;
-          });
-
-          setTimeout(() => {
-            deploy.download().then(() => {
-              deploy.extract().then(() => {
-                this.translateService.get('YOUR APP UPDATED TO THE LATEST VERSION').subscribe((translated) => {
-                  this.toastCtrl.create({
-                    message: 'Your app updated to the latest version!',
-                    duration: 3000
-                  }).present();
-                });
-
-                setTimeout(() => {
-                  deploy.load();
-                }, 3000);
-              })
+        this.deploy.channel = 'dev'; // TODO Comment this line before production release
+        this.deploy.check().then((hasUpdate: boolean) => {
+          if (hasUpdate) {
+            this.translateService.get('NEW UPDATE IS AVAILABLE').subscribe((translatedText) => {
+              this.toastCtrl.create({
+                message: translatedText,
+                duration: 3000
+              }).present();
             });
-          }, 3000);
 
-        }
+            let me = this;
+            setTimeout(() => {
+              me.deploy.download().then(() => {
+                me.deploy.extract().then(() => {
+                  me.translateService.get('YOUR APP UPDATED TO THE LATEST VERSION').subscribe((translatedText) => {
+                    me.toastCtrl.create({
+                      message: translatedText,
+                      duration: 3000
+                    }).present();
+                  });
+
+                  setTimeout(() => {
+                    me.deploy.load();
+                  }, 3000);
+                })
+              });
+            }, 3000);
+
+          }
+        });
+
+        this.favorites.load();
       });
-
     });
-  }
 
-  ngOnInit() {
     this.principal.identity(true).then(account => {
         this.user = account ? account : {};
     });

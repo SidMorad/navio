@@ -5,7 +5,7 @@ services:
   #=============================================================================
   nginx:
     extends:
-      file: ../nginx/docker-compose.yml
+      file: ../nginx-http/docker-compose.yml
       service: nginx
     restart: unless-stopped
   #=============================================================================

@@ -1,5 +1,5 @@
 import { Injectable, ComponentFactoryResolver, Injector,
-         ComponentRef, ApplicationRef, EventEmitter } from '@angular/core';
+         ComponentRef, ApplicationRef, EventEmitter, OnInit } from '@angular/core';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
@@ -41,6 +41,9 @@ export class MapService {
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
               private geocodingService: GeocodingService, private settings: Settings) {
+  }
+
+  ngOnInit() {
     this.initCurrentZoom();
   }
 
@@ -54,7 +57,7 @@ export class MapService {
     });
 
     L.tileLayer(TILE_API_BASE_URL + '/{z}/{x}/{y}.png', {
-      attribution: 'Rahpey | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution: 'Navio | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       attributionPrefix: '',
       maxZoom: 18,
       opacity: .7
@@ -193,8 +196,13 @@ export class MapService {
       if (this.currentZoom) {
         this.map.setView(this.currentLocation(), this.currentZoom);
         this.isCenterToCurrentLocation = true;
+        return true;
+      }
+      else {
+        this.initCurrentZoom();
       }
     }
+    return false;
   }
 
   reOrganizeRouterUrlParameters() {

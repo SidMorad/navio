@@ -31,7 +31,33 @@
 <body>
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
+  <ion-app>
+    <!-- Loading spinner for index page for the first time -->
+    <div style="text-align: center" *ngIf="false" class="first-load-container">
+      <img class="first-load-image" />
+      <div style="position: relative; top: 0px; z-index:3">
+        <div style="width: 80%; float: left;">
+          <br /><br /><br />
+          <progress id="bar" value="10" max="20" style="width: 100%"></progress>
+          <script type="text/javascript">
+            var counter = 10;
+            var element = document.getElementById('bar');
+            var interva = setInterval(function() {
+              console.log("Counter is ", counter);
+              counter++;
+              element.value = counter;
+              if (counter === 20) {
+                clearInterval(interva);
+              }
+            }, 1000);
+          </script>
+        </div>
+        <div style="width: 20%; float: left">
+          <div class="first-load-spinner"></div>
+        </div>
+      </div>
+    </div>
+  </ion-app>
 
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>

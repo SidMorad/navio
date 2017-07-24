@@ -94,6 +94,9 @@ export function httpLoaderFactory(http: Http) {
     CloudModule.forRoot({
       'core': {
         'app_id': 'a160dfe5'
+      },
+      'insights': {
+        'enabled': true
       }
     }),
     IonicStorageModule.forRoot({
@@ -101,7 +104,7 @@ export function httpLoaderFactory(http: Http) {
       driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
     }),
     Ng2Webstorage.forRoot({
-      prefix: 'rahpey'
+      prefix: 'navio'
     }),
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useFactory: httpLoaderFactory, deps: [Http] }

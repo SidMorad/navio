@@ -11,7 +11,6 @@ export class OverpassUtil implements OnInit {
 
   constructor(private settings: Settings) {
     settings.onSettingsChangeEvent.subscribe(() => {
-      console.log("OnSettinsChange", settings.allSettings[Settings.OVERPASS_SHOW_TRAFFIC_LIGHT], this.overpassShowTrafficLight);
       if (this.overpassShowSpeedCamera != settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA]) {
         this.overpassShowSpeedCamera = settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA];
         this.onOverpassSettingsChangeEvent.emit();

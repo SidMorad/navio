@@ -16,7 +16,7 @@ printf "done.\n\n"
 sleep 1
 
 printf "# Let's build our application (docker)images first.\n\n"
-./build-prod-all.sh
+#./build-prod-all.sh
 printf "done.\n\n"
 sleep 1
 
@@ -50,5 +50,7 @@ sleep 1
 
 printf "# Depends to timeouts in docker-compose.yml file and your hardware, everyting must be up and ready in 2 minutes or so. to check, use docker-compose logs -f or  see http://IP or host\n\n"
 sleep 1
+
+docker rmi $(docker images --quiet --filter "dangling=true")
 
 printf "\nRahpey production depolyment was successful! \ncelebrate it with a tea or coffee if you wish! :-)\n"
