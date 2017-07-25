@@ -9,4 +9,3 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - /home/www:/home/www
-    restart: unless-stopped

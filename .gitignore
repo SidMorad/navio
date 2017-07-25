@@ -5,9 +5,9 @@ deployment/packer/tmp
 deployment/packer/build
 
 # Terraform
-deployment/terraform/.terraform
-*.pub
-*.backup
+deployment/terraform/.terraform/
+deployment/terraform/*.pub
+deployment/terraform/*.backup
 
 # Yarn
 backend/**/yarn.lock

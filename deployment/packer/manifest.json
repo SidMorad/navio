@@ -1,0 +1,74 @@
+{
+  "builds": [
+    {
+      "name": "virtualbox-iso",
+      "builder_type": "virtualbox-iso",
+      "build_time": 1497865369,
+      "files": [
+        {
+          "name": "Ubuntu_64-1604-virtualbox-iso-2017-06-19_09-10-45-disk001.vmdk",
+          "size": 7406316032
+        },
+        {
+          "name": "Ubuntu_64-1604-virtualbox-iso-2017-06-19_09-10-45.ovf",
+          "size": 7772
+        }
+      ],
+      "artifact_id": "VM",
+      "packer_run_uuid": "48afedd7-ab21-2269-ba54-53c81c10aec4"
+    },
+    {
+      "name": "virtualbox-iso",
+      "builder_type": "virtualbox-iso",
+      "build_time": 1497872484,
+      "files": [
+        {
+          "name": "Ubuntu_64-1604-virtualbox-iso-2017-06-19_11-05-00.ova",
+          "size": 7895543296
+        }
+      ],
+      "artifact_id": "VM",
+      "packer_run_uuid": "6724ecab-4bc3-8dc9-6126-0a95af2d80c4"
+    },
+    {
+      "name": "virtualbox-iso",
+      "builder_type": "virtualbox-iso",
+      "build_time": 1497877749,
+      "files": [
+        {
+          "name": "Ubuntu_64-1604-virtualbox-iso-2017-06-19_12-03-44.ova",
+          "size": 8120193024
+        }
+      ],
+      "artifact_id": "VM",
+      "packer_run_uuid": "0ab6d035-f351-b254-fac5-4f36a3dc03f0"
+    },
+    {
+      "name": "virtualbox-iso",
+      "builder_type": "virtualbox-iso",
+      "build_time": 1499088898,
+      "files": [
+        {
+          "name": "Ubuntu_64-1604-virtualbox-iso-2017-07-03_12-25-34.ova",
+          "size": 8600327680
+        }
+      ],
+      "artifact_id": "VM",
+      "packer_run_uuid": "8fa3e64a-e557-8e44-adc1-6ac65b29120d"
+    },
+    {
+      "name": "virtualbox-iso",
+      "builder_type": "virtualbox-iso",
+      "build_time": 1500627183,
+      "files": [
+        {
+          "name": "Ubuntu_64-1604-virtualbox-iso-2017-07-21_07-36-47.ova",
+          "size": 9480624640
+        }
+      ],
+      "artifact_id": "VM",
+      "packer_run_uuid": "954eddce-a24c-b359-c80b-a9fe36efdf99"
+    }
+  ],
+  "last_run_uuid": "954eddce-a24c-b359-c80b-a9fe36efdf99"
+}

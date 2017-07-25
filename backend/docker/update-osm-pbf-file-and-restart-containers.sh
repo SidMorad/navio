@@ -14,15 +14,16 @@ opentileserver_cid=$(docker inspect --format="{{.Id}}" rahpey-opentileserver)
 
 if [ ! -d "${osm_dir}" ]; then
     mkdir "${osm_dir}"
-  else
-    rm "${osm_file}"
 fi
 
-wget -O "${osm_file}" http://download.geofabrik.de/asia/iran-latest.osm.pbf
+if [ ! -f "${osm_file}" ]; then
+    wget -O "${osm_file}" http://download.geofabrik.de/asia/iran-latest.osm.pbf
+fi
 
 echo "Graphhopper is updating... ${osm_file}"
-docker cp ../graphhopper/properties/config.properties "${graphhopper_cid}:/home/graphhopper/config.properties"
 docker-compose stop graphhopper
+docker cp ../graphhopper/properties/config.properties "${graphhopper_cid}:/home/graphhopper/config.properties"
+docker cp "${osm_file}" "${graphhopper_cid}:/data/import.osm.pbf"
 sudo rm -rf "${osm_cache_dir}"
 docker-compose start graphhopper
 echo "done!"
