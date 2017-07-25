@@ -46,7 +46,6 @@ export class SettingsPage {
     // Build an empty form for the template to render
     this.form = this.formBuilder.group({});
 
-
     this.loadCountriesAndCities();
     this.translateService.onLangChange.subscribe( data => {
       this.loadCountriesAndCities();

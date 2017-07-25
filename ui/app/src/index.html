@@ -31,21 +31,21 @@
 <body>
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app></ion-app>
-
-  <!-- Loading spinner for index page for the first time -->
-  <div id="loadbar" style="text-align: center" *ngIf="false" class="first-load-container">
-    <img class="first-load-image" />
-    <div style="position: relative; top: 0px; z-index:3">
-      <div style="width: 80%; float: left;">
-        <br /><br /><br />
-        <progress id="bar" value="20" max="30" style="width: 100%"></progress>
-      </div>
-      <div style="width: 20%; float: left">
-        <div class="first-load-spinner"></div>
+  <ion-app>
+    <!-- Loading spinner for index page for the first time -->
+    <div id="loadbar" style="text-align: center" *ngIf="false" class="first-load-container">
+      <img class="first-load-image" />
+      <div style="position: relative; top: 0px; z-index:3">
+        <div style="width: 80%; float: left;">
+          <br /><br /><br />
+          <progress id="bar" value="20" max="31" style="width: 100%"></progress>
+        </div>
+        <div style="width: 20%; float: left">
+          <div class="first-load-spinner"></div>
+        </div>
       </div>
     </div>
-  </div>
+  </ion-app>
 
   <script type="text/javascript">
   //As a worker normally take another JavaScript file to execute we convert the function in an URL: http://stackoverflow.com/a/16799132/2576706
@@ -63,13 +63,8 @@
   var bar = document.getElementById('bar');
   worker.addEventListener('message', function(e) {
     setTimeout(function() {
-      // console.log("Counter is ", e.data);
+      console.log("Progress counter is ", e.data);
       bar.value = e.data + 20;
-      if (10 === e.data) {
-        if (document.getElementById('loadbar')) {
-          document.getElementById('loadbar').style.display = 'none';
-        }
-      }
     }, e.data * e.data * 10);
   });
   worker.postMessage(10);

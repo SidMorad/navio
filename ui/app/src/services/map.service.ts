@@ -1,10 +1,12 @@
 import { Injectable, ComponentFactoryResolver, Injector,
          ComponentRef, ApplicationRef, EventEmitter, OnInit } from '@angular/core';
+import PouchDB from 'pouchdb';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
 import 'leaflet-control-geocoder';
+import 'leaflet.tilelayer.pouchdbcached';
 import * as moment from 'moment';
 import 'moment-duration-format';
 
@@ -56,12 +58,23 @@ export class MapService {
       attributionControl: false
     });
 
-    L.tileLayer(TILE_API_BASE_URL + '/{z}/{x}/{y}.png', {
+    let tileLayer = L.tileLayer(TILE_API_BASE_URL + '/{z}/{x}/{y}.png', {
       attribution: 'Navio | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       attributionPrefix: '',
       maxZoom: 18,
-      opacity: .7
+      opacity: .7,
+      useCache: true,
+      useOnlyCache: true
     }).addTo(this.map);
+
+    tileLayer.on({
+      tilecachehit: (e) => {
+        console.log("Cache HIT, ", e.url);
+      },
+      tilecachemiss: (e) => {
+        console.log("Cache MISS, ", e.url);
+      }
+    });
 
     this.map.addControl(L.control.attribution({
       position: 'topright',
