@@ -16,7 +16,7 @@ import { MyApp } from './app.component';
 import { SharedModule } from '../shared';
 
 import { GeocodingService, TrackingService, MapService, SignupService } from '../services';
-import { Settings, Favorites } from '../providers';
+import { Settings, Favorites, OverpassUtil } from '../providers';
 
 import { HomePage, AddressPopup, SettingsPage } from '../pages';
 
@@ -37,7 +37,10 @@ export function provideSettings(storage: Storage) {
     hasTehranMainTrafficCertificate: false,
     carPlateNumberEvenOrOdd: 'notset',
     lastZoomLevel: 18,
-    userGoInvisible: false
+    userGoInvisible: false,
+    overpassShowSpeedCamera: true,
+    overpassShowFuelStation: false,
+    overpassShowTrafficLight: false
   });
 }
 
@@ -67,6 +70,7 @@ export function providers() {
     MapService,
     SignupService,
     Favorites,
+    OverpassUtil,
 
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
@@ -90,6 +94,9 @@ export function httpLoaderFactory(http: Http) {
     CloudModule.forRoot({
       'core': {
         'app_id': 'a160dfe5'
+      },
+      'insights': {
+        'enabled': true
       }
     }),
     IonicStorageModule.forRoot({
@@ -97,7 +104,7 @@ export function httpLoaderFactory(http: Http) {
       driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
     }),
     Ng2Webstorage.forRoot({
-      prefix: 'rahpey'
+      prefix: 'navio'
     }),
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useFactory: httpLoaderFactory, deps: [Http] }

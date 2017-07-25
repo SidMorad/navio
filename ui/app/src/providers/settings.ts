@@ -16,6 +16,10 @@ export class Settings {
   public static readonly CAR_PLATE_NUMBER_EVEN_OR_ODD: string = 'carPlateNumberEvenOrOdd';
   public static readonly USER_GO_INVISIBLE: string = 'userGoInvisible';
 
+  public static readonly OVERPASS_SHOW_SPEED_CAMERA = 'overpassShowSpeedCamera';
+  public static readonly OVERPASS_SHOW_FUEL_STATION = 'overpassShowFuelStation';
+  public static readonly OVERPASS_SHOW_TRAFFIC_LIGHT = 'overpassShowTrafficLight';
+
   settings: any;
 
   _defaults: any;

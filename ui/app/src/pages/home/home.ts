@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
+import { Component, OnDestroy, isDevMode } from '@angular/core';
 import { Platform, MenuController, ModalController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
@@ -12,7 +12,7 @@ import { CarSpeedDTO , UserLocationDTO } from '../../domain/model';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit, OnDestroy {
+export class HomePage implements OnDestroy {
 
   watchPosition: any;
   ETA: string;
@@ -26,7 +26,7 @@ export class HomePage implements OnInit, OnDestroy {
               private alertCtrl: AlertController, private translateService: TranslateService) {
   }
 
-  ngOnInit() {
+  ionViewDidLoad() {
     this.settings.load().then(() => {
       this.checkIfLocationServiceIsEnabled();
       this.mapService.init();
@@ -82,8 +82,7 @@ export class HomePage implements OnInit, OnDestroy {
           { radius : 50}));
         this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
-        if (firstTime && this.mapService.map && !this.mapService.isCenterToCurrentLocation) {
-          this.mapService.centerToCurrentLocation();
+        if (firstTime && this.mapService.map && this.mapService.centerToCurrentLocation()) {
           firstTime = false;
         }
         if (this.mapService.shouldWeSendCarSpeed()) {
@@ -100,8 +99,7 @@ export class HomePage implements OnInit, OnDestroy {
               { radius : 50}));
             this.mapService.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
               { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
-            if (firstTime && this.mapService.map && !this.mapService.isCenterToCurrentLocation) {
-              this.mapService.centerToCurrentLocation();
+            if (firstTime && this.mapService.map && this.mapService.centerToCurrentLocation()) {
               firstTime = false;
             }
         }

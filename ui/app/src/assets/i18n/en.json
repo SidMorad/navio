@@ -8,6 +8,7 @@
 
   "SETTINGS_TITLE": "Settings",
   "TEHRAN_SETTINGS_TITLE": "Tehran's settings",
+  "MAP_SETTINGS_TITLE": "Map's settings",
   "HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE": "Hightlight Tehran Main Traffic Zone",
   "HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE": "Hightlight Tehran Even-Odd Traffic Zone",
   "HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE": "I have licence for crossing Tehran main traffic zone",
@@ -15,6 +16,9 @@
   "EVEN": "Even",
   "ODD": "Odd",
   "GO_INVISIBLE": "Go Invisible",
+  "MAP_SHOW_SPEED_CAMERA": "Show speed cameras on the map",
+  "MAP_SHOW_FUEL_STATION": "Show fuel stations on the map",
+  "MAP_SHOW_TRAFFIC_LIGHT": "Show traffic lights on the map",
 
   "LOGIN": "Login",
   "PAGE": "Page",
