@@ -16,7 +16,7 @@ printf "done.\n\n"
 sleep 1
 
 printf "# Let's build our application (docker)images first.\n\n"
-#./build-prod-all.sh
+./build-prod-all.sh
 printf "done.\n\n"
 sleep 1
 
@@ -43,14 +43,25 @@ printf "done.\n\n"
 sleep 1
 
 
-printf "# Let's update iran-latest.osm.pbf to the latest!"
+printf "# Let's update iran-latest.osm.pbf to the latest!\n\n"
 ./update-osm-pbf-file-and-restart-containers.sh
 printf "done.\n\n"
 sleep 1
 
-printf "# Depends to timeouts in docker-compose.yml file and your hardware, everyting must be up and ready in 2 minutes or so. to check, use docker-compose logs -f or  see http://IP or host\n\n"
+printf "# Let's remove dangling docker images to free up some space!\n\n"
+dangling_images=`docker images --quiet --filter "dangling=true"`
+printf "# Following images found: [${dangling_images}] \n\n"
+if [ "x${dangling_images}" = "x" ];
+then
+  echo "Nothing removed."
+else
+  docker rmi ${dangling_images}
+fi
+printf "done.\n\n"
 sleep 1
 
-docker rmi $(docker images --quiet --filter "dangling=true")
+printf "# Depends to timeouts in docker-compose.yml file and your hardware, everyting must be up and ready in 2 minutes or so. to check, use docker-compose logs -f or see http://IP or host\n\n"
+sleep 1
+
 
 printf "\nRahpey production depolyment was successful! \ncelebrate it with a tea or coffee if you wish! :-)\n"

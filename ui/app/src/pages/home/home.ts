@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, isDevMode } from '@angular/core';
+import { Component, OnDestroy, isDevMode } from '@angular/core';
 import { Platform, MenuController, ModalController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';

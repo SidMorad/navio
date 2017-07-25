@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, ViewController, ModalController, AlertController, ItemSliding } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 

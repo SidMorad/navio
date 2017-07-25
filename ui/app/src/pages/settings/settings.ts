@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { NavParams, ViewController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { Settings } from '../../providers';
   selector: 'page-settings',
   templateUrl: 'settings.html'
 })
-export class SettingsPage implements OnInit {
+export class SettingsPage {
 
   options: any;
   settingsReady = false;
@@ -42,7 +42,11 @@ export class SettingsPage implements OnInit {
               private translateService: TranslateService) {
   }
 
-  ngOnInit() {
+  ionViewDidLoad() {
+    // Build an empty form for the template to render
+    this.form = this.formBuilder.group({});
+
+
     this.loadCountriesAndCities();
     this.translateService.onLangChange.subscribe( data => {
       this.loadCountriesAndCities();
@@ -85,11 +89,6 @@ export class SettingsPage implements OnInit {
         this.translateService.use(this.settings.allSettings.preferLanguage);
       }
     });
-  }
-
-  ionViewDidLoad() {
-    // Build an empty form for the template to render
-    this.form = this.formBuilder.group({});
   }
 
   ionViewWillEnter() {
