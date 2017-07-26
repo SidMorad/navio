@@ -38,3 +38,13 @@ To destroy the launched instance:
 ```bash
 $ TF_VAR_private_key_path=$TF_PRIVATE_KEY_PATH terraform destroy
 ```
+
+## SSH
+
+To SSH to the launched instance:
+
+```bash
+$ ./private-key-to-public.sh $TF_PRIVATE_KEY_PATH
+$ ssh -i ./key.pub ubuntu@EC2_INSTANCE_IP
+```
+
