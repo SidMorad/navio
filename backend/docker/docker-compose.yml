@@ -7,6 +7,7 @@ services:
     extends:
       file: ../nginx-http/docker-compose.yml
       service: nginx
+    restart: unless-stopped
   #=============================================================================
   # Graphhopper (route engine)
   #=============================================================================
@@ -15,6 +16,7 @@ services:
     extends:
       file: ../graphhopper/docker-compose.yml
       service: graphhopper
+    restart: unless-stopped
   #=============================================================================
   # OpenTileServer (tile server)
   #=============================================================================
@@ -23,6 +25,7 @@ services:
     extends:
       file: ../opentileserver/docker-compose.yml
       service: opentileserver
+    restart: unless-stopped
   #=============================================================================
   # JHipster registry
   #=============================================================================
@@ -34,6 +37,7 @@ services:
     environment:
       - JAVA_OPTS=-Xmx768m -Xms256m
       - _JAVA_OPTIONS=-Xmx768m -Xms256m
+    restart: unless-stopped
   #=============================================================================
   # JHipster console
   #=============================================================================
@@ -42,21 +46,31 @@ services:
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-elasticsearch
+    restart: unless-stopped
   jhipster-logstash:
     container_name: rahpey-console-logstash
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-logstash
+    depends_on:
+      - jhipster-elasticsearch
+    restart: unless-stopped
   jhipster-console:
     container_name: rahpey-console
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-console
+    depends_on:
+      - jhipster-elasticsearch
+    restart: unless-stopped
   jhipster-zipkin:
     container_name: rahpey-console-zipkin
     extends:
       file: ../console/docker-compose.yml
       service: jhipster-zipkin
+    depends_on:
+      - jhipster-elasticsearch
+    restart: unless-stopped
   #=============================================================================
   # UAA server
   #============================================================================
@@ -70,11 +84,12 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://rahpey-postgres-uaa:5432/uaa
       - JHIPSTER_SLEEP=30 # gives time for the JHipster Registry to boot
       - JHIPSTER_REGISTRY_PASSWORD=admin
-#      - JAVA_OPTS=-Xmx768m -Xms256m
-#      - _JAVA_OPTIONS=-Xmx768m -Xms256m
+      - JAVA_OPTS=-Xmx1024m -Xms256m
+      - _JAVA_OPTIONS=-Xmx1024m -Xms256m
     depends_on:
       - rahpey-postgres-uaa
       - jhipster-registry
+    restart: unless-stopped
   rahpey-postgres-uaa:
     image: postgres:9.6.2
     container_name: rahpey-postgres-uaa
@@ -83,6 +98,7 @@ services:
     environment:
       - POSTGRES_USER=uaa
       - POSTGRES_PASSWORD=
+    restart: unless-stopped
   #=============================================================================
   # Route service
   #=============================================================================
@@ -94,15 +110,16 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       - SPRING_DATASOURCE_URL=jdbc:postgresql://rahpey-postgres-route:5432/route
-      - JHIPSTER_SLEEP=60 # gives time for UAA and the database to boot
+      - JHIPSTER_SLEEP=90 # gives time for UAA and the database to boot
       - JHIPSTER_REGISTRY_PASSWORD=admin
-#     - JAVA_OPTS=-Xmx2048m -Xms256m
-#     - _JAVA_OPTIONS=-Xmx2048m -Xms256m
+      - JAVA_OPTS=-Xmx1024m -Xms256m
+      - _JAVA_OPTIONS=-Xmx1024m -Xms256m
     depends_on:
       - rahpey-postgres-route
       - jhipster-registry
       - rahpey-uaa
       - graphhopper
+    restart: unless-stopped
   rahpey-postgres-route:
     image: postgres:9.6.2
     container_name: rahpey-postgres-route
@@ -111,6 +128,7 @@ services:
     environment:
       - POSTGRES_USER=route
       - POSTGRES_PASSWORD=
+    restart: unless-stopped
   #=============================================================================
   # Traffic service
   #=============================================================================
@@ -122,14 +140,15 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       - SPRING_DATASOURCE_URL=jdbc:postgresql://rahpey-postgres-traffic:5432/traffic
-      - JHIPSTER_SLEEP=60 # gives time for UAA and the database to boot
+      - JHIPSTER_SLEEP=90 # gives time for UAA and the database to boot
       - JHIPSTER_REGISTRY_PASSWORD=admin
-#     - JAVA_OPTS=-Xmx2048m -Xms256m
-#     - _JAVA_OPTIONS=-Xmx2048m -Xms256m
+      - JAVA_OPTS=-Xmx1024m -Xms256m
+      - _JAVA_OPTIONS=-Xmx1024m -Xms256m
     depends_on:
       - rahpey-postgres-traffic
       - jhipster-registry
       - rahpey-uaa
+    restart: unless-stopped
   rahpey-postgres-traffic:
     image: postgres:9.6.2
     container_name: rahpey-postgres-traffic
@@ -138,6 +157,7 @@ services:
     environment:
       - POSTGRES_USER=traffic
       - POSTGRES_PASSWORD=
+    restart: unless-stopped
   #=============================================================================
   # Gateway
   #=============================================================================
@@ -149,16 +169,17 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
       - SPRING_DATASOURCE_URL=jdbc:postgresql://rahpey-postgres-gateway:5432/gateway
-      - JHIPSTER_SLEEP=60 # gives time for uaa and the database to boot
+      - JHIPSTER_SLEEP=90 # gives time for uaa and the database to boot
       - JHIPSTER_REGISTRY_PASSWORD=admin
-#      - JAVA_OPTS=-Xmx1024m -Xms256m
-#      - _JAVA_OPTIONS=-Xmx1024m -Xms256m
+      - JAVA_OPTS=-Xmx1024m -Xms256m
+      - _JAVA_OPTIONS=-Xmx1024m -Xms256m
     ports:
       - 8080:8080
     depends_on:
       - rahpey-postgres-gateway
       - jhipster-registry
       - rahpey-uaa
+    restart: unless-stopped
   rahpey-postgres-gateway:
     image: postgres:9.6.2
     container_name: rahpey-postgres-gateway
@@ -167,3 +188,4 @@ services:
     environment:
       - POSTGRES_USER=gateway
       - POSTGRES_PASSWORD=
+    restart: unless-stopped

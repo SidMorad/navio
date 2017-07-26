@@ -452,7 +452,7 @@ sed -i 's/local all all.*/local all all trust/'  /etc/postgresql/${PG_VER}/main/
 
 #Restart services
 service postgresql restart
-service apache2 reload
+service apache2 restart
 service renderd restart
 
 echo <<EOF

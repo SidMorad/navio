@@ -26,6 +26,11 @@ docker-compose up -d
 printf "done.\n\n"
 sleep 1
 
+printf "# Let's stop jhipster-console services to speed up setup process. Note: For servers with rich memory this is not necessary!\n\n"
+./stop-jhipster-console.sh
+printf "done.\n\n"
+sleep 1
+
 printf "# Let's wait for(20 seconds) until opentileserver to come up.\n\n"
 sleep 20
 printf "done.\n\n"
@@ -53,14 +58,26 @@ dangling_images=`docker images --quiet --filter "dangling=true"`
 printf "# Following images found: [${dangling_images}] \n\n"
 if [ "x${dangling_images}" = "x" ];
 then
-  echo "Nothing removed."
+  echo "No docker image found with dangling status."
 else
   docker rmi ${dangling_images}
 fi
 printf "done.\n\n"
 sleep 1
 
-printf "# Depends to timeouts in docker-compose.yml file and your hardware, everyting must be up and ready in 2 minutes or so. to check, use docker-compose logs -f or see http://IP or host\n\n"
+printf "# Let's clean up build directories.\n\n"
+./clean-all.sh
+printf "done.\n\n"
+sleep 1
+
+printf "# Let's reload nginx instance to revalidate upstreams.\n\n"
+docker-compose stop nginx
+docker-compose start nginx
+printf "done.\n\n"
+sleep 1
+
+printf "# Everyting must be up and running by now! see end result at http://server-host-or-ip \n\n"
+printf "# If is not up!? then 'docker-compose logs --tail 10 -f SERVICE_NAME' is helpful for debugging. \n\n"
 sleep 1
 
 

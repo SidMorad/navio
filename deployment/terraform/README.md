@@ -45,6 +45,6 @@ To SSH to the launched instance:
 
 ```bash
 $ ./private-key-to-public.sh $TF_PRIVATE_KEY_PATH
-$ ssh -i ./key.pub ubuntu@EC2_INSTANCE_IP
+$ ssh -i $TF_PRIVATE_KEY_PATH ubuntu@EC2_INSTANCE_IP
 ```
 

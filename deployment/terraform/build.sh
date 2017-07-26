@@ -10,7 +10,8 @@ tar_archive="/tmp/rahpey.tar.gz"
 if [ -f "${tar_archive}" ]; then
     rm "${tar_archive}"
 fi
-tar -czf "${tar_archive}" --exclude ./deployment/packer .
+
+git ls-files . | xargs tar -czf ${tar_archive}
 
 cd ${tf_dir}
 if [ ! -d ".terraform/" ]; then
