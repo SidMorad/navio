@@ -12,8 +12,8 @@ import 'moment-duration-format';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
-import { GeocodingService } from '.';
-import { Settings, GeoUtil, OverpassUtil } from '../providers';
+import { GeocodingService } from '../services';
+import { Settings, GeoUtil, OverpassUtil } from './';
 import { TehranMainTrafficSpecification,
          TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
 import { AddressDTO, LatLng, UserLocationDTO } from '../domain/model';
@@ -21,7 +21,7 @@ import { AddressDTO, LatLng, UserLocationDTO } from '../domain/model';
 declare var L: any;
 
 @Injectable()
-export class MapService {
+export class Map {
   map: any;
   routeControl: any;
   currentLocationLayer: any = new L.LayerGroup([]);
@@ -63,8 +63,7 @@ export class MapService {
       attributionPrefix: '',
       maxZoom: 18,
       opacity: .7,
-      useCache: true,
-      useOnlyCache: true
+      useCache: true
     }).addTo(this.map);
 
     tileLayer.on({

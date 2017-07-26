@@ -3,8 +3,7 @@ import { IonicPage, NavParams, ViewController, AlertController, ActionSheetContr
 import { TranslateService } from '@ngx-translate/core';
 
 import { AddressDTO } from '../../domain/model/geocoding';
-import { MapService } from '../../services';
-import { Favorites } from '../../providers';
+import { Favorites, Map } from '../../providers';
 
 @IonicPage({
   priority: 'high'
@@ -18,7 +17,7 @@ export class AddressModal {
   address: AddressDTO;
 
   constructor(navParams: NavParams, private viewCtrl: ViewController,
-              private mapService: MapService, private favorites: Favorites,
+              private map: Map, private favorites: Favorites,
               private alertCtrl: AlertController, private translateService: TranslateService,
               private actionSheetCtrl: ActionSheetController) {
     this.address = navParams.get('address');
@@ -26,7 +25,7 @@ export class AddressModal {
 
   navigateToAddress() {
     this.dismiss();
-    this.mapService.navigateToAddress(this.address);
+    this.map.navigateToAddress(this.address);
   }
 
   bookmarkIt() {
@@ -92,7 +91,7 @@ export class AddressModal {
             text: translated['SET_AS_START_POINT'],
             handler: () => {
               this.dismiss();
-              this.mapService.setAsStartPoint(this.address);
+              this.map.setAsStartPoint(this.address);
             }
           },
           {

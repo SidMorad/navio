@@ -6,8 +6,8 @@ import { Deploy } from '@ionic/cloud-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { HomePage, SettingsPage } from '../pages';
-import { GeocodingService, MapService } from '../services';
-import { Settings, Favorites } from '../providers';
+import { GeocodingService } from '../services';
+import { Settings, Favorites, Map } from '../providers';
 import { AddressDTO } from '../domain/model/geocoding';
 import { Principal } from '../shared';
 
@@ -25,7 +25,7 @@ export class MyApp implements OnInit {
   constructor(private platform: Platform, private statusBar: StatusBar,
               private favorites: Favorites, private deploy: Deploy, private settings: Settings,
               private geocodingService: GeocodingService, private modalCtrl: ModalController,
-              private mapService: MapService, private toastCtrl: ToastController,
+              private map: Map, private toastCtrl: ToastController,
               private translateService: TranslateService, private principal: Principal,
               private splashScreen: SplashScreen) {
   }
@@ -101,7 +101,7 @@ export class MyApp implements OnInit {
   }
 
   geoSelected(item: AddressDTO) {
-    this.mapService.showDestination(item);
+    this.map.showDestination(item);
   }
 
   showSettingsModal() {

@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, ViewController, ModalController, AlertController, ItemSliding } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Favorites } from '../../providers';
-import { MapService } from '../../services';
+import { Favorites, Map } from '../../providers';
 import { AddressDTO } from '../../domain/model/geocoding';
 
 @IonicPage()
@@ -14,7 +13,7 @@ export class FavoritesPage {
 
   favs: AddressDTO[];
 
-  constructor(private favorites: Favorites, private mapService: MapService,
+  constructor(private favorites: Favorites, private map: Map,
               private viewCtrl: ViewController, private modalCtrl: ModalController,
               private translateService: TranslateService, private alertCtrl: AlertController) {
   }
@@ -30,7 +29,7 @@ export class FavoritesPage {
 
   showLocation(address: AddressDTO) {
     this.viewCtrl.dismiss();
-    this.mapService.navigateToAddress(address);
+    this.map.navigateToAddress(address);
   }
 
   deleteBookmark(address: AddressDTO) {

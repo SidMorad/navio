@@ -4,8 +4,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { TranslateService } from '@ngx-translate/core';
 
-import { MapService, TrackingService } from '../../services';
-import { Settings } from '../../providers';
+import { TrackingService } from '../../services';
+import { Settings, Map } from '../../providers';
 import { CarSpeedDTO , UserLocationDTO } from '../../domain/model';
 
 @Component({
@@ -21,7 +21,7 @@ export class HomePage implements OnDestroy {
 
   constructor(private platform: Platform, private geolocation: Geolocation,
               private settings: Settings, private trackingService: TrackingService,
-              private menuCtrl: MenuController, private mapService: MapService,
+              private menuCtrl: MenuController, private map: Map,
               private modalCtrl: ModalController, private diagnostic: Diagnostic,
               private alertCtrl: AlertController, private translateService: TranslateService) {
   }
@@ -29,7 +29,7 @@ export class HomePage implements OnDestroy {
   ionViewDidLoad() {
     this.settings.load().then(() => {
       this.checkIfLocationServiceIsEnabled();
-      this.mapService.init();
+      this.map.init();
     });
 
     let me = this;
@@ -39,11 +39,11 @@ export class HomePage implements OnDestroy {
       }
     });
 
-    this.mapService.onActiveRouteChangeEvent.subscribe(() => {
-      if (this.mapService.activeRoute) {
-        this.ETA = this.mapService.activeRoute.ETA;
-        this.distance = this.mapService.activeRoute.distance;
-        this.duration = this.mapService.activeRoute.duration;
+    this.map.onActiveRouteChangeEvent.subscribe(() => {
+      if (this.map.activeRoute) {
+        this.ETA = this.map.activeRoute.ETA;
+        this.distance = this.map.activeRoute.distance;
+        this.duration = this.map.activeRoute.duration;
       }
       else {
         this.ETA = "";
@@ -75,17 +75,17 @@ export class HomePage implements OnDestroy {
       }
     );
     this.watchPosition.subscribe((data) => {
-      console.log("watchPosition event: ", data, " currentZoom level: ", this.mapService.currentZoom);
+      console.log("watchPosition event: ", data, " currentZoom level: ", this.map.currentZoom);
       if (data.coords) {
-        this.mapService.currentLocationLayer.clearLayers();
-        this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+        this.map.currentLocationLayer.clearLayers();
+        this.map.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 50}));
-        this.mapService.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+        this.map.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
-        if (firstTime && this.mapService.map && this.mapService.centerToCurrentLocation()) {
+        if (firstTime && this.map.map && this.map.centerToCurrentLocation()) {
           firstTime = false;
         }
-        if (this.mapService.shouldWeSendCarSpeed()) {
+        if (this.map.shouldWeSendCarSpeed()) {
           // Send car speed
           this.trackingService.trackCarSpeed(CarSpeedDTO.toDTO(data.coords)).subscribe();
         }
@@ -95,11 +95,11 @@ export class HomePage implements OnDestroy {
       }
       else {
         if (isDevMode()) {  // Workaround for `ionic cordova run android -l` command that doesn't work on latest chrome browser anymore, therefore watchPosition doesn't work either.
-            this.mapService.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
+            this.map.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
               { radius : 50}));
-            this.mapService.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
+            this.map.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
               { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
-            if (firstTime && this.mapService.map && this.mapService.centerToCurrentLocation()) {
+            if (firstTime && this.map.map && this.map.centerToCurrentLocation()) {
               firstTime = false;
             }
         }
@@ -138,19 +138,19 @@ export class HomePage implements OnDestroy {
   }
 
   centerToCurrentLocation() {
-    this.mapService.centerToCurrentLocation();
+    this.map.centerToCurrentLocation();
   }
 
   isNotCenterToCurrentLocation() {
-    return !this.mapService.isCenterToCurrentLocation;
+    return !this.map.isCenterToCurrentLocation;
   }
 
   isInDrivingMode(): boolean {
-    return this.mapService.isInDrivingMode;
+    return this.map.isInDrivingMode;
   }
 
   openDestinationModal() {
-    this.modalCtrl.create('DestinationModal', { address: this.mapService.destination }).present();
+    this.modalCtrl.create('DestinationModal', { address: this.map.destination }).present();
   }
 
   ngOnDestroy() {

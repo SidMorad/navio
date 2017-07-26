@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 
 import { AddressDTO } from '../../domain/model/geocoding';
-import { MapService } from '../../services';
+import { Map } from '../../providers';
 
 @IonicPage({
   priority: 'high'
@@ -19,15 +19,15 @@ export class DestinationModal {
   distance: string;
 
   constructor(navParams: NavParams, private viewCtrl: ViewController,
-              private mapService: MapService) {
+              private map: Map) {
     this.address = navParams.get('address');
   }
 
   ionViewWillEnter() {
-    if (this.mapService.activeRoute) {
-      this.ETA = this.mapService.activeRoute.ETA;
-      this.distance = this.mapService.activeRoute.distance;
-      this.duration = this.mapService.activeRoute.duration;
+    if (this.map.activeRoute) {
+      this.ETA = this.map.activeRoute.ETA;
+      this.distance = this.map.activeRoute.distance;
+      this.duration = this.map.activeRoute.duration;
     }
     else {
       this.ETA = "";
@@ -38,12 +38,12 @@ export class DestinationModal {
 
   navigateToAddress() {
     this.dismiss();
-    this.mapService.navigateToAddress(this.address);
+    this.map.navigateToAddress(this.address);
   }
 
   stopTheRoute() {
     this.dismiss();
-    this.mapService.stopTheRoute();
+    this.map.stopTheRoute();
   }
 
   dismiss() {

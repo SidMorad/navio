@@ -15,8 +15,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { MyApp } from './app.component';
 import { SharedModule } from '../shared';
 
-import { GeocodingService, TrackingService, MapService, SignupService } from '../services';
-import { Settings, Favorites, OverpassUtil } from '../providers';
+import { GeocodingService, TrackingService, SignupService } from '../services';
+import { Settings, Favorites, OverpassUtil, Map } from '../providers';
 
 import { HomePage, AddressPopup, SettingsPage } from '../pages';
 
@@ -67,7 +67,7 @@ export function providers() {
     Diagnostic,
     GeocodingService,
     TrackingService,
-    MapService,
+    Map,
     SignupService,
     Favorites,
     OverpassUtil,
