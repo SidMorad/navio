@@ -12,8 +12,8 @@ import 'moment-duration-format';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
-import { GeocodingService } from '../services';
-import { Settings, GeoUtil, OverpassUtil } from './';
+import { GeocodingService } from '../services/geocoding.service';
+import { Settings, GeoUtil, OverpassUtil } from '../providers';
 import { TehranMainTrafficSpecification,
          TehranEvenOddTrafficSpecification } from '../domain/model/tehran';
 import { AddressDTO, LatLng, UserLocationDTO } from '../domain/model';
@@ -45,14 +45,11 @@ export class Map {
               private geocodingService: GeocodingService, private settings: Settings) {
   }
 
-  ngOnInit() {
-    this.initCurrentZoom();
-  }
-
   init() {
     if (this.map) {
       return;
     }
+    this.initCurrentZoom();
 
     this.map = L.map('map', {
       attributionControl: false
@@ -377,7 +374,7 @@ export class Map {
          debug: false,
          onSuccess: function(data) {
            for (let i=0; i < data.elements.length; i++) {
-             let pos, popupContent, popup, marker,
+             let pos, popup, popupContent,
              e = data.elements[i];
              if (e.id in this._ids) continue;
              this._ids[e.id] = true;

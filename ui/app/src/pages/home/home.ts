@@ -1,5 +1,5 @@
 import { Component, OnDestroy, isDevMode } from '@angular/core';
-import { Platform, MenuController, ModalController, AlertController } from 'ionic-angular';
+import { MenuController, ModalController, AlertController, IonicPage } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,6 +8,9 @@ import { TrackingService } from '../../services';
 import { Settings, Map } from '../../providers';
 import { CarSpeedDTO , UserLocationDTO } from '../../domain/model';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -19,7 +22,7 @@ export class HomePage implements OnDestroy {
   duration: string;
   distance: string;
 
-  constructor(private platform: Platform, private geolocation: Geolocation,
+  constructor(private geolocation: Geolocation,
               private settings: Settings, private trackingService: TrackingService,
               private menuCtrl: MenuController, private map: Map,
               private modalCtrl: ModalController, private diagnostic: Diagnostic,
@@ -86,8 +89,9 @@ export class HomePage implements OnDestroy {
           firstTime = false;
         }
         if (this.map.shouldWeSendCarSpeed()) {
-          // Send car speed
-          this.trackingService.trackCarSpeed(CarSpeedDTO.toDTO(data.coords)).subscribe();
+          if (data.coords.speed) {
+            this.trackingService.trackCarSpeed(CarSpeedDTO.toDTO(data.coords)).subscribe();
+          }
         }
         // Issue #24 Online users visiable on the map, is deactivated for now. refs: https://trello.com/c/bgPyzw51/51-display-online-users
         // For activating it again? uncomment following line:

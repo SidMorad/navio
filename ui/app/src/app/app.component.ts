@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Deploy } from '@ionic/cloud-angular';
 import { TranslateService } from '@ngx-translate/core';
 
-import { HomePage, SettingsPage } from '../pages';
+import { SettingsPage } from '../pages';
 import { GeocodingService } from '../services';
 import { Settings, Favorites, Map } from '../providers';
 import { AddressDTO } from '../domain/model/geocoding';
@@ -17,7 +17,7 @@ import { Principal } from '../shared';
 })
 export class MyApp implements OnInit {
 
-  rootPage:any = HomePage;
+  rootPage:any = 'HomePage';
   items: AddressDTO[];
   user: any = {};
   @ViewChild('content') nav: NavController;

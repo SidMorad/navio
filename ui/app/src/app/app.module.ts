@@ -18,7 +18,7 @@ import { SharedModule } from '../shared';
 import { GeocodingService, TrackingService, SignupService } from '../services';
 import { Settings, Favorites, OverpassUtil, Map } from '../providers';
 
-import { HomePage, AddressPopup, SettingsPage } from '../pages';
+import { AddressPopup, SettingsPage } from '../pages';
 
 
 export function provideSettings(storage: Storage) {
@@ -46,7 +46,6 @@ export function provideSettings(storage: Storage) {
 
 let pages = [
   MyApp,
-  HomePage,
   AddressPopup,
   SettingsPage
 ];
@@ -67,10 +66,10 @@ export function providers() {
     Diagnostic,
     GeocodingService,
     TrackingService,
-    Map,
     SignupService,
     Favorites,
     OverpassUtil,
+    Map,
 
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development

@@ -2,7 +2,7 @@ import { Injectable, OnInit, EventEmitter } from '@angular/core';
 import { Settings } from './';
 
 @Injectable()
-export class OverpassUtil implements OnInit {
+export class OverpassUtil {
 
   overpassShowSpeedCamera: boolean;
   overpassShowFuelStation: boolean;
@@ -10,12 +10,6 @@ export class OverpassUtil implements OnInit {
   onOverpassSettingsChangeEvent = new EventEmitter();
 
   constructor(private settings: Settings) {
-  }
-
-  ngOnInit() {
-    this.overpassShowSpeedCamera = this.settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA];
-    this.overpassShowFuelStation = this.settings.allSettings[Settings.OVERPASS_SHOW_FUEL_STATION];
-    this.overpassShowTrafficLight = this.settings.allSettings[Settings.OVERPASS_SHOW_TRAFFIC_LIGHT];
     this.settings.onSettingsChangeEvent.subscribe(() => {
       if (this.overpassShowSpeedCamera != this.settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA]) {
         this.overpassShowSpeedCamera = this.settings.allSettings[Settings.OVERPASS_SHOW_SPEED_CAMERA];
