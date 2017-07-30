@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { TRAFFIC_API_BASE_URL } from '../app/config';
 import { CarSpeedDTO } from '../domain/model/car';

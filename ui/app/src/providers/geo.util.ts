@@ -1,4 +1,4 @@
-import * as intersect from '@turf/intersect';
+import intersect from '@turf/intersect';
 import { polygon } from '@turf/helpers';
 import 'leaflet';
 

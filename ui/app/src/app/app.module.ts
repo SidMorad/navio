@@ -95,7 +95,7 @@ export function httpLoaderFactory(http: Http) {
         'app_id': 'a160dfe5'
       },
       'insights': {
-        'enabled': true
+        'enabled': false
       }
     }),
     IonicStorageModule.forRoot({

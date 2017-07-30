@@ -7,7 +7,7 @@ import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
 import 'leaflet-control-geocoder';
 import 'leaflet.tilelayer.pouchdbcached';
-import * as moment from 'moment';
+import moment from 'moment';
 import 'moment-duration-format';
 
 import { AddressPopup } from '../pages';
