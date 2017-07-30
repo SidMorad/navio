@@ -35,7 +35,7 @@ export class AddressModal {
         inputs: [{
           name: 'label',
           placeholder: translated['FAVORITE'],
-          value: this.address.shortName
+          value: this.address.favLabel || this.address.shortName
         }],
         buttons: [
           {

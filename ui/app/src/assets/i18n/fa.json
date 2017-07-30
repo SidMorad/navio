@@ -65,6 +65,7 @@
   "SET_AS_START_POINT": "به عنوان نقطه شروع در نظر بگیر",
   "DESTINATION": "مقصد",
   "STOP": "توقف",
+  "SEARCH": "جستجو",
 
   "ENABLE_LOCATION_ALERT_TITLE": "سرویس موقعیت مکانی مورد نیاز است",
   "ENABLE_LOCATION_ALERT_MESSAGE": "برای استفاده از اپلیکیشن ما سرویس موقعیت مکانی باید فعال باشد",

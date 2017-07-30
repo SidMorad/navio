@@ -16,7 +16,7 @@ export class GeocodingService {
 
   search(address: string): Observable<AddressDTO[]> {
     return this.http.get(GEOCODING_API_BASE_URL + "search?q=" + encodeURIComponent(address) +
-     "&format=json&addressdetails=0&limit=10&countrycodes=ir&accept-language=" + this.translateService.currentLang)
+     "&format=json&addressdetails=0&limit=10&countrycodes=ir&accept-language=" + this.acceptLanugage(address))
        .map(res => res.json())
        .map(result => {
          if (!result) {
@@ -39,6 +39,25 @@ export class GeocodingService {
         address.setDetails(result.address);
         return address;
       });
+  }
+
+  acceptLanugage(term):string {
+    let currentLang = this.translateService.currentLang;
+    if (currentLang === 'fa' || currentLang === 'en') {
+      if (this.isASCII(term)) {
+        return 'en';
+      }
+      else {
+        return 'fa';
+      }
+    }
+    else {
+      return currentLang;
+    }
+  }
+
+  isASCII(str):boolean {
+    return /^[\x00-\x7F]*$/.test(str);
   }
 
 }

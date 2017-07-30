@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Platform, ToastController, ModalController, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Deploy } from '@ionic/cloud-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 import { SettingsPage } from '../pages';
 import { GeocodingService } from '../services';
@@ -18,7 +20,8 @@ import { Principal } from '../shared';
 export class MyApp implements OnInit {
 
   rootPage:any = 'HomePage';
-  items: AddressDTO[];
+  items: Observable<AddressDTO[]>;
+  geoSearchTerm = new FormControl();
   user: any = {};
   @ViewChild('content') nav: NavController;
 
@@ -34,6 +37,10 @@ export class MyApp implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    this.items = this.geoSearchTerm.valueChanges
+                    .debounceTime(400)
+                    .distinctUntilChanged()
+                    .switchMap(term => this.geocodingService.search(term));     // Credit goes to https://blog.thoughtram.io/angular/2016/01/06/taking-advantage-of-observables-in-angular2.html
   }
 
   ngOnInit() {
@@ -87,19 +94,8 @@ export class MyApp implements OnInit {
     });
   }
 
-  geoSearch(ev: any) {
-    if (!ev.target.value) {
-      return;
-    }
-    this.geocodingService.search(ev.target.value).subscribe(result => {
-      this.items = result;
-    }, error => {
-      console.log("Error on geo serach by ", ev.target.value, " was: ", error);
-      this.items = [];
-    });
-  }
-
   geoSelected(item: AddressDTO) {
+    item.favLabel = item.name;
     this.map.showDestination(item);
   }
 

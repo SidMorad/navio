@@ -65,6 +65,7 @@
   "SET_AS_START_POINT": "Set as start point",
   "DESTINATION": "Destination",
   "STOP": "Stop",
+  "SEARCH": "Search",
 
   "ENABLE_LOCATION_ALERT_TITLE": "Location service needed",
   "ENABLE_LOCATION_ALERT_MESSAGE": "For using this app your location service must be enabled",
