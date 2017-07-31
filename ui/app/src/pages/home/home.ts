@@ -1,5 +1,5 @@
 import { Component, OnDestroy, isDevMode } from '@angular/core';
-import { MenuController, ModalController, AlertController, IonicPage } from 'ionic-angular';
+import { MenuController, ModalController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,9 +8,6 @@ import { TrackingService } from '../../services';
 import { Settings, Map } from '../../providers';
 import { CarSpeedDTO , UserLocationDTO } from '../../domain/model';
 
-@IonicPage({
-  priority: 'high'
-})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'

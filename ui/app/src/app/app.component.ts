@@ -7,7 +7,7 @@ import { Deploy } from '@ionic/cloud-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { SettingsPage } from '../pages';
+import { SettingsPage, HomePage } from '../pages';
 import { GeocodingService } from '../services';
 import { Settings, Favorites, Map } from '../providers';
 import { AddressDTO } from '../domain/model/geocoding';
@@ -19,7 +19,7 @@ import { Principal } from '../shared';
 })
 export class MyApp implements OnInit {
 
-  rootPage:any = 'HomePage';
+  rootPage:any = HomePage;
   items: Observable<AddressDTO[]>;
   geoSearchTerm = new FormControl();
   user: any = {};

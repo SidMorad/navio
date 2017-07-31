@@ -18,7 +18,7 @@ import { SharedModule } from '../shared';
 import { GeocodingService, TrackingService, SignupService } from '../services';
 import { Settings, Favorites, OverpassUtil, Map } from '../providers';
 
-import { AddressPopup, SettingsPage } from '../pages';
+import { AddressPopup, SettingsPage, HomePage } from '../pages';
 
 
 export function provideSettings(storage: Storage) {
@@ -47,7 +47,8 @@ export function provideSettings(storage: Storage) {
 let pages = [
   MyApp,
   AddressPopup,
-  SettingsPage
+  SettingsPage,
+  HomePage
 ];
 
 export function declarations() {
