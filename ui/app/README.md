@@ -1,9 +1,10 @@
-# Rahpey ionic app
+# Navio ionic app
 
 ## Developer guide
 `sudo npm install -g ionic cordova`
->  Cordova CLI      : 6.5.0
->  Ionic CLI        : 3.2.0
+
+Note: ionic.info.txt shows current used versions. at the moment Ionic
+ has an issue with Npm 5.x, so we have to use Npm 4.x(or lower) instead.
 
 `ionic cordova run android`
  Runs the app in connected Android device
@@ -11,8 +12,5 @@
 `ionic cordova resources`
  Generate icons and splash screens base on resources/icon.png and resources/splash.png
 
-`ionic upload --note "NOTE" --deploy dev`
+`./sign.sh && ionic upload --nobuild --note "NOTE" --deploy dev`
  Deploys your current code to our ionic-cloud dev channel
-
-`ionic cordova build android --prod --release --buildConfig`
- Signs and release the app(android-release.apk) see also `build.json`
