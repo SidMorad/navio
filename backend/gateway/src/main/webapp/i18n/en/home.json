@@ -1,9 +1,9 @@
 {
     "home": {
-        "title": "Rahpey, Welcome!",
+        "title": "Navio, Welcome!",
         "subtitle": "This is your homepage",
         "branding": {
-            "sentence": "Rahpey is an app that will help you to find your way easier, faster and safer",
+            "sentence": "Navio is an app that will help you to find your way easier, faster and safer",
             "startnow": "Start Now for Free!",
             "discover": "Discover what all the buzz is about!",
             "downloadnow": "Our app is available on any mobile device! Download now to get started!"
@@ -11,13 +11,13 @@
         "logged": {
           "message": "You are logged in as user \"{{username}}\"."
         },
-        "question": "If you have any question on Rahpey:",
+        "question": "If you have any question on Navio:",
         "link": {
-            "homepage": "Rahpey homepage",
-            "bugtracker": "Rahpey bug tracker",
-            "follow": "follow @rahpey on Twitter"
+            "homepage": "Navio homepage",
+            "bugtracker": "Navio bug tracker",
+            "follow": "follow @navio on Twitter"
         },
-        "like": "If you like Rahpey, don't forget to give us a star on",
+        "like": "If you like Navio, don't forget to give us a star on",
         "googleplay": "Google Play"
     }
 }

@@ -39,6 +39,7 @@ export class Map {
   isInDrivingMode: boolean = false;
   lastTimeCarSpeedSent: any = moment();
   destination: AddressDTO;
+  showAlternatives: boolean = false;
 
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
               private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
@@ -81,14 +82,16 @@ export class Map {
       router: L.Routing.graphHopper('', {
         serviceUrl: ROUTE_API_BASE_URL + '/get',
         urlParameters: {
-          // algorithm: 'alternative_route',
-         }
+        }
       }),
       // geocoder: L.Control.Geocoder.nominatim({
       //   serviceUrl: GEOCODING_API_BASE_URL
       // }),
       lineOptions: {
-        styles: [{color: 'blue', opacity: 0.8, weight: 2}]
+        styles: [{color: 'blue', opacity: 0.4, weight: 8}]
+      },
+      altLineOptions: {
+        styles: [{color: 'red', opacity: 0.4, weight: 8}]
       },
       createMarker: function(i: number, waypoint: any, total: number) {
         if (i === 0) {
@@ -98,8 +101,9 @@ export class Map {
       },
       autoRoute: true,
       show: false,
-      // showAlternatives: true,
-      routeWhileDragging: true
+      showAlternatives: true,
+      routeWhileDragging: true,
+      addWaypoints: false
     }).addTo(this.map);
 
     this.routeControl.on({
@@ -107,13 +111,12 @@ export class Map {
         this.reOrganizeRouterUrlParameters();
       },
       routesfound: (e) => {
-        this.activeRoute = e.routes[0];
-        this.activeRoute.ETA = moment().add(moment.duration(this.activeRoute.summary.totalTime, 'seconds')).format('h:mm A');
-        this.activeRoute.duration = moment.duration(this.activeRoute.summary.totalTime, 'seconds').format('h [hrs], m [min]');
-        this.activeRoute.distance = (this.activeRoute.summary.totalDistance / 1000).toFixed(1) + ' km';
-        this.isInDrivingMode = true;
-        this.onActiveRouteChangeEvent.emit();
-        this.destination = new AddressDTO(e.waypoints[1].latLng, '');
+        // console.log("Route found: ", e.routes[0]);
+        // this.setActiveRoute(e.routes[0]);
+      },
+      routeselected: (e) => {
+        console.log("Route selected: ", e);
+        this.setActiveRoute(e.route);
       }
     });
 
@@ -183,6 +186,16 @@ export class Map {
     this.centerToCurrentLocation();
   }
 
+  setActiveRoute(route) {
+    this.activeRoute = route;
+    this.activeRoute.ETA = moment().add(moment.duration(this.activeRoute.summary.totalTime, 'seconds')).format('h:mm A');
+    this.activeRoute.duration = moment.duration(this.activeRoute.summary.totalTime, 'seconds').format('h [hrs], m [min]');
+    this.activeRoute.distance = (this.activeRoute.summary.totalDistance / 1000).toFixed(1) + ' km';
+    this.isInDrivingMode = true;
+    this.onActiveRouteChangeEvent.emit();
+    this.destination = new AddressDTO(route.inputWaypoints[1].latLng, '');
+  }
+
   initCurrentZoom() {
     this.settings.getValue(Settings.LAST_ZOOM_LEVEL_KEY).then(val => {
       if (!val) {
@@ -216,7 +229,6 @@ export class Map {
 
   reOrganizeRouterUrlParameters() {
     this.routeControl.getRouter().options.urlParameters = {};
-    // let destinationPoints = [[this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]];
     let destinationPoints = GeoUtil.aPolygonWithTwoPoints([this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]);
     if (!this.settings.allSettings[Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE]) {
       if (new TehranEvenOddTrafficSpecification().isAllowedToday(this.settings.allSettings[Settings.CAR_PLATE_NUMBER_EVEN_OR_ODD])) {
@@ -240,7 +252,19 @@ export class Map {
         }
       }
     }
+    if (this.showAlternatives) {
+      this.routeControl.getRouter().options.urlParameters.algorithm = 'alternative_route';
+      this.routeControl.getRouter().options.urlParameters['ch.disable'] = true;
+      this.routeControl.getRouter().options.urlParameters['alternative_route.max_paths'] = 3;
+    }
     console.log("Route params are set: ", this.routeControl.getRouter().options.urlParameters);
+  }
+
+  removeAlternativeRoutes() {
+    this.showAlternatives = false;
+    if (this.activeRoute) {
+      this.routeControl.setAlternatives([this.activeRoute]);
+    }
   }
 
   addHighlightLayers() {
@@ -322,6 +346,11 @@ export class Map {
     this.isInDrivingMode = false;
     this.activeRoute = null;
     this.onActiveRouteChangeEvent.emit();
+  }
+
+  showAlternativeRoutes(addressDTO: AddressDTO) {
+    this.showAlternatives = true;
+    this.navigateToAddress(addressDTO);
   }
 
   setAsStartPoint(address: AddressDTO) {

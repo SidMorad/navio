@@ -4,7 +4,7 @@ import { TehranMainTrafficSpecification } from '.';
 
 export class TehranEvenOddTrafficSpecification {
 
-  isCurrentTimeBetweenForbiddenTime() {
+  isCurrentTimeBetweenForbiddenTime():boolean {
     if (TehranMainTrafficSpecification.isTodayAHoliday()) {  // Holiday, no restriction
       return false;
     }
@@ -23,7 +23,7 @@ export class TehranEvenOddTrafficSpecification {
     return false;
   }
 
-  isAllowedToday(val: string) {
+  isAllowedToday(val: string):boolean {
     if (TehranMainTrafficSpecification.isTodayAHoliday()) {  // Holiday, no restriction
       return true;
     }
@@ -47,7 +47,7 @@ export class TehranEvenOddTrafficSpecification {
     return false;
   }
 
-  static blockedAreaPoints() {
+  static blockedAreaPoints():string {
     return TehranEvenOddTrafficSpecification.rectanglePoints().join();
   }
 

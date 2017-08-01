@@ -46,6 +46,11 @@ export class DestinationModal {
     this.map.stopTheRoute();
   }
 
+  showAlternativeRoutes() {
+    this.dismiss();
+    this.map.showAlternativeRoutes(this.address);
+  }
+
   dismiss() {
     this.viewCtrl.dismiss();
   }

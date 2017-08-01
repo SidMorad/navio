@@ -66,6 +66,7 @@
   "DESTINATION": "مقصد",
   "STOP": "توقف",
   "SEARCH": "جستجو",
+  "ROUTES": "مسیرها",
 
   "ENABLE_LOCATION_ALERT_TITLE": "سرویس موقعیت مکانی مورد نیاز است",
   "ENABLE_LOCATION_ALERT_MESSAGE": "برای استفاده از اپلیکیشن ما سرویس موقعیت مکانی باید فعال باشد",

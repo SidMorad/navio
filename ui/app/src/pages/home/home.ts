@@ -150,6 +150,14 @@ export class HomePage implements OnDestroy {
     return this.map.isInDrivingMode;
   }
 
+  isAlternativeRoutesVisiable(): boolean {
+    return this.map.showAlternatives;
+  }
+
+  removeAlternativeRoutes() {
+    this.map.removeAlternativeRoutes();
+  }
+
   openDestinationModal() {
     this.modalCtrl.create('DestinationModal', { address: this.map.destination }).present();
   }

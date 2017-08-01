@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export class TehranMainTrafficSpecification {
 
-  isCurrentTimeBetweenForbiddenTime() {
+  isCurrentTimeBetweenForbiddenTime():boolean {
     if (TehranMainTrafficSpecification.isTodayAHoliday()) {  // Holiday, no restriction
       return false;
     }
@@ -21,7 +21,7 @@ export class TehranMainTrafficSpecification {
     return false;
   }
 
-  static isTodayAHoliday() {
+  static isTodayAHoliday():boolean {
     let today = moment();
     for (let holiday of TehranMainTrafficSpecification.iran1396Holidays()) {
       if (today.isSame(holiday, 'day')) {
@@ -51,7 +51,7 @@ export class TehranMainTrafficSpecification {
     ];
   }
 
-  static blockedAreaPoints() {
+  static blockedAreaPoints():string {
     return TehranMainTrafficSpecification.rectanglePoints().join();
   }
 

@@ -66,6 +66,7 @@
   "DESTINATION": "Destination",
   "STOP": "Stop",
   "SEARCH": "Search",
+  "ROUTES": "Routes",
 
   "ENABLE_LOCATION_ALERT_TITLE": "Location service needed",
   "ENABLE_LOCATION_ALERT_MESSAGE": "For using this app your location service must be enabled",

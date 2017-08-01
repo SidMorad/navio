@@ -22,7 +22,15 @@
     <p> {{ address.shortAreaName }}</p>
     <ion-grid>
       <ion-row>
-        <ion-col col-4></ion-col>
+        <ion-col col-4>
+          <button ion-button end round large icon-only color="primary" (click)="showAlternativeRoutes()">
+            <ion-icon name="icon-road"></ion-icon>
+          </button>
+          <br />
+          <div>
+            {{ 'ROUTES' | translate }}
+          </div>
+        </ion-col>
         <ion-col col-4></ion-col>
         <ion-col col-4>
           <button ion-button end round large icon-only color="danger" (click)="stopTheRoute()">

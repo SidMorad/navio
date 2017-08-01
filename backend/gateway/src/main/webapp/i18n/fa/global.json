@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "ره‌پی",
+        "title": "نویو",
         "browsehappy": "شما از مرورگر <strong>قدیمی</strong> استفاده می‌کنید. لطفا <a href=\"http://browsehappy.com/?locale=en\">مرورگر خود را به روز کنید</a>",
         "menu": {
             "home": "خانه",
@@ -129,5 +129,5 @@
         "emailexists": "این آدرس ایمیل در سیستم وجود دارد!",
         "idexists": "موجودیت جدید {{ entityName }} نمی‌تواند شناسه داشته‌باشد."
     },
-    "footer": "ره‌پی &copy; ۱۳۹۶"
+    "footer": "‌نویو &copy; ۱۳۹۶"
 }

@@ -5,6 +5,11 @@
       <ion-icon name="locate" class="custom-icon" color="dark"></ion-icon>
     </button>
   </ion-fab>
+  <ion-fab left middle *ngIf="isAlternativeRoutesVisiable()">
+    <button ion-fab color="light" large (click)="removeAlternativeRoutes()">
+      <ion-icon name="trash" class="custom-icon" color="dark"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
 
 <ion-footer>
