@@ -11,6 +11,7 @@ import { Ng2Webstorage } from 'ng2-webstorage';
 import { Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { NgLoadingBarModule } from 'ng-loading-bar';
 
 import { MyApp } from './app.component';
 import { SharedModule } from '../shared';
@@ -108,7 +109,8 @@ export function httpLoaderFactory(http: Http) {
     }),
     TranslateModule.forRoot({
       loader: { provide: TranslateLoader, useFactory: httpLoaderFactory, deps: [Http] }
-    })
+    }),
+    NgLoadingBarModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),
