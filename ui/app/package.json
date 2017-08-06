@@ -1,6 +1,6 @@
 {
   "name": "navio",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Navio team",
   "homepage": "http://navio.ir/",
   "description": "Navio an awesome traffic fighter!",
@@ -53,7 +53,6 @@
     "cordova-sqlite-storage": "^2.0.4",
     "cordova.plugins.diagnostic": "^3.6.6",
     "es6-promise-plugin": "^4.1.0",
-    "ionic": "3.6.0",
     "ionic-angular": "3.6.0",
     "ionic-plugin-deeplinks": "^1.0.15",
     "ionic-plugin-deploy": "^0.6.7",

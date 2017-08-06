@@ -16,7 +16,7 @@ export class DeeplinksComponent implements OnDestroy {
     constructor(private route: ActivatedRoute, private domSanitizer: DomSanitizer) {
       this.routeSub = this.route.params.subscribe((params) => {
           if (params['latLngZoom']) {
-            const url = 'navio://tile.webebook.org/dl/' + params['latLngZoom'];
+            const url = 'navio://' + window.location.host + '/dl/' + params['latLngZoom'];
             this.deeplink = domSanitizer.bypassSecurityTrustUrl(url);
           }
       });

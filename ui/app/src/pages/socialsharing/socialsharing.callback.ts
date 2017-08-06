@@ -6,8 +6,7 @@ import { LatLng } from '../../domain/model';
 
 @IonicPage()
 @Component({
-  template: ``,
-  selector: 'socialsharing-callback'
+  template: ``
 })
 export class SocialSharingCallback {
 
