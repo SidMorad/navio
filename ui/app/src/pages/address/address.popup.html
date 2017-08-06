@@ -14,12 +14,12 @@
   </ion-row>
   <ion-row>
     <ion-col col-6>
-      <button ion-button full color="light" disabled>
+      <button ion-button full color="light" (click)="sendButtonClicked()">
         {{ 'SEND' | translate }}
       </button>
     </ion-col>
     <ion-col col-6>
-      <button ion-button full color="primary" (click)='goButtonClicked($event)' icon-end>
+      <button ion-button full icon-end color="primary" (click)='goButtonClicked()' icon-end>
         {{ 'GO' | translate }}
         <ion-icon name="arrow-dropright"></ion-icon>
       </button>

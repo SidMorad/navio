@@ -25,4 +25,8 @@ export class AddressPopup {
     this.modalCtrl.create('AddressModal', { address: this.address }).present();
   }
 
+  sendButtonClicked() {
+    this.modalCtrl.create('SocialSharingModal', { address: this.address }).present();
+  }
+
 }

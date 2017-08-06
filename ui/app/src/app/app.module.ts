@@ -6,6 +6,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { CloudModule } from '@ionic/cloud-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { Deeplinks } from '@ionic-native/deeplinks';
+import { Keyboard } from '@ionic-native/keyboard';
 import { IonicStorageModule, Storage } from '@ionic/storage';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { Http } from '@angular/http';
@@ -66,6 +69,9 @@ export function providers() {
     SplashScreen,
     Geolocation,
     Diagnostic,
+    SocialSharing,
+    Deeplinks,
+    Keyboard,
     GeocodingService,
     TrackingService,
     SignupService,

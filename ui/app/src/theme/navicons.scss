@@ -36,5 +36,6 @@
   }
 }
 
-@include makeIcon(roads, '\e900');
+@include makeIcon(directions, '\e900');
 @include makeIcon(road, '\e901');
+@include makeIcon(telegram, '\e902');

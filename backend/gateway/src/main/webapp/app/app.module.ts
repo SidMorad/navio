@@ -12,6 +12,7 @@ import { GatewayHomeModule } from './home/home.module';
 import { GatewayAdminModule } from './admin/admin.module';
 import { GatewayAccountModule } from './account/account.module';
 import { GatewayEntityModule } from './entities/entity.module';
+import { GatewayDeeplinksModule } from './deeplinks/deeplinks.module';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -41,6 +42,7 @@ import {
         GatewayAdminModule,
         GatewayAccountModule,
         GatewayEntityModule,
+        GatewayDeeplinksModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

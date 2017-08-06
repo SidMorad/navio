@@ -139,7 +139,7 @@ export class Map {
     this.map.on({
       contextmenu: (e) => {     // Long press event
         // this.zone.run( () => {  // Run it in Angular zone, necessary to make component creation to work, but it seems is not necessary anymore!
-        this.showDestinationByLatLng(e.latlng);
+        this.showDestinationByLatLng(e.latlng, false, this.currentZoom);
         // });
       },
       click: (e) => {
@@ -284,18 +284,18 @@ export class Map {
     return this.showDestinationPopup(addressDTO, true);
   }
 
-  showDestinationByLatLng(latlng: LatLng) {
+  showDestinationByLatLng(latlng: LatLng, centerToPosition: boolean, zoom: number) {
     this.popupsLayer.clearLayers();
-    this.geocodingService.reverse(latlng, this.currentZoom).subscribe(addressDTO => {
-      return this.showDestinationPopup(addressDTO, false);
+    this.geocodingService.reverse(latlng, zoom).subscribe(addressDTO => {
+      return this.showDestinationPopup(addressDTO, centerToPosition);
     }, error => {
-      return this.showDestinationPopup(new AddressDTO(latlng, "Unknown"), false);
+      return this.showDestinationPopup(new AddressDTO(latlng, "Unknown"), centerToPosition);
     })
   }
 
   showDestinationPopup(addressDTO: AddressDTO, centerDestination: boolean) {
     if (centerDestination) {
-      this.map.setView([addressDTO.latlng.lat, addressDTO.latlng.lng], this.currentZoom);
+      this.map.panTo(new L.latLng(addressDTO.latlng.lat, addressDTO.latlng.lng));
     }
     var marker = L.marker(addressDTO.latlng, {icon: this.redIcon, draggable: true});
     this.popupsLayer.addLayer(marker);
@@ -322,7 +322,7 @@ export class Map {
     popup.on({
       popupopen: (e) => {
         if(!firstTime) {
-          this.showDestinationByLatLng(e.target._latlng);
+          this.showDestinationByLatLng(e.target._latlng, false, this.currentZoom);
         }
         firstTime = false;
       }

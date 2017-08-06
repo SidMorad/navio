@@ -1,0 +1,10 @@
+.badges .badge-link {
+  display: block;
+  margin-bottom: 25px;
+}
+.badges .badge-link:last-child {
+  margin-bottom: 0;
+}
+.badges .badge-link img {
+  height: 60px;
+}

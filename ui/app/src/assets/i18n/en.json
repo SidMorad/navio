@@ -67,6 +67,10 @@
   "STOP": "Stop",
   "SEARCH": "Search",
   "ROUTES": "Routes",
+  "TELEGRAM": "Telegram",
+  "SUBJECT": "Subject",
+  "MESSAGE": "Message",
+  "SENT_SUCCESSFULLY": "Sent successfully!",
 
   "ENABLE_LOCATION_ALERT_TITLE": "Location service needed",
   "ENABLE_LOCATION_ALERT_MESSAGE": "For using this app your location service must be enabled",
@@ -74,6 +78,10 @@
 
   "NEW UPDATE IS AVAILABLE": "New update is available!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "Your app updated to the latest version!",
+
+  "EXIT_QM": "Exit ?",
+  "OK": "OK",
+  "ARE_YOU_SURE_YOU_WANT_TO_EXIT": "Are you sure you want to exit?",
 
   "COUNTRIES": [
     {

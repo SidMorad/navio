@@ -1,5 +1,5 @@
 import { Component, OnDestroy, isDevMode } from '@angular/core';
-import { MenuController, ModalController, AlertController } from 'ionic-angular';
+import { MenuController, ModalController, AlertController, NavParams, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ export class HomePage implements OnDestroy {
   duration: string;
   distance: string;
 
-  constructor(private geolocation: Geolocation,
+  constructor(private geolocation: Geolocation, private platform: Platform,
               private settings: Settings, private trackingService: TrackingService,
               private menuCtrl: MenuController, private map: Map,
               private modalCtrl: ModalController, private diagnostic: Diagnostic,
@@ -160,6 +160,28 @@ export class HomePage implements OnDestroy {
 
   openDestinationModal() {
     this.modalCtrl.create('DestinationModal', { address: this.map.destination }).present();
+  }
+
+  backButtonAction() {
+    console.log("Back button clicked.");
+    this.translateService.get(['EXIT_QM', 'CANCEL', 'OK', 'ARE_YOU_SURE_YOU_WANT_TO_EXIT']).subscribe((translated) => {
+      this.alertCtrl.create({
+        title: translated.EXIT_QM,
+        message: translated.ARE_YOU_SURE_YOU_WANT_TO_EXIT,
+        buttons: [
+          {
+            text: translated.OK,
+            handler: () => {
+              this.platform.exitApp();
+            }
+          },
+          {
+            text: translated.CANCEL,
+            role: 'cancel'
+          }
+        ]
+      })
+    });
   }
 
   ngOnDestroy() {

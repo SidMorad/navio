@@ -33,7 +33,7 @@
   "LOG IN TO AN EXISTING ACCOUNT": "ورود به حساب کاربری موجود",
   "LOGOUT": "خروج",
   "SIGNUP": "ثبت نام",
-  "EMAIL": "رایانامه (ایمیل)",
+  "EMAIL": "رایانامه",
   "REGISTER_SUCCESS_MESSAGE": "ثبت نام انجام شد! لطفا صندوق رایانامه خود را برای تصدیق ثبت‌نام چک کنید.",
   "REGISTER_ERROR_MESSAGE": "ثبت نام شکست خورد، لطفا دوباره تلاش کنید.",
   "REGISTER_USER_EXISTS": "نام کاربری قبلا انتخاب شده است، لطفا نام دیگری را انتخاب کنید.",
@@ -61,12 +61,16 @@
   "CANCEL": "انصراف",
   "SAVE": "ذخیره",
   "INFO": "اطلاعات",
-  "ARE_YOU_SURE_YOU_WANT_TO_DELETE": "آیا مطمئن هستید برای حذف؟",
+  "ARE_YOU_SURE_YOU_WANT_TO_DELETE": "آیا برای حذف مطمئن هستید؟",
   "SET_AS_START_POINT": "به عنوان نقطه شروع در نظر بگیر",
   "DESTINATION": "مقصد",
   "STOP": "توقف",
   "SEARCH": "جستجو",
   "ROUTES": "مسیرها",
+  "TELEGRAM": "تلگرام",
+  "SUBJECT": "موضوع",
+  "MESSAGE": "متن",
+  "SENT_SUCCESSFULLY": "با موفقیت فرستاده شد!",
 
   "ENABLE_LOCATION_ALERT_TITLE": "سرویس موقعیت مکانی مورد نیاز است",
   "ENABLE_LOCATION_ALERT_MESSAGE": "برای استفاده از اپلیکیشن ما سرویس موقعیت مکانی باید فعال باشد",
@@ -74,6 +78,10 @@
 
   "NEW UPDATE IS AVAILABLE": "نسخه بروزتری در دسترس هست!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "برنامه شما بروزرسانی شد!",
+
+  "EXIT_QM": "خروج ؟",
+  "OK": "بسیار خوب",
+  "ARE_YOU_SURE_YOU_WANT_TO_EXIT": "آیا برای خروج مطمئن هستید؟",
 
   "COUNTRIES": [
     {

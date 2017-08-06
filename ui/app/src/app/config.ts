@@ -1,5 +1,6 @@
-export let GATEWAY_BASE_URL = 'http://tile.webebook.org';
-export let GATEWAY_SECURE_URL = 'https://tile.webebook.org';
+export let GATEWAY_HOST_NAME = 'tile.webebook.org';
+export let GATEWAY_BASE_URL = 'http://' + GATEWAY_HOST_NAME;
+export let GATEWAY_SECURE_URL = 'https://' + GATEWAY_HOST_NAME;
 export let AUTH_API_BASE_URL = GATEWAY_SECURE_URL + '/uaa';
 export let TILE_API_BASE_URL = GATEWAY_BASE_URL + '/tile';
 export let ROUTE_API_BASE_URL = GATEWAY_SECURE_URL + '/route/v1';

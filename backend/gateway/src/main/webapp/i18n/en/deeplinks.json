@@ -1,0 +1,8 @@
+{
+    "deeplinks": {
+        "title": "Deeplinks",
+        "locationLink": "Location link",
+        "viewLocation": "View location",
+        "appIsNotInstalled": "You don't have Navio installed?"
+    }
+}

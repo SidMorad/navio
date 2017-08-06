@@ -1,0 +1,44 @@
+<ion-content class="main-view" text-center>
+  <div class="overlay">
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button clear (click)='dismiss()' icon-start>
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div class="modal-view content-lbg">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked>{{ 'SUBJECT' | translate }}</ion-label>
+        <ion-input type="text" [(ngModel)]="message.subject" #subject></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>{{ 'MESSAGE' | translate }}</ion-label>
+        <ion-textarea [(ngModel)]="message.body" rows="4"></ion-textarea>
+      </ion-item>
+    </ion-list>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-4>
+          <button ion-button full color="light" (click)="dismiss()">
+            {{ 'CANCEL' | translate }}
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button ion-button full icon-end color="light" (click)="sendEmail()">
+            {{ 'EMAIL' | translate }}
+            <ion-icon name="mail"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col col-4>
+          <button ion-button full icon-end color="primary" (click)="sendTelegram()">
+            {{ 'TELEGRAM' | translate }}
+            <ion-icon name="icon-telegram"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

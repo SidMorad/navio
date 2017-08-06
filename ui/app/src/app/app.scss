@@ -17,8 +17,20 @@
 
 @import "../theme/navicons";
 
+body,
 .content-lbg {
   background: lightblue;
+}
+
+html[dir="rtl"] {
+  .icon.ion-md-arrow-back,
+  .icon.ion-ios-arrow-back,
+  .icon.ion-md-arrow-forward,
+  .icon.ion-ios-arrow-forward,
+  .icon.ion-md-arrow-dropright,
+  .icon.ion-ios-arrow-dropright {
+    transform: rotate(180deg);
+  }
 }
 
 // OpenStreetMap attribution text, takes entire header in some small phones,

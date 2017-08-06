@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Platform, ToastController, ModalController, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Deeplinks } from '@ionic-native/deeplinks';
 import { Deploy } from '@ionic/cloud-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -30,7 +31,7 @@ export class MyApp implements OnInit {
               private geocodingService: GeocodingService, private modalCtrl: ModalController,
               private map: Map, private toastCtrl: ToastController,
               private translateService: TranslateService, private principal: Principal,
-              private splashScreen: SplashScreen) {
+              private splashScreen: SplashScreen, private deeplinks: Deeplinks) {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -91,6 +92,18 @@ export class MyApp implements OnInit {
 
     this.principal.identity(true).then(account => {
         this.user = account ? account : {};
+    });
+  }
+
+  ngAfterViewInit() {
+    this.platform.ready().then(() => {
+      this.deeplinks.routeWithNavController(this.nav, {
+        '/dl/:location': 'SocialSharingCallback',
+      }).subscribe((match) => {
+        console.log('Successfully routed', match);
+      }, (nomatch) => {
+        console.warn("Unmatced route", nomatch);
+      });
     });
   }
 
