@@ -102,7 +102,9 @@ export class Map {
       show: false,
       showAlternatives: true,
       routeWhileDragging: true,
-      addWaypoints: false
+      addWaypoints: false,
+      collapsible: true,
+      collapseBtnClass: 'leaflet-routing-collapse-btn'
     }).addTo(this.map);
 
     this.routeControl.on({
@@ -316,7 +318,7 @@ export class Map {
       this.applicationRef.detachView(this.popupRef.hostView);
     });
 
-    var popup = marker.bindPopup(this.popupRef.location.nativeElement, {closeButton: false, maxWidth: 500, minWidth: 250});
+    var popup = marker.bindPopup(this.popupRef.location.nativeElement, {closeButton: false, maxWidth: 300, minWidth: 200, maxHeight: 150});
 
     var firstTime = true;
     popup.on({

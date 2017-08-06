@@ -22,7 +22,9 @@
     </ion-buttons>
     <ion-grid text-center class="force-ltr">
       <ion-row>
-        <ion-col col-12><div> {{ duration }} <ion-title> {{ ETA }} </ion-title> {{ distance }}</div></ion-col>
+        <ion-col col-3 text-end class="nowrap"> {{ duration }}</ion-col>
+        <ion-col col-6 class="eta nowrap"> {{ ETA }}</ion-col>
+        <ion-col col-3 text-start class="nowrap">{{ distance }}</ion-col>
       </ion-row>
     </ion-grid>
     <ion-buttons right>

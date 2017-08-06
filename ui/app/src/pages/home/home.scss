@@ -14,12 +14,18 @@ page-home {
     font-size: 45px;
   }
 
-  .toolbar-title {
-    display: inline;
+  .eta {
+    text-align: center;
+    font-size: 1.7rem;
+    font-weight: 600;
   }
 
-  ion-title {
-    display: inline;
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .leaflet-popup-content {
+    margin: 0 !important;
   }
 
 }
