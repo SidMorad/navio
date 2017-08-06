@@ -76,7 +76,7 @@ export class Settings {
   }
 
   save() {
-    return this.setAll(this.settings).then((val) => {
+    return this.setAll(this.settings).then(() => {
       this.onSettingsChangeEvent.emit();
     });
   }

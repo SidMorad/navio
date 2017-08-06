@@ -71,7 +71,7 @@ export class Principal {
       }
       this.authenticationState.next(this.userIdentity);
       return this.userIdentity;
-    }).catch((err) => {
+    }).catch(() => {
       this.userIdentity = null;
       this.authenticated = false;
       this.authenticationState.next(this.userIdentity);

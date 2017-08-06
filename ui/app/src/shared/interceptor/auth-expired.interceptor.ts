@@ -16,6 +16,7 @@ export class AuthExpiredInterceptor extends HttpInterceptor {
 
   responseIntercept(observable: Observable<Response>): Observable<Response> {
     return <Observable<Response>>observable.catch((error, source) => {
+      console.log("AuthExpiredInterceptor, error ",error, " source ", source);
       if (error.status === 401) {
         const loginService: LoginService = this.injector.get(LoginService);
         loginService.logout();

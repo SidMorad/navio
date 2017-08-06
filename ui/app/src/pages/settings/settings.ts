@@ -47,7 +47,7 @@ export class SettingsPage {
     this.form = this.formBuilder.group({});
 
     this.loadCountriesAndCities();
-    this.translateService.onLangChange.subscribe( data => {
+    this.translateService.onLangChange.subscribe( () => {
       this.loadCountriesAndCities();
     });
   }
@@ -82,7 +82,7 @@ export class SettingsPage {
     this.form = this.formBuilder.group(group)
 
     // Watch the form changes
-    this.form.valueChanges.subscribe((v) => {
+    this.form.valueChanges.subscribe(() => {
       this.settings.merge(this.form.value);
       if (this.settings.allSettings.preferLanguage !== this.translateService.currentLang) {
         this.translateService.use(this.settings.allSettings.preferLanguage);

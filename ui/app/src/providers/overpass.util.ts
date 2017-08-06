@@ -1,4 +1,4 @@
-import { Injectable, OnInit, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Settings } from './';
 
 @Injectable()

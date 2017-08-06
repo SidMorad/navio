@@ -1,12 +1,12 @@
 import { Component, OnDestroy, isDevMode } from '@angular/core';
-import { MenuController, ModalController, AlertController, NavParams, Platform } from 'ionic-angular';
+import { MenuController, ModalController, AlertController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { TranslateService } from '@ngx-translate/core';
 
 import { TrackingService } from '../../services';
 import { Settings, Map } from '../../providers';
-import { CarSpeedDTO , UserLocationDTO } from '../../domain/model';
+import { CarSpeedDTO } from '../../domain/model';
 
 @Component({
   selector: 'page-home',

@@ -68,7 +68,7 @@ export class AddressModal {
           },
           {
             text: translated['DELETE'],
-            handler: data => {
+            handler: () => {
               this.favorites.remove(this.address);
             }
           }

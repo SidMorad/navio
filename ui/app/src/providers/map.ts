@@ -1,6 +1,5 @@
 import { Injectable, ComponentFactoryResolver, Injector,
-         ComponentRef, ApplicationRef, EventEmitter, OnInit } from '@angular/core';
-import PouchDB from 'pouchdb';
+         ComponentRef, ApplicationRef, EventEmitter } from '@angular/core';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
@@ -94,7 +93,7 @@ export class Map {
         styles: [{color: 'red', opacity: 0.4, weight: 8}]
       },
       createMarker: function(i: number, waypoint: any, total: number) {
-        if (i === 0) {
+        if (i === 0 && total > 1) {
           return false;
         }
         return L.marker(waypoint.latLng, { draggable: true });
@@ -107,10 +106,10 @@ export class Map {
     }).addTo(this.map);
 
     this.routeControl.on({
-      routingstart: (e) => {
+      routingstart: () => {
         this.reOrganizeRouterUrlParameters();
       },
-      routesfound: (e) => {
+      routesfound: () => {
         // console.log("Route found: ", e.routes[0]);
         // this.setActiveRoute(e.routes[0]);
       },
@@ -142,7 +141,7 @@ export class Map {
         this.showDestinationByLatLng(e.latlng, false, this.currentZoom);
         // });
       },
-      click: (e) => {
+      click: () => {
         this.popupsLayer.clearLayers();
       },
       zoomend: (e) => {
@@ -156,14 +155,14 @@ export class Map {
           this.overpassLayer.clearLayers();
         }
       },
-      movestart: (e) => {
+      movestart: () => {
         if (this.isCenterToCurrentLocation) {
           if (!this.map.getCenter().equals(this.currentLocation())) {
             this.isCenterToCurrentLocation = false;
           }
         }
       },
-      moveend: (e) => {
+      moveend: () => {
         if (this.currentZoom > 14) {
           // Issue #24 Online users visiable on the map, is deactivated for now. refs: https://trello.com/c/bgPyzw51/51-display-online-users
           // For activating it again? uncomment following lines:
@@ -288,7 +287,8 @@ export class Map {
     this.popupsLayer.clearLayers();
     this.geocodingService.reverse(latlng, zoom).subscribe(addressDTO => {
       return this.showDestinationPopup(addressDTO, centerToPosition);
-    }, error => {
+    }, (error) => {
+      console.log("Error on geo revese search", error);
       return this.showDestinationPopup(new AddressDTO(latlng, "Unknown"), centerToPosition);
     })
   }
@@ -304,7 +304,7 @@ export class Map {
     const compFactory = this.resolver.resolveComponentFactory(AddressPopup);
     this.popupRef = compFactory.create(this.injector);
     this.popupRef.instance.address = addressDTO;
-    this.popupRef.instance.onGoButtonClicked.subscribe(x => {
+    this.popupRef.instance.onGoButtonClicked.subscribe(() => {
       this.navigateToAddress(addressDTO);
     });
     this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
