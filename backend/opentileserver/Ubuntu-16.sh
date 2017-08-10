@@ -106,8 +106,9 @@ function style_osm_carto(){
 
 	cd /usr/local/share/maps/style
 	if [ ! -d openstreetmap-carto-3.0.x ]; then
-		wget https://github.com/gravitystorm/openstreetmap-carto/archive/v3.0.x.zip
+		wget -O v3.0.x.zip https://github.com/sidmorad/openstreetmap-carto/archive/v3.0.x-trail-and-error.zip
 		unzip v3.0.x.zip
+    mv openstreetmap-carto-3.0.x-trail-and-error openstreetmap-carto-3.0.x
 		rm v3.0.x.zip
 	fi
 	cd openstreetmap-carto-3.0.x/
@@ -117,7 +118,7 @@ function style_osm_carto(){
 		rm data/*.zip data/world_boundaries-spherical.tgz
 	fi
 
-	/usr/local/lib/node_modules/carto/bin/carto project.mml >osm-carto.xml
+	/usr/local/lib/node_modules/carto/bin/carto -a "3.0.0" project.mml >osm-carto.xml
 
 	osm2pgsql_OPTS+=' --style /usr/local/share/maps/style/openstreetmap-carto-3.0.x/openstreetmap-carto.style'
 	OSM_STYLE_XML='/usr/local/share/maps/style/openstreetmap-carto-3.0.x/osm-carto.xml'
