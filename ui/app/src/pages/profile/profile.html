@@ -1,8 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title *ngIf="!isAuthenticated()">
-      <span text-start>{{'ACCOUNT' | translate}}</span>
-      <span text-end>{{'PAGE' | translate}}</span>
+      <span text-start>{{'ACCOUNT_PAGE' | translate}}</span>
     </ion-title>
     <ion-title *ngIf="isAuthenticated()">
       {{ user.login }}

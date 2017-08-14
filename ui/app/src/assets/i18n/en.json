@@ -22,6 +22,9 @@
 
   "LOGIN": "Login",
   "PAGE": "Page",
+  "ACCOUNT_PAGE": "Account Page",
+  "REGISTRATION_PAGE": "Registration page",
+  "LOGIN_PAGE": "Login Page",
   "USERNAME OR PASSWORD IS INCORRECT": "Username and/or Password is incorrect",
   "USERNAME": "Username",
   "PASSWORD": "Password",
