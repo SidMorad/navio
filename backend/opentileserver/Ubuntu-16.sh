@@ -98,6 +98,10 @@ function install_npm_carto(){
 	#Latest 0.17.2 doesn't install!
 	npm install -g carto@0.16.3
 	ln -sf /usr/local/lib/node_modules/carto/bin/carto /usr/local/bin/carto
+	npm install -g vazir-font
+	mkdir /root/.fonts
+	cp -r /usr/local/lib/node_modules/vazir-font/dist/* /root/.fonts/
+	fc-cache -f -v
 }
 
 function style_osm_carto(){
