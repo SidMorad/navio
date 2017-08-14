@@ -17,9 +17,20 @@
 
 @import "../theme/navicons";
 
+@font-face {
+  font-family: "Traffic";
+  src: url("../assets/fonts/traffic.ttf") format("opentype");
+}
+
 body,
 .content-lbg {
   background: lightblue;
+}
+
+html[dir="rtl"] {
+  body {
+    font-family: "Traffic" !important;
+  }
 }
 
 html[dir="rtl"] {
