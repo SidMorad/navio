@@ -3,29 +3,29 @@
   <ion-header>
     <ion-toolbar>
       <ion-buttons left>
-        <button ion-button icon-only color="purple" menuClose>
+        <button ion-button icon-only color="primary" menuClose>
           <ion-icon name="arrow-back"></ion-icon>
         </button>
-        <button ion-button icon-only color="purple" (click)="showSettingsModal()" menuClose>
-          <ion-icon name="cog"></ion-icon>
+        <button ion-button icon-only color="primary" (click)="exitApp()">
+          <ion-icon name="power"></ion-icon>
         </button>
       </ion-buttons>
-      <ion-title text-center *ngIf="!isAuthenticated()">
-        <button ion-button color="purple" outline (click)="openProfilePage()" menuClose>
-          <ion-icon name="ios-person-outline" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+      <ion-buttons text-center *ngIf="!isAuthenticated()">
+        <button ion-button icon-only small color="primary" outline (click)="openProfilePage()" menuClose>
+          <ion-icon name="ios-person-outline"></ion-icon>
           {{ 'NOT_REGISTERED' | translate}}
-          <ion-icon name="ios-arrow-forward" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+          <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
-      </ion-title>
+      </ion-buttons>
       <ion-title text-center *ngIf="isAuthenticated()">
-        <button ion-button color="purple" clear (click)="openProfilePage()" menuClose>
-          <ion-icon name="ios-person" style="padding-left: 10px; padding-right: 10px;"></ion-icon>
+        <button ion-button icon-only small color="primary" clear (click)="openProfilePage()" menuClose>
+          <ion-icon name="ios-person"></ion-icon>
           {{ user.login }}
         </button>
       </ion-title>
       <ion-buttons right>
-        <button ion-button icon-only color="purple" (click)="exitApp()">
-          <ion-icon name="power"></ion-icon>
+        <button ion-button icon-only color="primary" (click)="showSettingsModal()" menuClose>
+          <ion-icon name="cog"></ion-icon>
         </button>
       </ion-buttons>
     </ion-toolbar>
