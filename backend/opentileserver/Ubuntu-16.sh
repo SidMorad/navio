@@ -100,7 +100,7 @@ function install_npm_carto(){
 	ln -sf /usr/local/lib/node_modules/carto/bin/carto /usr/local/bin/carto
 	npm install -g vazir-font
 	mkdir /usr/share/fonts/truetype/vazir
-  cp /usr/local/lib/node_modules/vazir-font/dist/*.ttf /usr/share/fonts/truetype/vazir/
+	cp /usr/local/lib/node_modules/vazir-font/dist/*.ttf /usr/share/fonts/truetype/vazir/
 	fc-cache -f -v
 }
 

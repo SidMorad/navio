@@ -18,8 +18,30 @@
 @import "../theme/navicons";
 
 @font-face {
-  font-family: "Traffic";
-  src: url("../assets/fonts/traffic.ttf") format("opentype");
+  font-family: Vazir;
+  src: url('../assets/fonts/Vazir.eot');
+  src: url('../assets/fonts/Vazir.eot?iefix') format('embedded-opentype'),
+       url('../assets/fonts/Vazir.woff') format('woff'),
+       url('../assets/fonts/Vazir.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: Vazir;
+  src: url('../assets/fonts/Vazir-Bold.eot');
+  src: url('../assets/fonts/Vazir-Bold.eot?iefix') format('embedded-opentype'),
+       url('../assets/fonts/Vazir-Bold.woff') format('woff'),
+       url('../assets/fonts/Vazir-Bold.ttf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Vazir;
+  src: url('../assets/fonts/Vazir-Light.eot');
+  src: url('../assets/fonts/Vazir-Light.eot?iefix') format('embedded-opentype'),
+       url('../assets/fonts/Vazir-Light.woff') format('woff'),
+       url('../assets/fonts/Vazir-Light.ttf') format('truetype');
+  font-weight: 300;
 }
 
 body,
@@ -27,13 +49,13 @@ body,
   background: lightblue;
 }
 
-html[dir="rtl"] {
+html[dir='rtl'] {
   body {
-    font-family: "Traffic" !important;
+    font-family: 'Vazir' !important;
   }
 }
 
-html[dir="rtl"] {
+html[dir='rtl'] {
   .icon.ion-md-arrow-back,
   .icon.ion-ios-arrow-back,
   .icon.ion-md-arrow-forward,

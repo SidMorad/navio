@@ -1,5 +1,8 @@
 {
   "name": "Rahpey",
   "app_id": "a160dfe5",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

@@ -1,10 +1,7 @@
 cli packages:
 
-    @ionic/cli-plugin-cordova       : 1.6.2
-    @ionic/cli-plugin-ionic-angular : 1.4.1
-    @ionic/cli-plugin-proxy         : 1.4.1
-    @ionic/cli-utils                : 1.7.0
-    ionic (Ionic CLI)               : 3.7.0
+    @ionic/cli-utils  : 1.8.1
+    ionic (Ionic CLI) : 3.8.1
 
 global packages:
 
@@ -20,5 +17,5 @@ System:
 
     Android SDK Tools : 25.1.1
     Node              : v6.9.5
-    OS                : Linux 4.4
     npm               : 4.6.1
+    OS                : Linux 4.4
