@@ -11,14 +11,14 @@
         </button>
       </ion-buttons>
       <ion-buttons text-center *ngIf="!isAuthenticated()">
-        <button ion-button icon-only small color="primary" outline (click)="openProfilePage()" menuClose>
+        <button ion-button icon-only color="primary" clear (click)="openProfilePage()" menuClose>
           <ion-icon name="ios-person-outline"></ion-icon>
           {{ 'NOT_REGISTERED' | translate}}
           <ion-icon name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-buttons>
       <ion-title text-center *ngIf="isAuthenticated()">
-        <button ion-button icon-only small color="primary" clear (click)="openProfilePage()" menuClose>
+        <button ion-button icon-only color="primary" clear (click)="openProfilePage()" menuClose>
           <ion-icon name="ios-person"></ion-icon>
           {{ user.login }}
         </button>
