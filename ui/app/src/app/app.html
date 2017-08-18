@@ -1,13 +1,11 @@
-<ion-menu [content]="content" id="primary" (ionOpen)="menuOpened()">
+<!-- Left-to-Right menu, temporary fix until https://github.com/ionic-team/ionic/issues/9526 get resolved -->
+<ion-menu [content]="content" id="primary" side="left" *ngIf="!isRTL()" (ionOpen)="menuOpened()">
   <ng-loading-bar></ng-loading-bar>
   <ion-header>
     <ion-toolbar>
       <ion-buttons left>
-        <button ion-button icon-only color="primary" menuClose>
-          <ion-icon name="arrow-back"></ion-icon>
-        </button>
-        <button ion-button icon-only color="primary" (click)="exitApp()">
-          <ion-icon name="power"></ion-icon>
+        <button ion-button icon-only color="primary" (click)="showSettingsModal()" menuClose>
+          <ion-icon name="cog"></ion-icon>
         </button>
       </ion-buttons>
       <ion-buttons text-center *ngIf="!isAuthenticated()">
@@ -24,8 +22,8 @@
         </button>
       </ion-title>
       <ion-buttons right>
-        <button ion-button icon-only color="primary" (click)="showSettingsModal()" menuClose>
-          <ion-icon name="cog"></ion-icon>
+        <button ion-button icon-only color="primary" (click)="exitApp()">
+          <ion-icon name="power"></ion-icon>
         </button>
       </ion-buttons>
     </ion-toolbar>
@@ -45,6 +43,52 @@
     </ion-list>
   </ion-content>
 </ion-menu>
+<!-- Right-to-Left menu, temporary fix until https://github.com/ionic-team/ionic/issues/9526 get resolved -->
+<ion-menu [content]="content" id="primary" side="right" *ngIf="isRTL()" (ionOpen)="menuOpened()">
+  <ng-loading-bar></ng-loading-bar>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button icon-only color="primary" (click)="showSettingsModal()" menuClose>
+          <ion-icon name="cog"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-buttons text-center *ngIf="!isAuthenticated()">
+        <button ion-button icon-only color="primary" clear (click)="openProfilePage()" menuClose>
+          <ion-icon name="ios-person-outline"></ion-icon>
+          {{ 'NOT_REGISTERED' | translate}}
+          <ion-icon name="ios-arrow-forward"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title text-center *ngIf="isAuthenticated()">
+        <button ion-button icon-only color="primary" clear (click)="openProfilePage()" menuClose>
+          <ion-icon name="ios-person"></ion-icon>
+          {{ user.login }}
+        </button>
+      </ion-title>
+      <ion-buttons right>
+        <button ion-button icon-only color="primary" (click)="exitApp()">
+          <ion-icon name="power"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="content-lbg">
+    <ion-searchbar [formControl]="geoSearchTerm" placeholder="{{'SEARCH' | translate}}"></ion-searchbar>
+    <ion-list>
+      <button ion-item *ngFor="let addressDTO of items | async" (click)="geoSelected(addressDTO)" menuClose text-wrap>
+        {{addressDTO.name}}
+      </button>
+    </ion-list>
+    <ion-list [hidden]="(items | async)?.length > 0">
+      <button ion-item (click)="openFavorites()" menuClose>
+        <ion-icon name="bookmark" icon-start></ion-icon>
+        {{ 'FAVORITES' | translate }}
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
 <ion-nav [root]="rootPage" #content swipeBackeEnabled="false"></ion-nav>

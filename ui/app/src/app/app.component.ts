@@ -139,6 +139,10 @@ export class MyApp implements OnInit {
     }
   }
 
+  isRTL():boolean {
+    return this.platform.isRTL;
+  }
+
   exitApp() {
     this.platform.exitApp();
   }

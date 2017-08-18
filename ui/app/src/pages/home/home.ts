@@ -1,5 +1,5 @@
 import { Component, OnDestroy, isDevMode } from '@angular/core';
-import { MenuController, ModalController, AlertController, Platform } from 'ionic-angular';
+import { ModalController, AlertController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,7 +21,7 @@ export class HomePage implements OnDestroy {
 
   constructor(private geolocation: Geolocation, private platform: Platform,
               private settings: Settings, private trackingService: TrackingService,
-              private menuCtrl: MenuController, private map: Map,
+              private map: Map,
               private modalCtrl: ModalController, private diagnostic: Diagnostic,
               private alertCtrl: AlertController, private translateService: TranslateService) {
   }
@@ -54,7 +54,7 @@ export class HomePage implements OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.menuCtrl.swipeEnable(false, 'primary');
+    // this.menuCtrl.swipeEnable(false, 'primary');
   }
 
   initWatchPosition() {
