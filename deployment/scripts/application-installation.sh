@@ -13,7 +13,19 @@ if [ ! -d "${user_home}/src" ]; then
     tar -xzf /tmp/application.tar.gz -C "${user_home}/src"
 fi
 
+# Building docker containers
 cd "${user_home}/src/backend/docker/"
 ./init-production-first-time.sh
-# uncomment above line when you are sure everythings works as expeced locally.
-# and if you want to create a full(fat!) image.
+
+# NOT tested as part of packer build. TODO remove this line if packer build was successful(?)
+cd "${user_home}/src/backend/overpass"
+curl -o planet.osm.bz2 http://download.geofabrik.de/asia/iran-latest.osm.bz2
+docker-compose up -d
+
+cd "${user_home}/src/backend/nominatim"
+docker-compose up -d
+
+cd "${user_home}/src/backend/opentraffic/reporter"
+./init-data.sh
+docker-compose up -d
+# NOT tested, ends. TODO remove this line if packer build was successful(?)
