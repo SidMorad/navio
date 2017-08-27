@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd py
-./download_manila_reporter_tiles.sh
+./download_tehran_reporter_tiles.sh
 
 DATA_DIR=~/volumes/opentraffic/reporter/data/valhalla
 sudo mkdir -p $DATA_DIR

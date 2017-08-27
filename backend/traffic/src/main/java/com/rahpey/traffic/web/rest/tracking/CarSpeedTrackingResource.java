@@ -15,6 +15,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.common.geometry.S2CellId;
 import com.google.common.geometry.S2LatLng;
 import com.rahpey.traffic.domain.model.car.CarSpeed;
+import com.rahpey.traffic.infrastructure.kafka.KafkaProducerClient;
 import com.rahpey.traffic.repository.CarSpeedRepository;
 
 /**
@@ -27,14 +28,18 @@ public class CarSpeedTrackingResource {
 
 	public final CarSpeedRepository carSpeedRepository;
 
-	public CarSpeedTrackingResource(CarSpeedRepository carSpeedRepository) {
+	public final KafkaProducerClient kafkaProducerClient;
+
+	public CarSpeedTrackingResource(CarSpeedRepository carSpeedRepository, KafkaProducerClient kafkaProducerClient) {
 		this.carSpeedRepository = carSpeedRepository;
+		this.kafkaProducerClient = kafkaProducerClient;
 	}
 
 	@PostMapping("/record")
 	@Timed
 	public ResponseEntity<?> record(@Valid @RequestBody CarSpeedCommand command) {
 		logger.debug("Car speed event received: {}", command.toString());
+		kafkaProducerClient.sendCarSpeedToTrafficEngine(command);
 		S2CellId id = S2CellId.fromLatLng(S2LatLng.fromDegrees(command.lat(), command.lng()));
 		if (command.speed() != null) {
 			logger.info("Recording car speed [{}] at location id [{}] heading [{}]", command.speed(), Long.toString(id.id(), 16), command.heading());

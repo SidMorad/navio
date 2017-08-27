@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { Device } from '@ionic-native/device';
 import { Observable } from 'rxjs/Rx';
 import moment from 'moment';
 
@@ -15,10 +16,12 @@ export class TrackingService {
   allUserLocationsQueryInProgress: boolean = false;
   allUserLocationsCached: UserLocationDTO[];
 
-  constructor(private http: Http, private settings: Settings) {
+  constructor(private http: Http, private settings: Settings,
+              private device: Device) {
   }
 
   trackCarSpeed(dto: CarSpeedDTO): Observable<any> {
+    dto.uuid = this.device.uuid;
     return this.http.post(TRAFFIC_API_BASE_URL + '/carspeed/record', dto);
   }
 

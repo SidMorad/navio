@@ -6,6 +6,7 @@ export class CarSpeedDTO {
   speed: number;
   heading: number;
   accuracy: number;
+  uuid: string;
 
   static toDTO(geolocationCoords: any): CarSpeedDTO {
     let dto = new CarSpeedDTO();

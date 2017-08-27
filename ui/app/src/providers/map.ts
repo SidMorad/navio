@@ -370,9 +370,9 @@ export class Map {
   }
 
   shouldWeSendCarSpeed(): boolean {
-    if (!this.isInDrivingMode) {
-      return false;
-    }
+    // if (!this.isInDrivingMode) {
+    //   return false;
+    // }
     if (moment().diff(this.lastTimeCarSpeedSent, 'seconds') > 60) {  // 60 seconds is our sending frequency for now.
       this.lastTimeCarSpeedSent = moment();
       return true;

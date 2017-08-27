@@ -85,11 +85,11 @@ export class HomePage implements OnDestroy {
         if (firstTime && this.map.map && this.map.centerToCurrentLocation()) {
           firstTime = false;
         }
-        if (this.map.shouldWeSendCarSpeed()) {
-          if (data.coords.speed) {
+        // if (this.map.shouldWeSendCarSpeed()) {
+          // if (data.coords.speed) {
             this.trackingService.trackCarSpeed(CarSpeedDTO.toDTO(data.coords)).subscribe();
-          }
-        }
+          // }
+        // }
         // Issue #24 Online users visiable on the map, is deactivated for now. refs: https://trello.com/c/bgPyzw51/51-display-online-users
         // For activating it again? uncomment following line:
         // this.trackingService.trackUserLocation(UserLocationDTO.toDTO(data.coords)).subscribe();

@@ -131,3 +131,6 @@ jhipster:
 # ===================================================================
 
 application:
+    kafka:
+        bootstrapServers: localhost:9092
+        topicOpentraffic: raw

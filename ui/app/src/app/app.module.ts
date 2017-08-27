@@ -9,6 +9,7 @@ import { Diagnostic } from '@ionic-native/diagnostic';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Deeplinks } from '@ionic-native/deeplinks';
 import { Keyboard } from '@ionic-native/keyboard';
+import { Device } from '@ionic-native/device';
 import { IonicStorageModule, Storage } from '@ionic/storage';
 import { Ng2Webstorage } from 'ng2-webstorage';
 import { Http } from '@angular/http';
@@ -71,6 +72,7 @@ export function providers() {
     Diagnostic,
     SocialSharing,
     Deeplinks,
+    Device,
     Keyboard,
     GeocodingService,
     TrackingService,

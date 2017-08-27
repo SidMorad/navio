@@ -22,6 +22,8 @@ public final class CarSpeedCommand {
 	private Float heading;
 	private Float accuracy;
 
+	private String uuid;
+
 	public CarSpeedCommand() {
 	}
 
@@ -92,5 +94,9 @@ public final class CarSpeedCommand {
 	public Float getAccuracy() {
 		return accuracy;
 	}
+
+    public String getUuid() {
+        return uuid;
+    }
 
 }

@@ -1,12 +1,24 @@
 package com.rahpey.traffic.web.rest.tracking;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.Instant;
+import java.util.List;
+
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
+import org.springframework.kafka.listener.MessageListenerContainer;
+import org.springframework.kafka.test.rule.KafkaEmbedded;
+import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -17,15 +29,9 @@ import com.google.common.geometry.S2LatLng;
 import com.rahpey.traffic.TrafficApp;
 import com.rahpey.traffic.config.SecurityBeanOverrideConfiguration;
 import com.rahpey.traffic.domain.model.car.CarSpeed;
+import com.rahpey.traffic.infrastructure.kafka.KafkaProducerClient;
 import com.rahpey.traffic.repository.CarSpeedRepository;
 import com.rahpey.traffic.web.rest.TestUtil;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.time.Instant;
-import java.util.List;
 
 
 /**
@@ -45,12 +51,25 @@ public class CarSpeedTrackingResourceIntTest {
 
 	private MockMvc restCarSpeedTrackingMockMvc;
 
+	@Autowired
+	private KafkaProducerClient kafkaProducerClient;
+
+	@Autowired
+	private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
+
+	@ClassRule
+	public static KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, "formatted");
+
 	@Before
-	public void setup() {
+	public void setup() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		CarSpeedTrackingResource carSpeedTrackingResource = new CarSpeedTrackingResource(carSpeedRepository);
+		CarSpeedTrackingResource carSpeedTrackingResource = new CarSpeedTrackingResource(carSpeedRepository, kafkaProducerClient);
 		this.restCarSpeedTrackingMockMvc = MockMvcBuilders.standaloneSetup(carSpeedTrackingResource)
 			.setMessageConverters(jacksonMessageConverter).build();
+		// Kafka, wait until the partitions are assigned
+		for (MessageListenerContainer messageListenerContainer: kafkaListenerEndpointRegistry.getListenerContainers()) {
+		    ContainerTestUtils.waitForAssignment(messageListenerContainer, embeddedKafka.getPartitionsPerTopic());
+		}
 	}
 
 	@Test
