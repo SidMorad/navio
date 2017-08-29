@@ -4,18 +4,15 @@ Some Docker & Docker-compose commands documented here
 ### Build containers and start them.
 `./init-production-first-time.sh`
 
-Note: basicly we need to execute this only once in production.
+Note: basicly we need to execute above command only once in production.
 
-### Update *.osm.pbf into latest in Graphhopper and OpenTileServer containers.
+### Update iran-latest.osm.pbf into latest in Graphhopper and OpenTileServer containers.
 `./update-osm-pbf-file-and-restart-containers.sh`
-
-Note: this script fetch iran-latest.osm.pbf once and reload both Graphhopper and OpenTileServer containers with fresh downloaded file.
 
 ### Recreate specific container from an updated image.
 `docker-compose up -d --no-deps --build service_name_here`
 
-Note: DO NOT USE THIS COMMAND FOR DATABASE CONTAINERS. otherwise we do lose all contained data!
-Note 2: For preventing mistakes, `recreate-immutable-docker-containers.sh` can be used.
+Note: For updating internal microservices, `recreate-immutable-docker-containers.sh` script can be useful.
 
 ### Docker stats
 `docker stats $(docker ps | awk '{if(NR>1) print $NF}')`
@@ -29,3 +26,6 @@ Note 2: For preventing mistakes, `recreate-immutable-docker-containers.sh` can b
 
 ### Removes unused docker images, which will free disk space & speed up docker
 `docker rmi $(docker images --quiet --filter "dangling=true")`
+
+### Removes unattached docker volumes, which will free up some disk space
+`docker volume prune`
