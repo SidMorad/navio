@@ -17,6 +17,7 @@ package-lock.json
 .sass-cache/
 .tmp/
 .versions/
+.sourcemaps/
 coverage/
 dist/
 node_modules/
