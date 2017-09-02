@@ -2,6 +2,6 @@
   "private": true,
   "license": "UNLICENSED",
   "devDependencies": {
-    "generator-jhipster": "4.6.0"
+    "generator-jhipster": "4.7.0"
   }
 }
