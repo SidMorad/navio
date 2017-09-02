@@ -48,7 +48,9 @@ Navbar
     color: #fff;
 }
 
+.jh-navbar-toggler {
 
+}
 
 @media screen and (max-width: 992px) {
     .jh-logo-container {
@@ -59,6 +61,11 @@ Navbar
 .navbar-title {
     display: inline-block;
     vertical-align: middle;
+    color: #fff;
+}
+
+.nav-link {
+    color: #fff;
 }
 
 /* ==========================================================================
