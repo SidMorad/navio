@@ -36,8 +36,8 @@ usermod -aG docker ubuntu
 #===============================================================================
 # Docker-compose
 #===============================================================================
-# Install docker-compose version 1.13.0
-curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+# Install docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 #===============================================================================
@@ -60,3 +60,6 @@ apt-get install -y nodejs
 # Install Npm
 apt-get install -y npm
 npm install -g npm
+
+# Install Tmux
+apt-get install -y tmux
