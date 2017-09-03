@@ -37,11 +37,14 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final SocialService socialService;
+
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.socialService = socialService;
         this.authorityRepository = authorityRepository;
     }
 
@@ -185,6 +188,7 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
+            socialService.deleteUserSocialConnection(user.getLogin());
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });

@@ -63,6 +63,23 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML
+    social:
+        # see https://developers.google.com/+/web/signin/server-side-flow#step_1_create_a_client_id_and_client_secret
+        google:
+            client-id: 731748436635-bibk6uqbgf6q7cfou4vja9itkf1i6q00.apps.googleusercontent.com
+            client-secret: 04r-UkeMenSwh24PGXVSV1KP
+
+        # see https://developers.facebook.com/docs/facebook-login/v2.2
+        facebook:
+            client-id: xxx
+            client-secret: xxx
+
+        # see https://apps.twitter.com/app/
+        twitter:
+            client-id: xxx
+            client-secret: xxx
+
+        # jhipster-needle-add-social-configuration
 
 security:
     basic:
@@ -112,6 +129,8 @@ jhipster:
         contact-email:
         license:
         license-url:
+    social:
+        redirect-after-sign-in: "/#/"
     ribbon:
         display-on-active-profiles: dev
 
