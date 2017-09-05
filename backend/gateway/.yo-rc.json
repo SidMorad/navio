@@ -21,7 +21,7 @@
     "messageBroker": false,
     "serviceDiscoveryType": "eureka",
     "buildTool": "maven",
-    "enableSocialSignIn": false,
+    "enableSocialSignIn": true,
     "clientFramework": "angularX",
     "useSass": false,
     "clientPackageManager": "yarn",

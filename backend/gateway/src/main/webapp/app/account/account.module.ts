@@ -16,6 +16,7 @@ import {
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
     SettingsComponent,
+    SocialRegisterComponent,
     accountState
 } from './';
 
@@ -25,6 +26,7 @@ import {
         RouterModule.forRoot(accountState, { useHash: true })
     ],
     declarations: [
+        SocialRegisterComponent,
         ActivateComponent,
         RegisterComponent,
         PasswordComponent,
