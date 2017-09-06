@@ -21,6 +21,8 @@ eureka:
             defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 spring:
+    application:
+        url: http://localhost:8080
     profiles:
         active: dev
         include: swagger
@@ -118,7 +120,7 @@ jhipster:
             client-secret: internal
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: uaa@localhost
-        base-url: http://127.0.0.1:9999
+        base-url: ${spring.application.url}
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
@@ -138,6 +140,8 @@ jhipster:
             host: localhost
             port: 5000
             queue-size: 512
+    social:
+        redirect-after-sign-in: "${spring.application.url}/#/"
 
 # ===================================================================
 # Application specific properties

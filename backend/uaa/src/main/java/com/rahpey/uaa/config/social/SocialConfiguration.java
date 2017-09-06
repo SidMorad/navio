@@ -1,11 +1,5 @@
 package com.rahpey.uaa.config.social;
 
-import com.rahpey.uaa.repository.SocialUserConnectionRepository;
-import com.rahpey.uaa.repository.CustomSocialUsersConnectionRepository;
-import com.rahpey.uaa.security.social.CustomSignInAdapter;
-
-import io.github.jhipster.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -22,12 +16,19 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 // jhipster-needle-add-social-connection-factory-import-package
+
+import com.rahpey.uaa.repository.CustomSocialUsersConnectionRepository;
+import com.rahpey.uaa.repository.SocialUserConnectionRepository;
+import com.rahpey.uaa.security.social.CustomSignInAdapter;
+
+import io.github.jhipster.config.JHipsterProperties;
 
 /**
  * Basic Spring Social configuration.
@@ -128,15 +129,25 @@ public class SocialConfiguration implements SocialConfigurer {
     }
 
     @Bean
-    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter) {
+    public SessionStrategy sessionStragety() {
+        return new CustomHttpSessionStrategy();
+    }
+
+    @Bean
+    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator,
+            UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter, SessionStrategy sessionStrategy) {
         ProviderSignInController providerSignInController = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
+        providerSignInController.setApplicationUrl(environment.getProperty("spring.application.url") + "/uaa");
         providerSignInController.setSignUpUrl("/social/signup");
-        providerSignInController.setApplicationUrl(environment.getProperty("spring.application.url"));
+        providerSignInController.setSignInUrl("/signin");
+        providerSignInController.setSessionStrategy(sessionStrategy);
         return providerSignInController;
     }
 
     @Bean
-    public ProviderSignInUtils getProviderSignInUtils(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
-        return new ProviderSignInUtils(connectionFactoryLocator, usersConnectionRepository);
+    public ProviderSignInUtils getProviderSignInUtils(ConnectionFactoryLocator connectionFactoryLocator,
+            UsersConnectionRepository usersConnectionRepository, SessionStrategy sessionStrategy) {
+        return new ProviderSignInUtils(sessionStrategy, connectionFactoryLocator, usersConnectionRepository);
     }
+
 }

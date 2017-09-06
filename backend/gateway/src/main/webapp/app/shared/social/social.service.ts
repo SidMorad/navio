@@ -16,6 +16,6 @@ export class SocialService {
     }
 
     getProviderURL(provider) {
-        return 'signin/' + provider;
+        return 'uaa/signin/' + provider;
     }
 }

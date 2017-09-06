@@ -21,6 +21,8 @@ eureka:
             defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 spring:
+    application:
+        url: https://tile.webebook.org   # Modify according to production server base URL
     devtools:
         restart:
             enabled: false
@@ -106,7 +108,7 @@ jhipster:
             client-secret: internal
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: uaa@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        base-url: ${spring.application.url}
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:
@@ -126,6 +128,8 @@ jhipster:
             host: localhost
             port: 5000
             queue-size: 512
+    social:
+        redirect-after-sign-in: "${spring.application.url}/#/"
 
 # ===================================================================
 # Application specific properties

@@ -4,7 +4,7 @@ import com.rahpey.uaa.service.SocialService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.core.env.Environment;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.support.URIBuilder;
@@ -22,24 +22,29 @@ public class SocialController {
 
     private final ProviderSignInUtils providerSignInUtils;
 
-    public SocialController(SocialService socialService, ProviderSignInUtils providerSignInUtils) {
+    private final Environment environment;
+
+    public SocialController(SocialService socialService, ProviderSignInUtils providerSignInUtils,
+                            Environment environment) {
         this.socialService = socialService;
         this.providerSignInUtils = providerSignInUtils;
+        this.environment = environment;
     }
 
     @GetMapping("/signup")
     public RedirectView signUp(WebRequest webRequest, @CookieValue(name = "NG_TRANSLATE_LANG_KEY", required = false, defaultValue = "\"en\"") String langKey) {
+        String baseUrl = environment.getProperty("spring.application.url");
         try {
             Connection<?> connection = providerSignInUtils.getConnectionFromSession(webRequest);
             socialService.createSocialUser(connection, langKey.replace("\"", ""));
-            return new RedirectView(URIBuilder.fromUri("/#/social-register/" + connection.getKey().getProviderId())
+            return new RedirectView(URIBuilder.fromUri(baseUrl + "/#/social-register/" + connection.getKey().getProviderId())
                 .queryParam("success", "true")
-                .build().toString(), true);
+                .build().toString(), false);
         } catch (Exception e) {
             log.error("Exception creating social user: ", e);
-            return new RedirectView(URIBuilder.fromUri("/#/social-register/no-provider")
+            return new RedirectView(URIBuilder.fromUri(baseUrl + "/#/social-register/no-provider")
                 .queryParam("success", "false")
-                .build().toString(), true);
+                .build().toString(), false);
         }
     }
 }
