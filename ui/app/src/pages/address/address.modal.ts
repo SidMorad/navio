@@ -6,7 +6,7 @@ import { AddressDTO } from '../../domain/model/geocoding';
 import { Favorites, Map } from '../../providers';
 
 @IonicPage({
-  priority: 'high'
+  priority: 'low'
 })
 @Component({
   templateUrl: 'address.modal.html',

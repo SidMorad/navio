@@ -9,9 +9,6 @@
 
   <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="assets/css/leaflet.css">
-  <link rel="stylesheet" href="assets/css/leaflet-routing-machine.css">
-  <link rel="stylesheet" href="assets/css/loading-bar.css">
   <meta name="theme-color" content="#4e8ef7">
 
   <!-- cordova.js required for cordova apps -->
@@ -22,7 +19,7 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(() => console.log('service worker installed'))
-        .catch(err => console.log('Error', err));
+        .catch(err => console.error('Error', err));
     }
   </script>-->
 
@@ -32,52 +29,16 @@
 <body>
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app>
-    <!-- Loading spinner for index page for the first time -->
-    <div id="loadbar" style="text-align: center" *ngIf="false" class="first-load-container">
-      <img class="first-load-image" />
-      <div style="position: relative; top: 0px; z-index:3">
-        <div style="width: 80%; float: left;">
-          <br /><br /><br />
-          <progress id="bar" value="15" max="31" style="width: 100%"></progress>
-        </div>
-        <div style="width: 20%; float: left">
-          <div class="first-load-spinner"></div>
-        </div>
-      </div>
-    </div>
-  </ion-app>
-
-  <script type="text/javascript">
-  //As a worker normally take another JavaScript file to execute we convert the function in an URL: http://stackoverflow.com/a/16799132/2576706
-  function getScriptPath(foo){ return window.URL.createObjectURL(new Blob([foo.toString().match(/^\s*function\s*\(\s*\)\s*\{(([\s\S](?!\}$))*[\s\S])/)[1]],{type:'text/javascript'})); }
-  var worker = new Worker(getScriptPath(function() {
-    self.addEventListener('message', function(e) {
-      var value = 0;
-      var me = self;
-      while (value <= e.data) {
-        self.postMessage(value);
-        value++;
-      }
-    }, false);
-  }));
-  var bar = document.getElementById('bar');
-  worker.addEventListener('message', function(e) {
-    setTimeout(function() {
-      console.log("Progress counter is ", e.data);
-      bar.value = e.data + 15;
-    }, e.data * e.data * 10);
-  });
-  worker.postMessage(15);
-  </script>
+  <ion-app></ion-app>
 
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>
 
-  <!-- The vendor js is generated during the build process -->
+  <!-- The vendor js is generated during the build process
+       It contains all of the dependencies in node_modules -->
   <script src="build/vendor.js"></script>
 
-  <!-- The project bundle js is generated during the build process -->
+  <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
 
 </body>

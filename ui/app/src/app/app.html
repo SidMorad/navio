@@ -1,6 +1,7 @@
+
 <!-- Left-to-Right menu, temporary fix until https://github.com/ionic-team/ionic/issues/9526 get resolved -->
 <ion-menu [content]="content" id="primary" side="left" *ngIf="!isRTL()" (ionOpen)="menuOpened()">
-  <ng-loading-bar></ng-loading-bar>
+  <ngx-loading-bar></ngx-loading-bar>
   <ion-header>
     <ion-toolbar>
       <ion-buttons left>
@@ -45,7 +46,7 @@
 </ion-menu>
 <!-- Right-to-Left menu, temporary fix until https://github.com/ionic-team/ionic/issues/9526 get resolved -->
 <ion-menu [content]="content" id="primary" side="right" *ngIf="isRTL()" (ionOpen)="menuOpened()">
-  <ng-loading-bar></ng-loading-bar>
+  <ngx-loading-bar></ngx-loading-bar>
   <ion-header>
     <ion-toolbar>
       <ion-buttons left>
@@ -88,7 +89,6 @@
     </ion-list>
   </ion-content>
 </ion-menu>
-
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
 <ion-nav [root]="rootPage" #content swipeBackeEnabled="false"></ion-nav>

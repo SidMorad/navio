@@ -1,13 +1,24 @@
 import { Component, OnDestroy, isDevMode } from '@angular/core';
-import { ModalController, AlertController, Platform } from 'ionic-angular';
+import { IonicPage, ModalController, AlertController, Platform,
+         NavController } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
+import { Deeplinks } from '@ionic-native/deeplinks';
+import { Device } from '@ionic-native/device';
 import { TranslateService } from '@ngx-translate/core';
+// import { Deploy } from '@ionic/cloud-angular';
 
 import { TrackingService } from '../../services';
-import { Settings, Map } from '../../providers';
+import { Settings, Map, Favorites } from '../../providers';
 import { CarSpeedDTO } from '../../domain/model';
+import { FileStorage } from '../../plugindeps/file-storage';
+import { InMemoryStorage } from '../../shared/storage/in-memory-storage';
+import { Principal } from '../../shared/auth/principal.service';
 
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -19,18 +30,23 @@ export class HomePage implements OnDestroy {
   duration: string;
   distance: string;
 
-  constructor(private geolocation: Geolocation, private platform: Platform,
-              private settings: Settings, private trackingService: TrackingService,
-              private map: Map,
-              private modalCtrl: ModalController, private diagnostic: Diagnostic,
-              private alertCtrl: AlertController, private translateService: TranslateService) {
-  }
+constructor(private geolocation: Geolocation, private platform: Platform,
+  private settings: Settings, private trackingService: TrackingService,
+  private map: Map, private favorites: Favorites, private deeplinks: Deeplinks,
+  private modalCtrl: ModalController, private diagnostic: Diagnostic,
+  private alertCtrl: AlertController, private translateService: TranslateService,
+  private navCtrl: NavController, private fileStorage: FileStorage,
+  private inMemoryStorage: InMemoryStorage, private device: Device,
+  private principal: Principal, private statusBar: StatusBar) {
+  this.initApp();
+}
 
   ionViewDidLoad() {
-    this.settings.load().then(() => {
+    this.fileStorage.loadSettings().then(() => {
+      this.settings.load();
       this.checkIfLocationServiceIsEnabled();
       this.map.init();
-    });
+    })
 
     let me = this;
     this.diagnostic.registerLocationStateChangeHandler(function(state) {
@@ -183,6 +199,73 @@ export class HomePage implements OnDestroy {
         ]
       })
     });
+  }
+
+  initApp() {
+    this.fileStorage.loadSettings().then(() => {
+      this.settings.load();
+      this.translateService.onLangChange.subscribe( data => {
+        console.log("OnLangChange triggered with data: ", data);
+        this.platform.setLang(data.lang, true);
+        this.platform.setDir((data.lang === 'fa') ? 'rtl': 'ltr', true);
+      });
+      this.translateService.setDefaultLang(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+      this.translateService.use(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+      console.log("Translate service is set with prefer language: ", this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+
+      this.deeplinks.routeWithNavController(this.navCtrl, {
+        '/dl/:location': 'SocialSharingCallback',
+      }).subscribe((match) => {
+        console.log('Successfully routed', match);
+      }, (nomatch) => {
+        console.warn("Unmatced route", nomatch);
+      });
+
+      this.inMemoryStorage.setValue(Settings.DEVICE_UUID, this.device.uuid, false);
+      this.statusBar.styleDefault();
+    });
+
+    this.fileStorage.loadFavorites().then(() => {
+      this.favorites.load();
+    });
+
+    this.fileStorage.get(InMemoryStorage.AUTH_TOKEN_KEY).then((value) => {      // Remember-me feature
+      if (value) {
+        this.inMemoryStorage.setValue(InMemoryStorage.AUTH_TOKEN_KEY, value, false);
+        this.principal.identity(true).then();
+      }
+    });
+
+    // this.deploy.channel = 'dev'; // TODO Comment this line before production release
+    // this.deploy.check().then((hasUpdate: boolean) => {
+    //   if (hasUpdate) {
+    //     this.translateService.get('NEW UPDATE IS AVAILABLE').subscribe((translatedText) => {
+    //       this.toastCtrl.create({
+    //         message: translatedText,
+    //         duration: 3000
+    //       }).present();
+    //     });
+    //
+    //     let me = this;
+    //     setTimeout(() => {
+    //       me.deploy.download().then(() => {
+    //         me.deploy.extract().then(() => {
+    //           me.translateService.get('YOUR APP UPDATED TO THE LATEST VERSION').subscribe((translatedText) => {
+    //             me.toastCtrl.create({
+    //               message: translatedText,
+    //               duration: 3000
+    //             }).present();
+    //           });
+    //
+    //           setTimeout(() => {
+    //             me.deploy.load();
+    //           }, 3000);
+    //         })
+    //       });
+    //     }, 3000);
+    //   }
+    // });
+
   }
 
   ngOnDestroy() {

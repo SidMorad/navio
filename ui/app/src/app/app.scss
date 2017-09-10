@@ -17,6 +17,8 @@
 
 @import "../theme/navicons";
 
+@import "../assets/css/loading-bar";
+
 @font-face {
   font-family: Vazir;
   src: url('../assets/fonts/Vazir.eot');
@@ -65,6 +67,9 @@ html[dir='rtl'] {
     transform: rotate(180deg);
   }
 }
+/** Leaflet customizations */
+@import "../assets/css/leaflet";
+@import "../assets/css/leaflet-routing-machine";
 
 // OpenStreetMap attribution text, takes entire header in some small phones,
 // let's fix it by set font size to 9px.
@@ -72,10 +77,31 @@ html[dir='rtl'] {
   font-size: 9px !important;
 }
 
+.leaflet-control-layers-toggle {
+  background-image: url('../assets/img/layers.png');
+}
+
+.leaflet-retina .leaflet-control-layers-toggle {
+  background-image: url('../assets/img/layers-2x.png');
+}
+
+.leaflet-default-icon-path {
+  background-image: url('../assets/img/marker-icon.png');
+}
+
 .leaflet-routing-collapse-btn {
   font-size: 32px;
   color: #000;
 }
+
+.leaflet-routing-icon {
+  background-image: url('../assets/img/leaflet.routing.icons.png');
+}
+
+.leaflet-routing-container-hide .leaflet-routing-collapse-btn {
+  background-image: url('../assets/img/routing-icon.png');
+}
+/** Leaflet customizations ended here */
 
 .force-ltr {
   direction: ltr;

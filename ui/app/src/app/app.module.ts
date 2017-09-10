@@ -2,38 +2,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
-import { CloudModule } from '@ionic/cloud-angular';
-import { Geolocation } from '@ionic-native/geolocation';
-import { Diagnostic } from '@ionic-native/diagnostic';
-import { SocialSharing } from '@ionic-native/social-sharing';
-import { Deeplinks } from '@ionic-native/deeplinks';
-import { Keyboard } from '@ionic-native/keyboard';
-import { Device } from '@ionic-native/device';
-import { IonicStorageModule, Storage } from '@ionic/storage';
-import { Ng2Webstorage } from 'ng2-webstorage';
-import { Http } from '@angular/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { NgLoadingBarModule } from 'ng-loading-bar';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 import { MyApp } from './app.component';
-import { SharedModule } from '../shared';
+import { MainPage } from '../pages/main/main';
+import { AddressPopup } from '../pages/address/address.popup';
+import { SharedModule } from '../shared/shared.module';
+import { Settings, OverpassUtil, Favorites, Map } from '../providers';
+import { TrackingService, GeocodingService, SignupService } from '../services';
+import { InMemoryStorage } from '../shared/storage/in-memory-storage';
+import { customHttpProvider } from '../shared/interceptor/http.provider';
 
-import { GeocodingService, TrackingService, SignupService } from '../services';
-import { Settings, Favorites, OverpassUtil, Map } from '../providers';
-
-import { AddressPopup, SettingsPage, HomePage } from '../pages';
-
-
-export function provideSettings(storage: Storage) {
+export function provideSettings(inMemoryStorage: InMemoryStorage) {
   /**
    * The Settings provider takes a set of default settings for the app.
    *
    * You can add new settings options at any time. Once the settings are saved,
    * these values will not overwrite the saved values.
    */
-  return new Settings(storage, {
+  return new Settings(inMemoryStorage, {
     preferLanguage: 'fa',
     country: 'IR',
     city: 'THR',
@@ -49,79 +36,38 @@ export function provideSettings(storage: Storage) {
   });
 }
 
-let pages = [
-  MyApp,
-  AddressPopup,
-  SettingsPage,
-  HomePage
-];
 
-export function declarations() {
-  return pages;
-}
-
-export function entryComponents() {
-  return pages;
-}
-
-export function providers() {
-  return [
-    StatusBar,
+@NgModule({
+  declarations: [
+    MyApp,
+    MainPage,
+    AddressPopup
+  ],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(MyApp, {
+      preloadModules: false
+    }),
+    SharedModule,
+    LoadingBarModule
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    MainPage,
+    AddressPopup
+  ],
+  providers: [
     SplashScreen,
-    Geolocation,
-    Diagnostic,
-    SocialSharing,
-    Deeplinks,
-    Device,
-    Keyboard,
+    { provide: Settings, useFactory: provideSettings, deps: [InMemoryStorage] },
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    customHttpProvider(),
     GeocodingService,
     TrackingService,
     SignupService,
     Favorites,
     OverpassUtil,
-    Map,
-
-    { provide: Settings, useFactory: provideSettings, deps: [Storage] },
-    // Keep this to enable Ionic's runtime error handling during development
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
-  ];
-}
-
-// The translate loader needs to know where to load i18n files
-export function httpLoaderFactory(http: Http) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
-
-@NgModule({
-  declarations: declarations(),
-  imports: [
-    BrowserModule,
-    SharedModule,
-    IonicModule.forRoot(MyApp, {
-      preloadModules: false
-    }),
-    CloudModule.forRoot({
-      'core': {
-        'app_id': 'a160dfe5'
-      },
-      'insights': {
-        'enabled': false
-      }
-    }),
-    IonicStorageModule.forRoot({
-      name: '_db',
-      driverOrder: ['sqlite', 'indexeddb', 'websql', 'localstorage']
-    }),
-    Ng2Webstorage.forRoot({
-      prefix: 'navio'
-    }),
-    TranslateModule.forRoot({
-      loader: { provide: TranslateLoader, useFactory: httpLoaderFactory, deps: [Http] }
-    }),
-    NgLoadingBarModule.forRoot()
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: entryComponents(),
-  providers: providers()
+    Map
+  ]
 })
-export class AppModule {}
+export class AppModule { }

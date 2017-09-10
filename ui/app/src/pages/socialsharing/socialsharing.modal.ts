@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { Keyboard } from '@ionic-native/keyboard';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AddressDTO } from '../../domain/model/geocoding';
@@ -22,7 +21,7 @@ export class SocialSharingModal {
   message: { subject: string, body: string} = { subject: '', body: ''};
 
   constructor(navParams: NavParams, private viewCtrl: ViewController,
-              private socialSharing: SocialSharing, private keyboard: Keyboard,
+              private socialSharing: SocialSharing,
               private toastCtrl: ToastController, private map: Map,
               private translateService: TranslateService) {
     this.address = navParams.get('address');
@@ -33,7 +32,6 @@ export class SocialSharingModal {
   ionViewDidLoaded() {
     setTimeout(() => {
       this.subject.setFocus();
-      this.keyboard.show();
     }, 600);
   }
 

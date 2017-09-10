@@ -3,16 +3,15 @@ import { Http, XHRBackend, RequestOptions } from '@angular/http';
 
 import { InterceptableHttp } from './jhipster/interceptable-http';
 import { AuthInterceptor } from './auth.interceptor';
-import { LocalStorageService, SessionStorageService } from 'ng2-webstorage';
 import { AuthExpiredInterceptor } from './auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from './errorhandler.interceptor';
 import { NotificationInterceptor } from './notification.interceptor';
+import { InMemoryStorage } from '../storage/in-memory-storage';
 
 export function interceptableFactory(
   backend: XHRBackend,
   defaultOptions: RequestOptions,
-  localStorage: LocalStorageService,
-  sessionStorage: SessionStorageService,
+  inMemoryStorage: InMemoryStorage,
   injector: Injector,
   errorHandler: ErrorHandler
 ) {
@@ -20,7 +19,7 @@ export function interceptableFactory(
     backend,
     defaultOptions,
     [
-      new AuthInterceptor(localStorage, sessionStorage),
+      new AuthInterceptor(inMemoryStorage),
       new AuthExpiredInterceptor(injector),
       // Other interceptors can be added here
       new ErrorHandlerInterceptor(errorHandler),
@@ -32,12 +31,11 @@ export function interceptableFactory(
 export function customHttpProvider() {
   return {
     provide: Http,
-    useFactory: interceptableFactory,
+    useFactory: (interceptableFactory),
     deps: [
       XHRBackend,
       RequestOptions,
-      LocalStorageService,
-      SessionStorageService,
+      InMemoryStorage,
       Injector,
       ErrorHandler
     ]

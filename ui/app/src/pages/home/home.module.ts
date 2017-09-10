@@ -1,18 +1,21 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 
-import { SocialSharingModal } from './socialsharing.modal';
+import { HomePage } from './home';
 import { PluginDepsModule } from '../../plugindeps/plugin-deps.module';
 
 @NgModule({
-  declarations: [ SocialSharingModal ],
+  declarations: [
+    HomePage
+  ],
   imports: [
-    IonicPageModule.forChild(SocialSharingModal),
+    IonicPageModule.forChild(HomePage),
     TranslateModule.forChild(),
+    LoadingBarModule,
     PluginDepsModule
   ],
-  entryComponents: [ SocialSharingModal ]
+  entryComponents: [ HomePage ]
 })
-export class SocialSharingModalModule {
-}
+export class HomeModule {}

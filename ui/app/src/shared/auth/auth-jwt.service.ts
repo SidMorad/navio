@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { LocalStorageService, SessionStorageService } from 'ng2-webstorage';
 
 import { AUTH_API_BASE_URL } from '../../app/config';
+import { InMemoryStorage } from '../storage/in-memory-storage';
 
 @Injectable()
 export class AuthServerProvider {
+
   constructor(
     private http: Http,
-    private $localStorage: LocalStorageService,
-    private $sessionStorage: SessionStorageService
+    private inMemoryStorage: InMemoryStorage
   ) { }
 
   getToken() {
-    return this.$localStorage.retrieve('authenticationToken') || this.$sessionStorage.retrieve('authenticationToken');
+    return this.inMemoryStorage.getValue(InMemoryStorage.AUTH_TOKEN_KEY);
   }
 
   login(credentials): Observable<any> {
@@ -51,16 +51,15 @@ export class AuthServerProvider {
 
   storeAuthenticationToken(jwt, rememberMe) {
     if (rememberMe) {
-      this.$localStorage.store('authenticationToken', jwt);
+      this.inMemoryStorage.setValue(InMemoryStorage.AUTH_TOKEN_KEY, jwt, true);
     } else {
-      this.$sessionStorage.store('authenticationToken', jwt);
+      this.inMemoryStorage.setValue(InMemoryStorage.AUTH_TOKEN_KEY, jwt, false);
     }
   }
 
   logout(): Observable<any> {
     return new Observable((observer) => {
-      this.$localStorage.clear('authenticationToken');
-      this.$sessionStorage.clear('authenticationToken');
+      this.inMemoryStorage.clear(InMemoryStorage.AUTH_TOKEN_KEY, true);
       observer.complete();
     });
   }

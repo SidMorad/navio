@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Settings } from '../../providers';
 
-// Ionic Lazy loading & TranslateService.use(lang) method doesn't play well togather at the moment!
-// @IonicPage({
-//   priority: 'low'
-// })
+@IonicPage({
+  priority: 'low'
+})
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html'
@@ -34,8 +33,8 @@ export class SettingsPage {
 
   subSettings: any = SettingsPage;
 
-  countries: string[];
-  cities: string[];
+  countries: string[] = [];
+  cities: string[] = [];
 
   constructor(private settings: Settings, private navParams: NavParams,
               private formBuilder: FormBuilder, private viewCtrl: ViewController,
@@ -97,19 +96,22 @@ export class SettingsPage {
     this.page = this.navParams.get('page') || this.page;
     this.pageTitleKey = this.navParams.get('pageTitleKey') || this.pageTitleKey;
 
-    this.settings.load().then(() => {
-      this.settingsReady = true;
-      this.options = this.settings.allSettings;
-      this._buildForm();
-    });
+    this.settings.load();
+    this.settingsReady = true;
+    this.options = this.settings.allSettings;
+    this._buildForm();
   }
 
   loadCountriesAndCities() {
     this.translateService.get('COUNTRIES').subscribe((res: string[]) => {
-      this.countries = res;
+      if (res) {
+        this.countries = res;
+      }
     });
     this.translateService.get('CITIES').subscribe((res: string[]) => {
-      this.cities = res;
+      if (res) {
+        this.cities = res;
+      }
     });
   }
 

@@ -1,12 +1,12 @@
-import intersect from '@turf/intersect';
-import { polygon } from '@turf/helpers';
-import 'leaflet';
+// import intersect from '@turf/intersect';
+// import { polygon } from '@turf/helpers';
+import * as L from 'leaflet';
 
 export class GeoUtil {
 
-  static intersectPolygon(points1: any[], points2: any[]): boolean {
-    return intersect(polygon([points1]), polygon([points2])) != null;
-  }
+  // static intersectPolygon(points1: any[], points2: any[]): boolean {
+  //   return intersect(polygon([points1]), polygon([points2])) != null;
+  // }
 
   static intersectRect(points1: any[], points2: any[]): boolean {
     let corner1_1 = L.latLng(points1[0][0], points1[0][1]);

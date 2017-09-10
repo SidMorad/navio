@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Device } from '@ionic-native/device';
 import { Observable } from 'rxjs/Rx';
 import moment from 'moment';
 
@@ -8,6 +7,7 @@ import { TRAFFIC_API_BASE_URL } from '../app/config';
 import { CarSpeedDTO } from '../domain/model/car';
 import { UserLocationDTO } from '../domain/model/userlocation';
 import { Settings } from '../providers';
+import { InMemoryStorage } from '../shared/storage/in-memory-storage';
 
 @Injectable()
 export class TrackingService {
@@ -17,11 +17,11 @@ export class TrackingService {
   allUserLocationsCached: UserLocationDTO[];
 
   constructor(private http: Http, private settings: Settings,
-              private device: Device) {
+              private inMemoryStorage: InMemoryStorage) {
   }
 
   trackCarSpeed(dto: CarSpeedDTO): Observable<any> {
-    dto.uuid = this.device.uuid;
+    dto.uuid = this.inMemoryStorage.getValue(Settings.DEVICE_UUID);
     return this.http.post(TRAFFIC_API_BASE_URL + '/carspeed/record', dto);
   }
 

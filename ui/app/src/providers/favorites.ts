@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { InMemoryStorage } from '../shared/storage/in-memory-storage';
 
 import { AddressDTO } from '../domain/model/geocoding';
 
 @Injectable()
 export class Favorites {
 
-  FAVORITES_KEY: string = 'FAVORITES';
+  public static readonly FAVORITES_KEY: string = 'FAVORITES';
   favorites: any = {};
 
-  constructor(private storage: Storage) {
+  constructor(private inMemoryStorage: InMemoryStorage) {
   }
 
   load() {
-    this.storage.get(this.FAVORITES_KEY).then(val => {
-      if (val) {
-        this.favorites = JSON.parse(val);
-      }
-    });
+    let val = this.inMemoryStorage.getValue(Favorites.FAVORITES_KEY);
+    if (val) {
+      this.favorites = JSON.parse(val);
+    }
   }
 
   /*
@@ -34,11 +33,7 @@ export class Favorites {
   }
 
   save() {
-    return this.storage.set(this.FAVORITES_KEY, JSON.stringify(this.favorites)).then(() => {
-      console.log("Save favorites was successful ", this.favorites);
-    }).catch(error => {
-      console.log("Oops save favorites failed: ", error);
-    });
+    this.inMemoryStorage.setValue(Favorites.FAVORITES_KEY, JSON.stringify(this.favorites), true);
   }
 
   list(): AddressDTO[] {

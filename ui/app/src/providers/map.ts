@@ -4,10 +4,11 @@ import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
-import 'leaflet-control-geocoder';
-import 'leaflet.tilelayer.pouchdbcached';
+// import 'leaflet-control-geocoder';
+// import 'leaflet.tilelayer.pouchdbcached';
 import moment from 'moment';
 import 'moment-duration-format';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
@@ -40,10 +41,11 @@ export class Map {
   destination: AddressDTO;
   showAlternatives: boolean = false;
 
-  constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
-              private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
-              private geocodingService: GeocodingService, private settings: Settings) {
-  }
+constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
+  private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
+  private geocodingService: GeocodingService, private settings: Settings,
+  private loadingBarService: LoadingBarService) {
+}
 
   init() {
     if (this.map) {
@@ -139,6 +141,8 @@ export class Map {
 
     this.map.on({
       contextmenu: (e) => {     // Long press event
+        console.log("Contextmenu event triggered, event: ", e);
+        this.loadingBarService.startLoading();
         // this.zone.run( () => {  // Run it in Angular zone, necessary to make component creation to work, but it seems is not necessary anymore!
         this.showDestinationByLatLng(e.latlng, false, this.currentZoom);
         // });
@@ -198,13 +202,12 @@ export class Map {
   }
 
   initCurrentZoom() {
-    this.settings.getValue(Settings.LAST_ZOOM_LEVEL_KEY).then(val => {
-      if (!val) {
-        this.currentZoom = 18;
-      } else {
-        this.currentZoom = val;
-      }
-    });
+    let val = this.settings.getValue(Settings.LAST_ZOOM_LEVEL_KEY);
+    if (!val) {
+      this.currentZoom = 18;
+    } else {
+      this.currentZoom = val;
+    }
   }
 
   currentLocation() {
@@ -233,7 +236,7 @@ export class Map {
     let destinationPoints = GeoUtil.aPolygonWithTwoPoints([this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]);
     if (!this.settings.allSettings[Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE]) {
       if (new TehranEvenOddTrafficSpecification().isAllowedToday(this.settings.allSettings[Settings.CAR_PLATE_NUMBER_EVEN_OR_ODD])) {
-        if (GeoUtil.intersectPolygon(destinationPoints, TehranMainTrafficSpecification.polygonPoints())) {
+        if (GeoUtil.intersectRect(destinationPoints, TehranMainTrafficSpecification.polygonPoints())) {
           if (new TehranMainTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
             this.routeControl.getRouter().options.urlParameters = {
               'ch.disable': true,
@@ -243,7 +246,7 @@ export class Map {
         }
       }
       else {
-        if (GeoUtil.intersectPolygon(destinationPoints, TehranEvenOddTrafficSpecification.polygonPoints())) {
+        if (GeoUtil.intersectRect(destinationPoints, TehranEvenOddTrafficSpecification.polygonPoints())) {
           if (new TehranEvenOddTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
             this.routeControl.getRouter().options.urlParameters = {
               'ch.disable': true,
@@ -269,16 +272,12 @@ export class Map {
   }
 
   addHighlightLayers() {
-    this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE).then(val => {
-      if (val === true) {
-        this.highlightLayer.addLayer(this.tehranMainTrafficZonePolygon);
-      }
-    });
-    this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE).then(val => {
-      if (val === true) {
-        this.highlightLayer.addLayer(this.tehranEvenOddTrafficZonePloygon);
-      }
-    })
+    if (this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE) === true) {
+      this.highlightLayer.addLayer(this.tehranMainTrafficZonePolygon);
+    }
+    if (this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE) === true) {
+      this.highlightLayer.addLayer(this.tehranEvenOddTrafficZonePloygon);
+    }
   }
 
   showDestination(addressDTO: AddressDTO) {
@@ -331,6 +330,7 @@ export class Map {
     });
 
     popup.openPopup();
+    this.loadingBarService.endLoading();
     return marker;
   }
 
