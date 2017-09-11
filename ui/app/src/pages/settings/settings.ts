@@ -4,6 +4,7 @@ import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Settings } from '../../providers';
+import { FileStorage } from '../../plugindeps/file-storage';
 
 @IonicPage({
   priority: 'low'
@@ -38,7 +39,7 @@ export class SettingsPage {
 
   constructor(private settings: Settings, private navParams: NavParams,
               private formBuilder: FormBuilder, private viewCtrl: ViewController,
-              private translateService: TranslateService) {
+              private translateService: TranslateService, private fileStorage: FileStorage) {
   }
 
   ionViewDidLoad() {
@@ -74,7 +75,8 @@ export class SettingsPage {
         group = {
           overpassShowSpeedCamera: [this.options.overpassShowSpeedCamera],
           overpassShowFuelStation: [this.options.overpassShowFuelStation],
-          overpassShowTrafficLight: [this.options.overpassShowTrafficLight]
+          overpassShowTrafficLight: [this.options.overpassShowTrafficLight],
+          useCacheForMapTiles: [this.options.useCacheForMapTiles]
         };
         break;
     }
@@ -96,10 +98,12 @@ export class SettingsPage {
     this.page = this.navParams.get('page') || this.page;
     this.pageTitleKey = this.navParams.get('pageTitleKey') || this.pageTitleKey;
 
-    this.settings.load();
-    this.settingsReady = true;
-    this.options = this.settings.allSettings;
-    this._buildForm();
+    this.fileStorage.loadSettings().then(() => {
+      this.settings.load();
+      this.settingsReady = true;
+      this.options = this.settings.allSettings;
+      this._buildForm();
+    });
   }
 
   loadCountriesAndCities() {

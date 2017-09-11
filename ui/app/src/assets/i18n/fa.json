@@ -19,6 +19,7 @@
   "MAP_SHOW_SPEED_CAMERA": "نمایش دوربینهای محدودیت سرعت",
   "MAP_SHOW_FUEL_STATION": "نمایش جایگاهای پمپ بنزین",
   "MAP_SHOW_TRAFFIC_LIGHT": "نمایش چراغ های قرمز",
+  "USE_CACHE_FOR_MAP_TILES": "لود نقشه بصورت آفلاین (با استفاده از فضای ذخیره دستگاه)",
 
   "LOGIN": "ورود",
   "PAGE": "صفحه",

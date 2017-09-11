@@ -19,6 +19,7 @@ export class Settings {
   public static readonly OVERPASS_SHOW_SPEED_CAMERA = 'overpassShowSpeedCamera';
   public static readonly OVERPASS_SHOW_FUEL_STATION = 'overpassShowFuelStation';
   public static readonly OVERPASS_SHOW_TRAFFIC_LIGHT = 'overpassShowTrafficLight';
+  public static readonly USE_CACHE_FOR_MAP_TILES = 'useCacheForMapTiles';
 
   public static readonly DEVICE_UUID = 'deviceUuid';
 

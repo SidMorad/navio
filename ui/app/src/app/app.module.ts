@@ -32,7 +32,8 @@ export function provideSettings(inMemoryStorage: InMemoryStorage) {
     userGoInvisible: false,
     overpassShowSpeedCamera: true,
     overpassShowFuelStation: false,
-    overpassShowTrafficLight: false
+    overpassShowTrafficLight: false,
+    useCacheForMapTiles: true
   });
 }
 

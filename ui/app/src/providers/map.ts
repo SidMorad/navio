@@ -5,7 +5,7 @@ import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
 import 'leaflet-overpass-layer';
 // import 'leaflet-control-geocoder';
-// import 'leaflet.tilelayer.pouchdbcached';
+import 'leaflet.tilelayer.pouchdbcached';
 import moment from 'moment';
 import 'moment-duration-format';
 import { LoadingBarService } from '@ngx-loading-bar/core';
@@ -62,7 +62,7 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
       attributionPrefix: '',
       maxZoom: 18,
       opacity: .7,
-      useCache: true
+      useCache: this.settings.allSettings[Settings.USE_CACHE_FOR_MAP_TILES]
     }).addTo(this.map);
 
     tileLayer.on({

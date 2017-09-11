@@ -8,7 +8,7 @@ sleep 1
 printf "Done.\n\n"
 
 # Second patch TileLayer.PouchDBCached library
-#printf "Patching TileLayer.PouchDBCached...\n\n"
-#cp patchs/L.TileLayer.PouchDBCached-patched.js node_modules/leaflet.tilelayer.pouchdbcached/L.TileLayer.PouchDBCached.js
-#sleep 1
-#printf "Done.\n"
+printf "Patching TileLayer.PouchDBCached...\n\n"
+cp patchs/L.TileLayer.PouchDBCached-patched.js node_modules/leaflet.tilelayer.pouchdbcached/L.TileLayer.PouchDBCached.js
+sleep 1
+printf "Done.\n"
