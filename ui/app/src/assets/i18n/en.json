@@ -82,9 +82,8 @@
   "NEW UPDATE IS AVAILABLE": "New update is available!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "Navio is updated!",
 
-  "EXIT_QM": "Exit ?",
   "OK": "OK",
-  "ARE_YOU_SURE_YOU_WANT_TO_EXIT": "Are you sure you want to exit?",
+  "PRESS_BACK_AGAIN_TO_EXIT_QM": "Press back again to exit?",
 
   "COUNTRIES": [
     {

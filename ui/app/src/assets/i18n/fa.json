@@ -82,9 +82,8 @@
   "NEW UPDATE IS AVAILABLE": "نسخه بروزتری در دسترس است!",
   "YOUR APP UPDATED TO THE LATEST VERSION": "نویو بروزرسانی شد.",
 
-  "EXIT_QM": "خروج ؟",
   "OK": "بسیار خوب",
-  "ARE_YOU_SURE_YOU_WANT_TO_EXIT": "آیا برای خروج مطمئن هستید؟",
+  "PRESS_BACK_AGAIN_TO_EXIT_QM": "اگر مایل به خروج هستید؟ دکمه برگشت را دوباره بزنید.",
 
   "COUNTRIES": [
     {

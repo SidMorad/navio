@@ -10,12 +10,12 @@ export class InMemoryStorage {
   onDeleteFromFileEvent = new EventEmitter();
 
   getValue(key: string) {
-    console.log("IN_MEMORY_STORAGE#GET: key: ", key, " Value: ", this.memoryStore[key]);
+    //console.log("IN_MEMORY_STORAGE#GET: key: ", key, " Value: ", this.memoryStore[key]);
     return this.memoryStore[key];
   }
 
   setValue(key: string, value: any, persistIt: boolean) {
-    console.log("IN_MEMORY_STORAGE#SET: key [", key, "] value [", value, "]");
+    //console.log("IN_MEMORY_STORAGE#SET: key [", key, "] value [", value, "]");
     this.memoryStore[key] = value;
     if (persistIt) {
       this.onStoreToFileEvent.emit({key: key, value: value});

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, isDevMode } from '@angular/core';
 import { IonicPage, ModalController, AlertController, Platform,
-         NavController } from 'ionic-angular';
+         ToastController, NavController, MenuController, IonicApp } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Diagnostic } from '@ionic-native/diagnostic';
@@ -37,7 +37,9 @@ constructor(private geolocation: Geolocation, private platform: Platform,
   private alertCtrl: AlertController, private translateService: TranslateService,
   private navCtrl: NavController, private fileStorage: FileStorage,
   private inMemoryStorage: InMemoryStorage, private device: Device,
-  private principal: Principal, private statusBar: StatusBar) {
+  private principal: Principal, private statusBar: StatusBar,
+  private toastCtrl: ToastController, private menuCtrl: MenuController,
+  private ionicApp: IonicApp) {
   this.initApp();
 }
 
@@ -179,61 +181,76 @@ constructor(private geolocation: Geolocation, private platform: Platform,
     this.modalCtrl.create('DestinationModal', { address: this.map.destination }).present();
   }
 
-  backButtonAction() {
-    console.log("Back button clicked.");
-    this.translateService.get(['EXIT_QM', 'CANCEL', 'OK', 'ARE_YOU_SURE_YOU_WANT_TO_EXIT']).subscribe((translated) => {
-      this.alertCtrl.create({
-        title: translated.EXIT_QM,
-        message: translated.ARE_YOU_SURE_YOU_WANT_TO_EXIT,
-        buttons: [
-          {
-            text: translated.OK,
-            handler: () => {
-              this.platform.exitApp();
-            }
-          },
-          {
-            text: translated.CANCEL,
-            role: 'cancel'
-          }
-        ]
-      })
-    });
-  }
-
   initApp() {
-    this.fileStorage.loadSettings().then(() => {
-      this.settings.load();
-      this.translateService.onLangChange.subscribe( data => {
-        console.log("OnLangChange triggered with data: ", data);
-        this.platform.setLang(data.lang, true);
-        this.platform.setDir((data.lang === 'fa') ? 'rtl': 'ltr', true);
+    this.platform.ready().then(() => {
+      this.fileStorage.loadSettings().then(() => {
+        this.settings.load();
+        this.translateService.onLangChange.subscribe( data => {
+          console.log("OnLangChange triggered with data: ", data);
+          this.platform.setLang(data.lang, true);
+          this.platform.setDir((data.lang === 'fa') ? 'rtl': 'ltr', true);
+        });
+        this.translateService.setDefaultLang(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+        this.translateService.use(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+        console.log("Translate service is set with prefer language: ", this.settings.allSettings[Settings.PREFER_LANGUAGE]);
+
+        this.deeplinks.routeWithNavController(this.navCtrl, {
+          '/dl/:location': 'SocialSharingCallback',
+        }).subscribe((match) => {
+          console.log('Successfully routed', match);
+        }, (nomatch) => {
+          console.warn("Unmatced route", nomatch);
+        });
+
+        this.inMemoryStorage.setValue(Settings.DEVICE_UUID, this.device.uuid, false);
+        this.statusBar.styleDefault();
       });
-      this.translateService.setDefaultLang(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
-      this.translateService.use(this.settings.allSettings[Settings.PREFER_LANGUAGE]);
-      console.log("Translate service is set with prefer language: ", this.settings.allSettings[Settings.PREFER_LANGUAGE]);
 
-      this.deeplinks.routeWithNavController(this.navCtrl, {
-        '/dl/:location': 'SocialSharingCallback',
-      }).subscribe((match) => {
-        console.log('Successfully routed', match);
-      }, (nomatch) => {
-        console.warn("Unmatced route", nomatch);
+      this.fileStorage.loadFavorites().then(() => {
+        this.favorites.load();
       });
 
-      this.inMemoryStorage.setValue(Settings.DEVICE_UUID, this.device.uuid, false);
-      this.statusBar.styleDefault();
-    });
+      this.fileStorage.get(InMemoryStorage.AUTH_TOKEN_KEY).then((value) => {      // Remember-me feature
+        if (value) {
+          this.inMemoryStorage.setValue(InMemoryStorage.AUTH_TOKEN_KEY, value, false);
+          this.principal.identity(true).then();
+        }
+      });
 
-    this.fileStorage.loadFavorites().then(() => {
-      this.favorites.load();
-    });
+      // Handle back button for exit confirmation
+      let lastTimeBackPressed = 0;
+      let timePeriodToExit = 3000;
+      this.platform.registerBackButtonAction(() => {
+        let activePortal = this.ionicApp._loadingPortal.getActive() ||
+          this.ionicApp._modalPortal.getActive() ||
+          // this.ionicApp._toastPortal.getActive() ||
+          this.ionicApp._overlayPortal.getActive();
 
-    this.fileStorage.get(InMemoryStorage.AUTH_TOKEN_KEY).then((value) => {      // Remember-me feature
-      if (value) {
-        this.inMemoryStorage.setValue(InMemoryStorage.AUTH_TOKEN_KEY, value, false);
-        this.principal.identity(true).then();
-      }
+        if (activePortal) {
+          activePortal.dismiss();
+        }
+        else if (this.menuCtrl.isOpen()) {
+          this.menuCtrl.close();
+        }
+        else if (this.navCtrl.getActive().component.name === "HomePage") {
+          if (new Date().getTime() - lastTimeBackPressed < timePeriodToExit) {
+            this.platform.exitApp();
+          }
+          else {
+            this.translateService.get('PRESS_BACK_AGAIN_TO_EXIT_QM').subscribe((translatedMessage) => {
+              this.toastCtrl.create({
+                message: translatedMessage,
+                duration: 3000
+              }).present();
+            });
+            lastTimeBackPressed = new Date().getTime();
+          }
+        }
+        else {
+          this.navCtrl.pop();
+        }
+      });
+
     });
 
     // this.deploy.channel = 'dev'; // TODO Comment this line before production release

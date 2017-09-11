@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-import { MainPage } from '../pages/main/main';
+import { BlankPage } from '../pages/blank/blank';
 import { Principal } from '../shared';
 import { AddressDTO } from '../domain/model';
 import { GeocodingService } from '../services';
@@ -14,7 +14,7 @@ import { GeocodingService } from '../services';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any = MainPage;
+  rootPage: any = BlankPage;
   user: any = {};
   @ViewChild('content') nav: NavController;
   items: Observable<AddressDTO[]>;

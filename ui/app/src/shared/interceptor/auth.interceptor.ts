@@ -12,7 +12,6 @@ export class AuthInterceptor extends HttpInterceptor {
 
   requestIntercept(options?: RequestOptionsArgs): RequestOptionsArgs {
     const token = this.inMemoryStorage.getValue(InMemoryStorage.AUTH_TOKEN_KEY);
-    console.log("requestIntercept TOKEN: ", token);
     if (!!token) {
       options.headers.append('Authorization', 'Bearer ' + token);
     }

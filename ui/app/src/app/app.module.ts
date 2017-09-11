@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 
 import { MyApp } from './app.component';
-import { MainPage } from '../pages/main/main';
+import { BlankPage } from '../pages/blank/blank';
 import { AddressPopup } from '../pages/address/address.popup';
 import { SharedModule } from '../shared/shared.module';
 import { Settings, OverpassUtil, Favorites, Map } from '../providers';
@@ -40,7 +40,7 @@ export function provideSettings(inMemoryStorage: InMemoryStorage) {
 @NgModule({
   declarations: [
     MyApp,
-    MainPage,
+    BlankPage,
     AddressPopup
   ],
   imports: [
@@ -54,7 +54,7 @@ export function provideSettings(inMemoryStorage: InMemoryStorage) {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    MainPage,
+    BlankPage,
     AddressPopup
   ],
   providers: [
