@@ -47,7 +47,7 @@ export function provideSettings(inMemoryStorage: InMemoryStorage) {
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp, {
-      preloadModules: false
+      preloadModules: true
     }),
     SharedModule,
     LoadingBarModule
