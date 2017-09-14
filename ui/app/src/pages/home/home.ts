@@ -96,10 +96,10 @@ constructor(private geolocation: Geolocation, private platform: Platform,
     this.watchPosition.subscribe((data) => {
       console.log("watchPosition event: ", data, " currentZoom level: ", this.map.currentZoom);
       if (data.coords) {
-        this.map.currentLocationLayer.clearLayers();
-        this.map.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+        this.map.currentLocationLayerGroup.clearLayers();
+        this.map.currentLocationLayerGroup.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 50}));
-        this.map.currentLocationLayer.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
+        this.map.currentLocationLayerGroup.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
           { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
         if (firstTime && this.map.map && this.map.centerToCurrentLocation()) {
           firstTime = false;
@@ -115,9 +115,9 @@ constructor(private geolocation: Geolocation, private platform: Platform,
       }
       else {
         if (isDevMode()) {  // Workaround for `ionic cordova run android -l` command that doesn't work on latest chrome browser anymore, therefore watchPosition doesn't work either.
-            this.map.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
+            this.map.currentLocationLayerGroup.addLayer(L.circleMarker([35.7000, 51.5000],
               { radius : 50}));
-            this.map.currentLocationLayer.addLayer(L.circleMarker([35.7000, 51.5000],
+            this.map.currentLocationLayerGroup.addLayer(L.circleMarker([35.7000, 51.5000],
               { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
             if (firstTime && this.map.map && this.map.centerToCurrentLocation()) {
               firstTime = false;

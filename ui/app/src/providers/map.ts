@@ -24,13 +24,14 @@ declare var L: any;
 export class Map {
   map: any;
   routeControl: any;
-  currentLocationLayer: any = new L.LayerGroup([]);
-  startLocationLayer: any = new L.LayerGroup([]);
-  onlineUserLayer: any = new L.LayerGroup([]);
-  highlightLayer: any = new L.LayerGroup([]);
-  overpassLayer: any = new L.LayerGroup([]);
-  popupsLayer: any = new L.LayerGroup([]);
-  overpassQuery: any = new L.LayerGroup([]);
+  currentLocationLayerGroup: any = new L.LayerGroup([]);
+  startLocationLayerGroup: any = new L.LayerGroup([]);
+  onlineUserLayerGroup: any = new L.LayerGroup([]);
+  highlightLayerGroup: any = new L.LayerGroup([]);
+  overpassLayerGroup: any = new L.LayerGroup([]);
+  popupsLayerGroup: any = new L.LayerGroup([]);
+  tileLayerGroup: any = new L.LayerGroup([]);
+  overpassQuery: any = new L.Layer();
   currentZoom: number;
   popupRef: ComponentRef<AddressPopup>;
   isCenterToCurrentLocation: boolean;
@@ -55,23 +56,6 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
 
     this.map = L.map('map', {
       attributionControl: false
-    });
-
-    let tileLayer = L.tileLayer(TILE_API_BASE_URL + '/{z}/{x}/{y}.png', {
-      attribution: 'Navio | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      attributionPrefix: '',
-      maxZoom: 18,
-      opacity: .7,
-      useCache: this.settings.allSettings[Settings.USE_CACHE_FOR_MAP_TILES]
-    }).addTo(this.map);
-
-    tileLayer.on({
-      tilecachehit: (e) => {
-        console.log("Cache HIT, ", e.url);
-      },
-      tilecachemiss: (e) => {
-        console.log("Cache MISS, ", e.url);
-      }
     });
 
     this.map.addControl(L.control.attribution({
@@ -126,18 +110,21 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
     this.initalizeOverpassQuery();
     this.overpassUtil.onOverpassSettingsChangeEvent.subscribe(() => {
       this.initalizeOverpassQuery();
-      this.overpassLayer.clearLayers();
+      this.overpassLayerGroup.clearLayers();
       if (this.currentZoom > 14) {
-        this.overpassLayer.addLayer(this.overpassQuery);
+        this.overpassLayerGroup.addLayer(this.overpassQuery);
       }
     });
 
-    this.currentLocationLayer.addTo(this.map);
-    this.startLocationLayer.addTo(this.map);
-    this.onlineUserLayer.addTo(this.map);
-    this.highlightLayer.addTo(this.map);
-    this.overpassLayer.addTo(this.map);
-    this.popupsLayer.addTo(this.map);
+    this.tileLayerGroup.addLayer(this.tileLayer());
+
+    this.tileLayerGroup.addTo(this.map);
+    this.currentLocationLayerGroup.addTo(this.map);
+    this.startLocationLayerGroup.addTo(this.map);
+    this.onlineUserLayerGroup.addTo(this.map);
+    this.highlightLayerGroup.addTo(this.map);
+    this.overpassLayerGroup.addTo(this.map);
+    this.popupsLayerGroup.addTo(this.map);
 
     this.map.on({
       contextmenu: (e) => {     // Long press event
@@ -148,17 +135,17 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
         // });
       },
       click: () => {
-        this.popupsLayer.clearLayers();
+        this.popupsLayerGroup.clearLayers();
       },
       zoomend: (e) => {
         this.currentZoom = e.target._zoom;
         this.settings.setValue(Settings.LAST_ZOOM_LEVEL_KEY, this.currentZoom);
         if (this.currentZoom > 14) {
-          if (this.overpassLayer.getLayers().length === 0) {
-            this.overpassLayer.addLayer(this.overpassQuery);
+          if (this.overpassLayerGroup.getLayers().length === 0) {
+            this.overpassLayerGroup.addLayer(this.overpassQuery);
           }
         } else {
-          this.overpassLayer.clearLayers();
+          this.overpassLayerGroup.clearLayers();
         }
       },
       movestart: () => {
@@ -177,15 +164,17 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
           // });
         }
         else {
-          this.onlineUserLayer.clearLayers();
+          this.onlineUserLayerGroup.clearLayers();
         }
       }
     });
 
     this.addHighlightLayers();
     this.settings.onSettingsChangeEvent.subscribe(() => {
-      this.highlightLayer.clearLayers();
+      this.highlightLayerGroup.clearLayers();
       this.addHighlightLayers();
+      this.tileLayerGroup.clearLayers();
+      this.tileLayerGroup.addLayer(this.tileLayer());
     });
 
     this.centerToCurrentLocation();
@@ -211,8 +200,8 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
   }
 
   currentLocation() {
-    if (this.currentLocationLayer.getLayers()[0]) {
-      return this.currentLocationLayer.getLayers()[0]._latlng;
+    if (this.currentLocationLayerGroup.getLayers()[0]) {
+      return this.currentLocationLayerGroup.getLayers()[0]._latlng;
     }
     return null;
   }
@@ -273,10 +262,10 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
 
   addHighlightLayers() {
     if (this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE) === true) {
-      this.highlightLayer.addLayer(this.tehranMainTrafficZonePolygon);
+      this.highlightLayerGroup.addLayer(this.tehranMainTrafficZonePolygon);
     }
     if (this.settings.getValue(Settings.HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE) === true) {
-      this.highlightLayer.addLayer(this.tehranEvenOddTrafficZonePloygon);
+      this.highlightLayerGroup.addLayer(this.tehranEvenOddTrafficZonePloygon);
     }
   }
 
@@ -285,7 +274,7 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
   }
 
   showDestinationByLatLng(latlng: LatLng, centerToPosition: boolean, zoom: number) {
-    this.popupsLayer.clearLayers();
+    this.popupsLayerGroup.clearLayers();
     this.geocodingService.reverse(latlng, zoom).subscribe(addressDTO => {
       return this.showDestinationPopup(addressDTO, centerToPosition);
     }, (error) => {
@@ -299,7 +288,7 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
       this.map.panTo(new L.latLng(addressDTO.latlng.lat, addressDTO.latlng.lng));
     }
     var marker = L.marker(addressDTO.latlng, {icon: this.redIcon, draggable: true});
-    this.popupsLayer.addLayer(marker);
+    this.popupsLayerGroup.addLayer(marker);
 
     if (this.popupRef) { this.popupRef.destroy(); }
     const compFactory = this.resolver.resolveComponentFactory(AddressPopup);
@@ -309,7 +298,7 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
       this.navigateToAddress(addressDTO);
     });
     this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
-      this.popupsLayer.clearLayers();
+      this.popupsLayerGroup.clearLayers();
     });
 
     this.applicationRef.attachView(this.popupRef.hostView);
@@ -337,13 +326,13 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
   navigateToAddress(addressDTO: AddressDTO) {
     this.destination = addressDTO;
     this.reOrganizeRouterUrlParameters();
-    this.popupsLayer.clearLayers();
+    this.popupsLayerGroup.clearLayers();
     this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
     this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
   }
 
   stopTheRoute() {
-    this.popupsLayer.clearLayers();
+    this.popupsLayerGroup.clearLayers();
     this.routeControl.getPlan().spliceWaypoints(0, this.routeControl.getPlan().getWaypoints().length);
     this.isInDrivingMode = false;
     this.activeRoute = null;
@@ -356,16 +345,16 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
   }
 
   setAsStartPoint(address: AddressDTO) {
-    this.startLocationLayer.clearLayers();
-    this.startLocationLayer.addLayer(L.marker(address.latlng, {icon: this.violetIcon}));
+    this.startLocationLayerGroup.clearLayers();
+    this.startLocationLayerGroup.addLayer(L.marker(address.latlng, {icon: this.violetIcon}));
   }
 
   resolveStartingPoint() {
-    if (this.startLocationLayer.getLayers().length > 0) {
-      return this.startLocationLayer.getLayers()[0]._latlng;
+    if (this.startLocationLayerGroup.getLayers().length > 0) {
+      return this.startLocationLayerGroup.getLayers()[0]._latlng;
     }
     else {
-      return this.currentLocationLayer.getLayers()[0]._latlng;
+      return this.currentLocationLayerGroup.getLayers()[0]._latlng;
     }
   }
 
@@ -383,13 +372,33 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
   }
 
   refreshOnlineUsersLayer(uls: UserLocationDTO[]) {
-    this.onlineUserLayer.clearLayers();
+    this.onlineUserLayerGroup.clearLayers();
     if (uls) {
       uls.forEach(ul => {
-        this.onlineUserLayer.addLayer(L.marker({ lat: ul.latitude, lng: ul.longitude}, {icon: this.onlinUserIcon})
+        this.onlineUserLayerGroup.addLayer(L.marker({ lat: ul.latitude, lng: ul.longitude}, {icon: this.onlinUserIcon})
             .bindPopup(ul.userId ? ul.userId : 'Driver'));
       });
     }
+  }
+
+  tileLayer(): any {
+    let tileLayer = L.tileLayer(TILE_API_BASE_URL + '/{z}/{x}/{y}.png', {
+      attribution: 'Navio | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attributionPrefix: '',
+      maxZoom: 18,
+      opacity: .7,
+      useCache: this.settings.allSettings[Settings.USE_CACHE_FOR_MAP_TILES]
+    }).addTo(this.map);
+
+    tileLayer.on({
+      tilecachehit: (e) => {
+        console.log("Cache HIT, ", e.url);
+      },
+      tilecachemiss: (e) => {
+        console.log("Cache MISS, ", e.url);
+      }
+    });
+    return tileLayer;
   }
 
   initalizeOverpassQuery() {
