@@ -2,6 +2,7 @@
 
 # This script designed to be exectued in a VPS server, for instance in a PersianGig VPS server with ubuntu 16.04 installed.
 
+echo "Creating user 'ubuntu'"
 useradd -d /home/ubuntu ubuntu
 passwd ubuntu
 usermod -aG sudo ubuntu

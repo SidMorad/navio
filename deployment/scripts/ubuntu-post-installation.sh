@@ -6,6 +6,7 @@
 
 # Update apt
 apt-get update
+apt-get -y upgrade
 
 # Install packages to allow apt to use a repository over HTTPS
 apt-get install -y apt-transport-https ca-certificates curl software-properties-common
