@@ -26,7 +26,7 @@
   "ACCOUNT_PAGE": "صفحه حساب کاربری",
   "REGISTRATION_PAGE": "صفحه ثبت نام",
   "LOGIN_PAGE": "صفحه ورود",
-  "USERNAME OR PASSWORD IS INCORRECT": "خطای ورود. اگر حساب کاربری شما فعال شده است، پس از بررسی نام کاربری و کلمه عبور مجددا سعی کنید.",
+  "USERNAME OR PASSWORD IS INCORRECT": "نام‌کاربری و یا رمزعبور اشتباه است",
   "USERNAME": "نام‌ کاربری",
   "PASSWORD": "رمز عبور",
   "REMEMBER ME": "مرا به خاطر بسپار",
