@@ -141,3 +141,10 @@ html[dir='rtl'] {
   border-right-color: transparent;
   border-radius: 50%;
 }
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  font-size: 30px;
+  min-height: 40px;
+  min-width: 40px;
+}
