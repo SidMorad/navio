@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+apply plugin: 'eclipse'
+apply plugin: 'com.greensopinion.gradle-android-eclipse'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+
+    defaultConfig {
+        applicationId "biz.navio"
+        minSdkVersion 10
+        targetSdkVersion 22
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../../app/release-dev.keystore")
+            storePassword "change-this-to-actual-password"
+            keyAlias "aval_viewer"
+            keyPassword "change-this-to-actual-password"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    lintOptions {
+        /* CGIARProvider refers to java.awt
+         * Helper7 refers to java.lang.management
+         * HeightTile refers to javax.imageio and java.awt
+         * OSMElement refers to javax.xml.stream
+         */
+        disable 'InvalidPackage'
+    }
+}
+
+
+/** only necessary if you need to use latest SNAPSHOT
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+ **/
+
+dependencies {
+
+    compile 'org.mapsforge:vtm:0.8.0'
+    compile 'org.mapsforge:vtm-android:0.8.0'
+    compile 'org.mapsforge:vtm-android:0.8.0:natives-armeabi'
+    compile 'org.mapsforge:vtm-android:0.8.0:natives-armeabi-v7a'
+    compile 'org.mapsforge:vtm-android:0.8.0:natives-x86'
+    compile('org.mapsforge:vtm-jts:0.8.0') {
+        exclude group: 'com.vividsolutions', module: 'jts-core'
+    }
+    compile 'org.mapsforge:vtm-themes:0.8.0'
+    compile 'com.caverock:androidsvg:1.2.2-beta-1'
+//    compile 'com.vividsolutions:jts-core:1.14.0'
+
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.slf4j:slf4j-android:1.7.25'
+}
+
+task run(dependsOn: 'installDebug') {
+    doFirst {
+        println(">> adb run...")
+        String adb = System.getenv()['ANDROID_HOME'] + '/platform-tools/adb'
+        String cmd = "${adb} shell am start -n biz.navio/.MainActivity"
+        def proc = cmd.execute()
+        proc.in.eachLine { line -> println line }
+        proc.err.eachLine { line -> System.err.println('ERROR: ' + line) }
+        proc.waitFor()
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="bin" path="src/main/java"/>
+	<classpathentry kind="src" output="bin" path="build/generated/source/r/debug"/>
+	<classpathentry kind="src" output="bin" path="build/generated/source/buildConfig/debug"/>
+	<classpathentry kind="src" output="bin" path="build/generated/source/aidl/debug"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
+	<classpathentry kind="var" path="ANDROID_HOME/platforms/android-26/android.jar" sourcepath="ANDROID_HOME/sources/android-26"/>
+	<classpathentry kind="var" path="M2_REPO/org/mapsforge/vtm/0.8.0/vtm-0.8.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mapsforge/vtm-android/0.8.0/vtm-android-0.8.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mapsforge/vtm-jts/0.8.0/vtm-jts-0.8.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/mapsforge/vtm-themes/0.8.0/vtm-themes-0.8.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-android/1.7.25/slf4j-android-1.7.25.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
