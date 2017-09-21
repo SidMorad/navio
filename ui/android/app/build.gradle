@@ -2,14 +2,65 @@ apply plugin: 'com.android.application'
 apply plugin: 'eclipse'
 apply plugin: 'com.greensopinion.gradle-android-eclipse'
 
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+
+    compile 'org.mapsforge:vtm-android:0.8.0'
+    compile 'org.mapsforge:vtm-android:0.8.0:natives-armeabi'
+    compile 'org.mapsforge:vtm-android:0.8.0:natives-armeabi-v7a'
+    compile 'org.mapsforge:vtm-android:0.8.0:natives-x86'
+    compile('org.mapsforge:vtm-jts:0.8.0') {
+        exclude group: 'com.vividsolutions', module: 'jts-core'
+    }
+//    compile 'org.mapsforge:vtm-http:0.8.0'
+//    compile 'org.mapsforge:vtm-json:0.8.0'
+//    compile 'org.mapsforge:vtm-themes:0.8.0'
+//    compile 'org.mapsforge:mapsforge-core:0.8.0'
+//    compile 'org.mapsforge:mapsforge-poi:0.8.0'
+//    compile 'org.mapsforge:mapsforge-poi-android:0.8.0'
+//    compile 'org.mapsforge:spatialite-android:0.8.0'
+//    compile 'org.mapsforge:spatialite-android:0.8.0:natives-armeabi'
+//    compile 'org.mapsforge:spatialite-android:0.8.0:natives-armeabi-v7a'
+//    compile 'org.mapsforge:spatialite-android:0.8.0:natives-x86'
+//    compile 'com.android.support:support-v4:26.0.1'
+
+    compile ('com.graphhopper:directions-api-client-optimized:0.9.0') {
+         exclude group: 'com.carrotsearch'
+    }
+
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.slf4j:slf4j-android:1.7.25'
+
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 
     defaultConfig {
         applicationId "biz.navio"
         minSdkVersion 10
         targetSdkVersion 22
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/resources']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+        }
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
     }
 
     signingConfigs {
@@ -36,6 +87,11 @@ android {
          * OSMElement refers to javax.xml.stream
          */
         disable 'InvalidPackage'
+        abortOnError false
+    }
+
+    packagingOptions {
+        pickFirst 'META-INF/LICENSE'
     }
 }
 
@@ -47,23 +103,6 @@ configurations.all {
 }
  **/
 
-dependencies {
-
-    compile 'org.mapsforge:vtm:0.8.0'
-    compile 'org.mapsforge:vtm-android:0.8.0'
-    compile 'org.mapsforge:vtm-android:0.8.0:natives-armeabi'
-    compile 'org.mapsforge:vtm-android:0.8.0:natives-armeabi-v7a'
-    compile 'org.mapsforge:vtm-android:0.8.0:natives-x86'
-    compile('org.mapsforge:vtm-jts:0.8.0') {
-        exclude group: 'com.vividsolutions', module: 'jts-core'
-    }
-    compile 'org.mapsforge:vtm-themes:0.8.0'
-    compile 'com.caverock:androidsvg:1.2.2-beta-1'
-//    compile 'com.vividsolutions:jts-core:1.14.0'
-
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'org.slf4j:slf4j-android:1.7.25'
-}
 
 task run(dependsOn: 'installDebug') {
     doFirst {

@@ -53,17 +53,17 @@
             <classifier>natives-x86</classifier>
         </dependency>
 
-		<dependency>
-			<groupId>org.mapsforge</groupId>
-			<artifactId>vtm-jts</artifactId>
-			<version>${vtm.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.vividsolutions</groupId>
-					<artifactId>jts-core</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <dependency>
+            <groupId>org.mapsforge</groupId>
+            <artifactId>vtm-jts</artifactId>
+            <version>${vtm.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vividsolutions</groupId>
+                    <artifactId>jts-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.mapsforge</groupId>
             <artifactId>vtm-themes</artifactId>
@@ -97,6 +97,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>directions-api-client-optimized</artifactId>
+            <version>0.9.0</version>
+        </dependency>
     </dependencies>
 
     <build>
