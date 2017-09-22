@@ -1,0 +1,19 @@
+{
+	"version": 8,
+	"name": "Raster Tiles",
+	"sources": {
+		"navioTileServer": {
+			"type": "raster",
+			"tiles": ["https://tile.webebook.org/tile/{z}/{x}/{y}.png"],
+			"tileSize": 256
+		}
+	},
+	"layers": [{
+		"id": "navioTileServer",
+		"type": "raster",
+		"source": "navioTileServer",
+		"paint": {
+			   "raster-fade-duration": 100
+		}
+   }]
+}
