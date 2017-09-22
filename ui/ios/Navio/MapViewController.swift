@@ -6,17 +6,16 @@
 //  Copyright © 2017 navio tech team. All rights reserved.
 //
 
-import UIKit
 import Mapbox
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, MGLMapViewDelegate {
 
 	var mapView: MGLMapView!
 	let locationManager = CLLocationManager()
 
 	// TODO: temporary, needs to be replaced by user current location coordinates
 	// Tehran coordinates
-	let customeLocation : CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 35.6892, longitude: 51.389)
+	let customLocation : CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 35.6892, longitude: 51.389)
 
 
 
@@ -27,13 +26,45 @@ class MapViewController: UIViewController {
 		let styleURL = URL(string: "navioRasterV8.json")
 		mapView = MGLMapView(frame: view.bounds, styleURL: styleURL)
 
+		mapView.delegate = self
+
 		//locationManager.location!.coordinate
-		mapView.setCenter(customeLocation, zoomLevel: 10, animated: false)
+		mapView.setCenter(customLocation, zoomLevel: 8, animated: false)
 
 		mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-		mapView.tintColor = .white
+		mapView.showsUserLocation = true
+		mapView.compassView.isHidden = false
+
+		// TODO: add Mapbox and OSM appreciation somewhere else
+		mapView.logoView.isHidden = true
+		mapView.attributionButton.isHidden = true
 
 		view.addSubview(mapView)
+	}
+
+
+
+	// Override annotation markers here
+	func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+
+		// TODO: needs a better condition
+		if annotation.title! == "You Are Here" {
+
+			// Use previously loaded view if exists
+			var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "arrow")
+
+			if annotationView == nil {
+				let arrowImage = UIImage(named: "arrow")!
+
+				// Mapbox uses MGLUserLocationAnnotationView specifically for user location annotation
+				annotationView = MGLUserLocationAnnotationView(annotation: annotation, reuseIdentifier: "arrow")
+
+				annotationView!.addSubview(UIImageView(image: arrowImage))
+			}
+
+			return annotationView
+		}
+		return nil
 	}
 
 
@@ -47,6 +78,7 @@ class MapViewController: UIViewController {
 			return
 
 		case .denied, .restricted:
+			// TODO: Show a message on how to enable location service from settings
 			print("location access denied")
 
 		default:
@@ -61,6 +93,4 @@ class MapViewController: UIViewController {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
-
 }
