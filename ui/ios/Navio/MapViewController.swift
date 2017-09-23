@@ -12,10 +12,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 
 	var mapView: MGLMapView!
 	let locationManager = CLLocationManager()
+	let annotation = MGLPointAnnotation()
 
 	// TODO: temporary, needs to be replaced by user current location coordinates
 	// Tehran coordinates
 	let customLocation : CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 35.6892, longitude: 51.389)
+
 
 
 
@@ -40,7 +42,45 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 		mapView.attributionButton.isHidden = true
 
 		view.addSubview(mapView)
+
+		// Add a long press gesture recognizer to the map
+		let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotation(_:)))
+		longPressGestureRecognizer.minimumPressDuration = 0.7
+		mapView.addGestureRecognizer(longPressGestureRecognizer)
 	}
+
+
+
+
+	@objc func addAnnotation(_ gestureRecognizer: UILongPressGestureRecognizer){
+
+		// Check to see if tap duration was satisfied
+		if gestureRecognizer.state == .began {
+
+			let touchPoint = gestureRecognizer.location(in: mapView)
+			let touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+
+			// Reversing the touch coordinate to location name
+			CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: touchCoordinate.latitude, longitude: touchCoordinate.longitude), completionHandler: { (placemarks, error) -> Void in
+
+				if error != nil {
+					print(error.debugDescription)
+
+				} else if placemarks!.count > 0 {
+					self.annotation.coordinate = touchCoordinate
+
+					self.annotation.title = placemarks![0].name!
+					self.annotation.subtitle = placemarks![0].country!
+
+					self.mapView.addAnnotation(self.annotation)
+
+				} else {
+					print("CLGeocoder: Could not find the place")
+				}
+			})
+		}
+	}
+
 
 
 
@@ -65,6 +105,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 			return annotationView
 		}
 		return nil
+	}
+
+
+
+
+	// Allow callout view to appear when an annotation is tapped.
+	func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+		return true
 	}
 
 
