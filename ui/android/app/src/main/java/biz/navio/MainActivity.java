@@ -16,11 +16,11 @@ import org.oscim.layers.Layer;
 import org.oscim.layers.marker.ItemizedLayer;
 import org.oscim.layers.marker.MarkerItem;
 import org.oscim.layers.marker.MarkerSymbol;
-import org.oscim.layers.tile.TileLayer;
 import org.oscim.layers.tile.bitmap.BitmapTileLayer;
 import org.oscim.layers.vector.PathLayer;
 import org.oscim.layers.vector.geometries.Style;
 import org.oscim.map.Map;
+import org.oscim.renderer.MapRenderer;
 import org.oscim.tiling.TileSource;
 import org.oscim.tiling.source.bitmap.BitmapTileSource;
 import org.slf4j.Logger;
@@ -47,13 +47,12 @@ public class MainActivity extends MapActivity {
 
 	static final Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
-	private final static String tileUrl = "http://tile.webebook.org/tile";
+	private final static String tileUrl = "http://test.navio.biz/tile";
 	private final static String routeServiceUrl = "https://tile.webebook.org/route/v1/get";
-//	private final static String tileUrl =         "http://192.168.10.100/tile";
 //	private final static String vectorTileUrl =   "http://192.168.10.100:8983/data/v3/{z}/{x}/{y}.pbf";
 //	private final static String routeServiceUrl = "http://192.168.10.100/route/v1/get";
 	private final TileSource tileSource;
-	protected TileLayer tileLayer;
+	protected BitmapTileLayer tileLayer;
 
 	private volatile boolean shortestPathRunning = false;
 	private GeoPoint start;
@@ -83,6 +82,9 @@ public class MainActivity extends MapActivity {
 	protected void onCreate(Bundle saveInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(saveInstanceState);
+
+		MapRenderer.setBackgroundColor(0xff777777);
+
 		createLayers();
 	}
 

@@ -1,4 +1,4 @@
-export let GATEWAY_HOST_NAME = 'tile.webebook.org';
+export let GATEWAY_HOST_NAME = 'test.navio.biz';
 export let GATEWAY_BASE_URL = 'http://' + GATEWAY_HOST_NAME;
 export let GATEWAY_SECURE_URL = 'https://' + GATEWAY_HOST_NAME;
 export let AUTH_API_BASE_URL = GATEWAY_SECURE_URL + '/uaa';
