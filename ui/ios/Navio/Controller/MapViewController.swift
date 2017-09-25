@@ -68,9 +68,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 
 				} else if placemarks!.count > 0 {
 					self.annotation.coordinate = touchCoordinate
-
 					self.annotation.title = placemarks![0].name!
-					self.annotation.subtitle = placemarks![0].country!
 
 					self.mapView.addAnnotation(self.annotation)
 
@@ -113,6 +111,25 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 	// Allow callout view to appear when an annotation is tapped.
 	func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
 		return true
+	}
+
+
+
+
+	func mapView(_ mapView: MGLMapView, calloutViewFor annotation: MGLAnnotation) -> MGLCalloutView? {
+		// Instantiate and return our custom callout view.
+		return CalloutView(representedObject: annotation)
+	}
+
+
+
+	
+	func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
+		// Optionally handle taps on the callout.
+		print("Tapped the callout for: \(annotation)")
+
+		// Hide the callout.
+//		mapView.deselectAnnotation(annotation, animated: true)
 	}
 
 
