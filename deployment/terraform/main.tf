@@ -137,6 +137,6 @@ resource "aws_instance" "rahpey_server" {
 
   root_block_device {
     volume_type = "standard"
-    volume_size = "16"
+    volume_size = "32"
   }
 }
