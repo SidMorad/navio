@@ -1,9 +1,9 @@
 export let GATEWAY_HOST_NAME = 'test.navio.biz';
-export let GATEWAY_BASE_URL = 'http://' + GATEWAY_HOST_NAME;
-export let GATEWAY_SECURE_URL = 'https://' + GATEWAY_HOST_NAME;
-export let AUTH_API_BASE_URL = GATEWAY_SECURE_URL + '/uaa';
-export let TILE_API_BASE_URL = GATEWAY_BASE_URL + '/tile';
-export let ROUTE_API_BASE_URL = GATEWAY_SECURE_URL + '/route/v1';
-export let TRAFFIC_API_BASE_URL = GATEWAY_SECURE_URL + '/traffic/v1'
-export let OVERPASS_API_BASE_URL = GATEWAY_BASE_URL + '/overpass/';
-export let GEOCODING_API_BASE_URL = GATEWAY_BASE_URL + '/geocoding/';
+export let GATEWAY_HTTP = 'http://' + GATEWAY_HOST_NAME;
+export let GATEWAY_HTTPS = 'https://' + GATEWAY_HOST_NAME;
+export let AUTH_API_BASE_URL = GATEWAY_HTTPS + '/uaa';
+export let ROUTE_API_BASE_URL = GATEWAY_HTTPS + '/route/v1';
+export let TRAFFIC_API_BASE_URL = GATEWAY_HTTPS + '/traffic/v1'
+export let TILE_API_BASE_URL = GATEWAY_HTTP + '/tile';
+export let OVERPASS_API_BASE_URL = GATEWAY_HTTP + '/overpass/';
+export let GEOCODING_API_BASE_URL = GATEWAY_HTTP + '/geocoding/';
