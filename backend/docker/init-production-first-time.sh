@@ -26,11 +26,6 @@ docker-compose up -d
 printf "done.\n\n"
 sleep 1
 
-printf "# Let's stop jhipster-console services to speed up setup process. Note: For servers with rich memory this is not necessary!\n\n"
-./stop-jhipster-console.sh
-printf "done.\n\n"
-sleep 1
-
 printf "# Let's wait for(20 seconds) until opentileserver to come up.\n\n"
 sleep 20
 printf "done.\n\n"

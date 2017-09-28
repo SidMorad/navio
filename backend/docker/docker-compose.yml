@@ -39,39 +39,6 @@ services:
       - _JAVA_OPTIONS=-Xmx768m -Xms256m
     restart: unless-stopped
   #=============================================================================
-  # JHipster console
-  #=============================================================================
-  jhipster-elasticsearch:
-    container_name: rahpey-console-elasticsearch
-    extends:
-      file: ../console/docker-compose.yml
-      service: jhipster-elasticsearch
-    restart: unless-stopped
-  jhipster-logstash:
-    container_name: rahpey-console-logstash
-    extends:
-      file: ../console/docker-compose.yml
-      service: jhipster-logstash
-    depends_on:
-      - jhipster-elasticsearch
-    restart: unless-stopped
-  jhipster-console:
-    container_name: rahpey-console
-    extends:
-      file: ../console/docker-compose.yml
-      service: jhipster-console
-    depends_on:
-      - jhipster-elasticsearch
-    restart: unless-stopped
-  jhipster-zipkin:
-    container_name: rahpey-console-zipkin
-    extends:
-      file: ../console/docker-compose.yml
-      service: jhipster-zipkin
-    depends_on:
-      - jhipster-elasticsearch
-    restart: unless-stopped
-  #=============================================================================
   # UAA server
   #============================================================================
   rahpey-uaa:
