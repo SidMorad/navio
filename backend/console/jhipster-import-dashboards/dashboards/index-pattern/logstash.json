@@ -1,4 +1,0 @@
-{
-  "timeFieldName": "@timestamp",
-  "title": "logstash-*"
-}
