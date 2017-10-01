@@ -13,10 +13,12 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 	var mapView: MGLMapView!
 	let locationManager = CLLocationManager()
 	let annotation = MGLPointAnnotation()
+	var currentOriginPoint = CLLocationCoordinate2D()
+	var currentDestinationPoint = CLLocationCoordinate2D()
 
 	// TODO: temporary, needs to be replaced by user current location coordinates
 	// Tehran coordinates
-	let customLocation : CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 35.6892, longitude: 51.389)
+	let customLocation = CLLocationCoordinate2D(latitude: 35.6892, longitude: 51.389)
 
 
 
@@ -125,11 +127,23 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 
 	
 	func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
-		// Optionally handle taps on the callout.
-		print("Tapped the callout for: \(annotation)")
 
 		// Hide the callout.
 //		mapView.deselectAnnotation(annotation, animated: true)
+
+		let alertController = UIAlertController(title: annotation.title!, message: "به عنوان مبدا یا مقصد انتخاب کنید", preferredStyle: .actionSheet)
+
+		alertController.addAction(UIAlertAction(title: "برو به اینجا", style: .default, handler: { (action) -> Void in
+			self.currentDestinationPoint = annotation.coordinate
+		}))
+
+		alertController.addAction(UIAlertAction(title: "از اینجا برو به...", style: .default, handler: { (action) -> Void in
+			self.currentOriginPoint = annotation.coordinate
+		}))
+
+		alertController.addAction(UIAlertAction(title: "بازگشت", style: .cancel, handler: nil))
+
+		self.present(alertController, animated: true, completion: nil)
 	}
 
 
