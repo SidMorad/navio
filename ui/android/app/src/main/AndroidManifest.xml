@@ -2,7 +2,7 @@
     package="biz.navio"
     android:installLocation="preferExternal"
     android:versionCode="2"
-    android:versionName="1.1" >
+    android:versionName="1.1.5" >
 
     <!-- saving maps -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
