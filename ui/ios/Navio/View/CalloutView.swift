@@ -49,7 +49,7 @@ class CalloutView: UIView, MGLCalloutView {
 		backgroundColor = .clear
 
 		mainBody.backgroundColor = .red
-		mainBody.tintColor = .white
+		mainBody.setTitleColor(.white, for: .normal)
 		mainBody.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
 		mainBody.layer.cornerRadius = 4.0
 
