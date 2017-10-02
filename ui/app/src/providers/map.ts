@@ -187,7 +187,9 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
     this.activeRoute.distance = (this.activeRoute.summary.totalDistance / 1000).toFixed(1) + ' km';
     this.isInDrivingMode = true;
     this.onActiveRouteChangeEvent.emit();
-    this.destination = new AddressDTO(route.inputWaypoints[1].latLng, '');
+    this.geocodingService.reverse(route.inputWaypoints[1].latLng, this.currentZoom).subscribe((result) => {
+      this.destination = result;
+    });
   }
 
   initCurrentZoom() {

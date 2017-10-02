@@ -10,6 +10,7 @@ export class Settings {
   public static readonly SETTINGS_KEY: string = 'settings_key';
   public static readonly LAST_ZOOM_LEVEL_KEY: string = 'lastZoomLevel';
   public static readonly PREFER_LANGUAGE: string = 'preferLanguage';
+  public static readonly CITY: string = 'city';
   public static readonly HIGHLIGHT_TEHRAN_MAIN_TRAFFIC_ZONE: string = 'highlightTehranMainTrafficZone';
   public static readonly HIGHLIGHT_TEHRAN_EVEN_ODD_TRAFFIC_ZONE: string = 'highlightTehranEvenOddTrafficZone';
   public static readonly HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE: string = 'hasTehranMainTrafficCertificate';

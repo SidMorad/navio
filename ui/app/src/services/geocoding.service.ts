@@ -6,17 +6,18 @@ import "rxjs/add/operator/map";
 
 import { GEOCODING_API_BASE_URL } from '../app/config';
 import { AddressDTO } from '../domain/model/geocoding';
+import { Settings } from '../providers/settings';
 
 @Injectable()
 export class GeocodingService {
 
-  constructor(private http: Http, private translateService: TranslateService) {
-
+  constructor(private http: Http, private translateService: TranslateService,
+              private settings: Settings) {
   }
 
   search(address: string): Observable<AddressDTO[]> {
-    return this.http.get(GEOCODING_API_BASE_URL + "search?q=" + encodeURIComponent(address) +
-     "&format=json&addressdetails=0&limit=10&countrycodes=ir&accept-language=" + this.acceptLanugage(address))
+    return this.http.get(GEOCODING_API_BASE_URL + "search?street=" + encodeURIComponent(address) +
+     "&format=json&addressdetails=0&limit=10&countrycodes=ir&accept-language=" + this.acceptLanugage(address) + this.resolveState())
        .map(res => res.json())
        .map(result => {
          if (!result) {
@@ -39,6 +40,13 @@ export class GeocodingService {
         address.setDetails(result.address);
         return address;
       });
+  }
+
+  resolveState(): string {
+    if (this.settings.getValue(Settings.CITY) === 'THR') {
+      return '&state=tehran';
+    }
+    return '';
   }
 
   acceptLanugage(term):string {

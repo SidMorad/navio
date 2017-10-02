@@ -5,7 +5,7 @@ import { AddressDTO } from '../../domain/model/geocoding';
 import { Map } from '../../providers';
 
 @IonicPage({
-  priority: 'high'
+  priority: 'low'
 })
 @Component({
   templateUrl: 'destination.modal.html',
