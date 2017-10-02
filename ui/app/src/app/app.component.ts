@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { BlankPage } from '../pages/blank/blank';
-import { Principal } from '../shared';
+// import { Principal } from '../shared';
 import { AddressDTO } from '../domain/model';
 import { GeocodingService } from '../services';
 
@@ -21,8 +21,7 @@ export class MyApp {
   geoSearchTerm = new FormControl();
 
   constructor(private platform: Platform,
-    splashScreen: SplashScreen,
-    private principal: Principal, private modalCtrl: ModalController,
+    splashScreen: SplashScreen, private modalCtrl: ModalController,
     translateService: TranslateService, private geocodingService: GeocodingService) {
     console.log("AppComponent#constructor", new Date());
     platform.ready().then(() => {
@@ -36,9 +35,9 @@ export class MyApp {
 
   ngAfterViewInit() {
     console.log("AppComponent#ngAfterViewInit");
-    this.principal.identity(true).then(account => {
-      this.user = account ? account : {};
-    });
+    // this.principal.identity(true).then(account => {
+    //   this.user = account ? account : {};
+    // });
     this.items = this.geoSearchTerm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
@@ -64,19 +63,19 @@ export class MyApp {
     this.nav.push('FavoritesPage');
   }
 
-  isAuthenticated() {
-    return this.principal.isAuthenticated();
-  }
+  // isAuthenticated() {
+  //   return this.principal.isAuthenticated();
+  // }
 
   menuOpened() {
-    if (this.isAuthenticated()) {
-      this.principal.identity().then(account => {
-        this.user = account ? account : {};
-      });
-    }
-    else {
-      this.user = {};
-    }
+    // if (this.isAuthenticated()) {
+    //   this.principal.identity().then(account => {
+    //     this.user = account ? account : {};
+    //   });
+    // }
+    // else {
+    //   this.user = {};
+    // }
   }
 
   isRTL(): boolean {
