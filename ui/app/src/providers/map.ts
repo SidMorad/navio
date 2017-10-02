@@ -93,6 +93,9 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
       collapseBtnClass: 'leaflet-routing-collapse-btn'
     }).addTo(this.map);
 
+    this.tileLayerGroup.addLayer(this.tileLayer());
+    this.tileLayerGroup.addTo(this.map);
+
     this.routeControl.on({
       routingstart: () => {
         this.reOrganizeRouterUrlParameters();
@@ -116,9 +119,6 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
       }
     });
 
-    this.tileLayerGroup.addLayer(this.tileLayer());
-
-    this.tileLayerGroup.addTo(this.map);
     this.currentLocationLayerGroup.addTo(this.map);
     this.startLocationLayerGroup.addTo(this.map);
     this.onlineUserLayerGroup.addTo(this.map);

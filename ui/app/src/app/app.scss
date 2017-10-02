@@ -89,6 +89,10 @@ html[dir='rtl'] {
   background-image: url('../assets/img/marker-icon.png');
 }
 
+.leaflet-routing-container {
+  display: none;  // Hides leaflet routing container
+}
+
 .leaflet-routing-collapse-btn {
   font-size: 32px;
   color: #000;

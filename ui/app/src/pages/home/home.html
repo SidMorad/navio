@@ -1,12 +1,12 @@
 <ion-content>
   <ngx-loading-bar></ngx-loading-bar>
   <div style="height: 100%" id="map"></div>
-  <ion-fab left bottom *ngIf="isNotCenterToCurrentLocation()">
+  <ion-fab left bottom *ngIf="isNotCenterToCurrentLocation()" class="opacity-half">
     <button ion-fab color="light" large (click)="centerToCurrentLocation()">
       <ion-icon name="locate" class="custom-icon" color="dark"></ion-icon>
     </button>
   </ion-fab>
-  <ion-fab left middle *ngIf="isAlternativeRoutesVisiable()">
+  <ion-fab bottom right *ngIf="isAlternativeRoutesVisiable()">
     <button ion-fab color="light" large (click)="removeAlternativeRoutes()">
       <ion-icon name="trash" class="custom-icon" color="dark"></ion-icon>
     </button>
