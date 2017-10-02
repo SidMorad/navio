@@ -76,7 +76,7 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
         styles: [{color: 'blue', opacity: 0.4, weight: 8}]
       },
       altLineOptions: {
-        styles: [{color: 'red', opacity: 0.4, weight: 8}]
+        styles: [{color: 'green', opacity: 0.4, weight: 8}]
       },
       createMarker: function(i: number, waypoint: any, total: number) {
         if (i === 0 && total > 1) {
