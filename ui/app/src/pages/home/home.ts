@@ -165,6 +165,10 @@ constructor(private geolocation: Geolocation, private platform: Platform,
     return !this.map.isCenterToCurrentLocation;
   }
 
+  reRoute() {
+    this.map.reRoute();
+  }
+
   isInDrivingMode(): boolean {
     return this.map.isInDrivingMode;
   }

@@ -360,6 +360,11 @@ export class Map {
     return marker;
   }
 
+  reRoute() {
+    this.reOrganizeRouterUrlParameters();
+    this.navigateToAddress(this.destination);
+  }
+
   navigateToAddress(addressDTO: AddressDTO) {
     this.destination = addressDTO;
     this.reOrganizeRouterUrlParameters();
