@@ -225,6 +225,15 @@ export class Map {
     this.geocodingService.reverse(route.inputWaypoints[1].latLng, this.currentZoom).subscribe((result) => {
       this.destination = result;
     });
+    let me = this;
+    setTimeout(function() {
+      if (moment().diff(me.lastTimeMapMoved, 'seconds') >= 3) {
+        me.map.flyTo(me.currentLocation(), 16, {
+          animation: true,
+          duration: 1
+        });
+      }
+    }, 4000);
   }
 
   initCurrentZoom() {
