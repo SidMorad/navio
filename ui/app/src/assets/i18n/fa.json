@@ -86,6 +86,8 @@
   "OK": "بسیار خوب",
   "PRESS_BACK_AGAIN_TO_EXIT_QM": "اگر مایل به خروج هستید؟ دکمه برگشت را دوباره بزنید.",
 
+  "ERROR_OCCURRED_ON_FINDING_ROUTE_PLEASE_TRY_AGAIN": "در هنگام یافتن مسیر خطا رخ داد، لطفا دوباره تلاش کنید.",
+
   "COUNTRIES": [
     {
       "LABEL": "ایران",

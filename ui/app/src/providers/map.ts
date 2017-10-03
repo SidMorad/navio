@@ -1,5 +1,6 @@
 import { Injectable, ComponentFactoryResolver, Injector,
          ComponentRef, ApplicationRef, EventEmitter } from '@angular/core';
+import { ToastController } from 'ionic-angular';
 import 'leaflet';
 import 'leaflet-routing-machine';
 import 'lrm-graphhopper';
@@ -9,6 +10,7 @@ import 'leaflet.tilelayer.pouchdbcached';
 import moment from 'moment';
 import 'moment-duration-format';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AddressPopup } from '../pages';
 import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
@@ -46,7 +48,8 @@ export class Map {
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
     private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
     private geocodingService: GeocodingService, private settings: Settings,
-    private loadingBarService: LoadingBarService) {
+    private loadingBarService: LoadingBarService, private toastCtrl: ToastController,
+    private translateService: TranslateService) {
   }
 
   init() {
@@ -105,6 +108,21 @@ export class Map {
       routeselected: (e) => {
         console.log("Route selected: ", e);
         this.setActiveRoute(e.route);
+      },
+      routingerror: (e) => {
+        console.log("Route error: ", e);
+        this.translateService.get('ERROR_OCCURRED_ON_FINDING_ROUTE_PLEASE_TRY_AGAIN').subscribe((translatedMessage) => {
+          let hint = "";
+          if (e.error && e.error.response && e.error.response.message) {
+            hint = "\n Hint: " + e.error.response.message;
+          }
+          this.toastCtrl.create({
+            message: translatedMessage + hint,
+            duration: 5000,
+            position: 'top',
+            cssClass: 'white-space-pre-line'
+          }).present();
+        });
       }
     });
 
@@ -155,6 +173,7 @@ export class Map {
             this.isCenterToCurrentLocation = false;
           }
         }
+        this.lastTimeMapMoved = moment();
       },
       moveend: () => {
         if (this.currentZoom > 14) {
@@ -240,10 +259,10 @@ export class Map {
 
   reOrganizeRouterUrlParameters() {
     this.routeControl.getRouter().options.urlParameters = {};
-    let destinationPoints = GeoUtil.aPolygonWithTwoPoints([this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]);
+    let destinationPoints = [[this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]];
     if (!this.settings.allSettings[Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE]) {
       if (new TehranEvenOddTrafficSpecification().isAllowedToday(this.settings.allSettings[Settings.CAR_PLATE_NUMBER_EVEN_OR_ODD])) {
-        if (GeoUtil.intersectRect(destinationPoints, TehranMainTrafficSpecification.polygonPoints())) {
+        if (GeoUtil.intersectRect(destinationPoints, TehranMainTrafficSpecification.rectanglePoints())) {
           if (new TehranMainTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
             this.routeControl.getRouter().options.urlParameters = {
               'ch.disable': true,
@@ -253,7 +272,7 @@ export class Map {
         }
       }
       else {
-        if (GeoUtil.intersectRect(destinationPoints, TehranEvenOddTrafficSpecification.polygonPoints())) {
+        if (GeoUtil.intersectRect(destinationPoints, TehranEvenOddTrafficSpecification.rectanglePoints())) {
           if (new TehranEvenOddTrafficSpecification().isCurrentTimeBetweenForbiddenTime()) {
             this.routeControl.getRouter().options.urlParameters = {
               'ch.disable': true,
