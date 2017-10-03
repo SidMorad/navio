@@ -229,7 +229,7 @@ export class Map {
     setTimeout(function() {
       if (moment().diff(me.lastTimeMapMoved, 'seconds') >= 3) {
         me.map.flyTo(me.currentLocation(), 16, {
-          animation: true,
+          animate: true,
           duration: 1
         });
       }
@@ -486,7 +486,7 @@ export class Map {
          }
       });
     } else {
-      this.overpassQuery = new L.LayerGroup([]);
+      this.overpassQuery = new L.Layer();
     }
   }
 
