@@ -1,6 +1,6 @@
 {
-    "name": "NavioMaps",
-    "version": "1.1.6",
+    "name": "biz.navio.maps",
+    "version": "1.1.7",
     "author": "Navio team",
     "homepage": "http://navio.ir/",
     "description": "Navio an awesome traffic fighter!",
@@ -90,7 +90,7 @@
             "ionic-plugin-deeplinks": {
                 "URL_SCHEME": "navio",
                 "DEEPLINK_SCHEME": "https",
-                "DEEPLINK_HOST": "tile.webebook.org",
+                "DEEPLINK_HOST": "navio.biz",
                 "ANDROID_PREFIX": "/",
                 "ANDROID_PATH_PREFIX": "/",
                 "ANDROID_2_PATH_PREFIX": "/",

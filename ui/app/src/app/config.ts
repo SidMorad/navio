@@ -1,4 +1,4 @@
-export let GATEWAY_HOST_NAME = 'test.navio.biz';
+export let GATEWAY_HOST_NAME = 'navio.biz';
 export let GATEWAY_HTTP = 'http://' + GATEWAY_HOST_NAME;
 export let GATEWAY_HTTPS = 'https://' + GATEWAY_HOST_NAME;
 export let AUTH_API_BASE_URL = GATEWAY_HTTPS + '/uaa';
