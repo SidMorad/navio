@@ -39,14 +39,15 @@ export class Map {
   onActiveRouteChangeEvent = new EventEmitter;
   isInDrivingMode: boolean = false;
   lastTimeCarSpeedSent: any = moment();
+  lastTimeMapMoved: any = moment();
   destination: AddressDTO;
   showAlternatives: boolean = false;
 
-constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
-  private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
-  private geocodingService: GeocodingService, private settings: Settings,
-  private loadingBarService: LoadingBarService) {
-}
+  constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
+    private applicationRef: ApplicationRef, private overpassUtil: OverpassUtil,
+    private geocodingService: GeocodingService, private settings: Settings,
+    private loadingBarService: LoadingBarService) {
+  }
 
   init() {
     if (this.map) {
@@ -93,9 +94,6 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
       collapseBtnClass: 'leaflet-routing-collapse-btn'
     }).addTo(this.map);
 
-    this.tileLayerGroup.addLayer(this.tileLayer());
-    this.tileLayerGroup.addTo(this.map);
-
     this.routeControl.on({
       routingstart: () => {
         this.reOrganizeRouterUrlParameters();
@@ -109,6 +107,9 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
         this.setActiveRoute(e.route);
       }
     });
+
+    this.tileLayerGroup.addLayer(this.tileLayer());
+    this.tileLayerGroup.addTo(this.map);
 
     this.initalizeOverpassQuery();
     this.overpassUtil.onOverpassSettingsChangeEvent.subscribe(() => {
@@ -166,6 +167,10 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
         else {
           this.onlineUserLayerGroup.clearLayers();
         }
+        this.lastTimeMapMoved = moment();
+      },
+      load: () => {
+        this.lastTimeMapMoved = moment();
       }
     });
 
@@ -178,6 +183,17 @@ constructor(private resolver: ComponentFactoryResolver, private injector: Inject
     });
 
     this.centerToCurrentLocation();
+    let me = this;
+    setInterval(me.checkInactivityInDrivingMode, 1000, me);
+  }
+
+  checkInactivityInDrivingMode(me) {
+    if (me.isInDrivingMode) {
+      if (moment().diff(me.lastTimeMapMoved, 'seconds') > 5) { // 5 seconds inactivity event
+        me.centerToCurrentLocation();
+        me.lastTimeMapMoved = moment();
+      }
+    }
   }
 
   setActiveRoute(route) {
