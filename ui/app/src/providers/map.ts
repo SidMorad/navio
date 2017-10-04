@@ -347,7 +347,7 @@ export class Map {
       this.navigateToAddress(addressDTO);
     });
     this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
-      this.popupsLayerGroup.clearLayers();
+      // this.popupsLayerGroup.clearLayers();
     });
 
     this.applicationRef.attachView(this.popupRef.hostView);
