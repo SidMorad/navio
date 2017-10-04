@@ -51,6 +51,10 @@ export class MyApp {
     });
   }
 
+  isSearchInProgress(): boolean {
+    return this.geocodingService.searchInProgress;
+  }
+
   showSettingsModal() {
     this.modalCtrl.create('SettingsPage').present();
   }

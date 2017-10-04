@@ -11,11 +11,18 @@ import { Settings } from '../providers/settings';
 @Injectable()
 export class GeocodingService {
 
+  searchInProgress: boolean = false;
+
   constructor(private http: Http, private translateService: TranslateService,
               private settings: Settings) {
   }
 
   search(address: string): Observable<AddressDTO[]> {
+    this.searchInProgress = true;
+    if (address.trim() === "") {
+      this.searchInProgress = false;
+      return Observable.of([]);
+    }
     return this.http.get(GEOCODING_API_BASE_URL + "search?street=" + encodeURIComponent(address) +
      "&format=json&addressdetails=0&limit=10&countrycodes=ir&accept-language=" + this.acceptLanugage(address) + this.resolveState())
        .map(res => res.json())
@@ -23,6 +30,7 @@ export class GeocodingService {
          if (!result) {
            throw new Error("unable to geocode address");
          }
+         this.searchInProgress = false;
          return AddressDTO.toDTO(result);
        });
   }

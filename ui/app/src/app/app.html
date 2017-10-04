@@ -42,6 +42,9 @@
         {{ 'FAVORITES' | translate }}
       </button>
     </ion-list>
+    <ion-fab top end>
+      <ion-spinner *ngIf="isSearchInProgress()" color="primary"></ion-spinner>
+    </ion-fab>
   </ion-content>
 </ion-menu>
 <!-- Right-to-Left menu, temporary fix until https://github.com/ionic-team/ionic/issues/9526 get resolved -->
@@ -87,6 +90,9 @@
         {{ 'FAVORITES' | translate }}
       </button>
     </ion-list>
+    <ion-fab top end>
+      <ion-spinner *ngIf="isSearchInProgress()" color="primary"></ion-spinner>
+    </ion-fab>
   </ion-content>
 </ion-menu>
 
