@@ -36,9 +36,10 @@ export class SocialSharingModal {
   }
 
   sendEmail() {
-    let link = '<a href="https://' + GATEWAY_HOST_NAME + '/dl/' + this.address.latlng.lat + '-' + this.address.latlng.lng + '-' + this.map.currentZoom + '">' + this.message.subject + '</a><br><br>';
+    let link = 'https://' + GATEWAY_HOST_NAME + '/dl/' + this.address.latlng.lat + '-' + this.address.latlng.lng + '-' + this.map.currentZoom;
+    let linkString = '<a href="' + link + '">' + link + '</a><br/><br/>';
     this.translateService.get('SENT_SUCCESSFULLY').subscribe((translated) => {
-      this.socialSharing.shareViaEmail(link + this.message.body,
+      this.socialSharing.shareViaEmail(linkString + this.message.body,
         this.message.subject, null).
         then(() => {
           this.dismiss();

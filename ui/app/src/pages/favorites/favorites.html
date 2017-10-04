@@ -7,11 +7,10 @@
 </ion-header>
 
 <ion-content class="content-lbg">
-  <ion-list inset>
+  <ion-list inset reorder="true" (ionItemReorder)="reorderItems($event)">
     <ion-item-sliding *ngFor="let addressDTO of favs" #slidingItem>
-      <button ion-item (click)="showLocation(addressDTO)" detail-none>
+      <button ion-item (click)="simulateOpen(slidingItem, item)" detail-none #item>
         {{ addressDTO.favLabel }}
-        <ion-icon name="ios-more" (click)="simulateClose(slidingItem)" item-end></ion-icon>
       </button>
       <ion-item-options>
         <button ion-button color="primary" (click)='editBookmark(addressDTO)'>

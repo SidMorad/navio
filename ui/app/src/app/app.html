@@ -39,10 +39,16 @@
     <ion-list [hidden]="(items | async)?.length > 0">
       <button ion-item (click)="openFavorites()" menuClose>
         <ion-icon name="bookmark" icon-start></ion-icon>
-        {{ 'FAVORITES' | translate }}
+        {{'EDIT' | translate}} {{ 'FAVORITES' | translate }}
+      </button>
+    </ion-list>
+    <ion-list [hidden]="(items | async)?.length > 0">
+      <button ion-item *ngFor="let addressDTO of favs" (click)="favSelected(addressDTO)" menuClose>
+        {{ addressDTO.favLabel }}
       </button>
     </ion-list>
     <ion-fab top end>
+      <button ion-fab [hidden]="true"></button>
       <ion-spinner *ngIf="isSearchInProgress()" color="primary"></ion-spinner>
     </ion-fab>
   </ion-content>
@@ -87,10 +93,16 @@
     <ion-list [hidden]="(items | async)?.length > 0">
       <button ion-item (click)="openFavorites()" menuClose>
         <ion-icon name="bookmark" icon-start></ion-icon>
-        {{ 'FAVORITES' | translate }}
+        {{'EDIT' | translate}} {{ 'FAVORITES' | translate }}
+      </button>
+    </ion-list>
+    <ion-list [hidden]="(items | async)?.length > 0">
+      <button ion-item *ngFor="let addressDTO of favs" (click)="favSelected(addressDTO)" menuClose>
+        {{ addressDTO.favLabel }}
       </button>
     </ion-list>
     <ion-fab top end>
+      <button ion-fab [hidden]="true"></button>
       <ion-spinner *ngIf="isSearchInProgress()" color="primary"></ion-spinner>
     </ion-fab>
   </ion-content>

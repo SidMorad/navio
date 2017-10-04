@@ -32,6 +32,14 @@ export class Favorites {
     return this.save();
   }
 
+  set(addresses: AddressDTO[]) {
+    this.favorites = {};
+    addresses.forEach(addr => {
+      this.favorites[this.keyFor(addr)] = addr;
+    });
+    return this.save();
+  }
+
   save() {
     this.inMemoryStorage.setValue(Favorites.FAVORITES_KEY, JSON.stringify(this.favorites), true);
   }

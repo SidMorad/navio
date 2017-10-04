@@ -9,6 +9,7 @@ import { BlankPage } from '../pages/blank/blank';
 // import { Principal } from '../shared';
 import { AddressDTO } from '../domain/model';
 import { GeocodingService } from '../services';
+import { Favorites } from '../providers';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,13 +20,12 @@ export class MyApp {
   @ViewChild('content') nav: NavController;
   items: Observable<AddressDTO[]>;
   geoSearchTerm = new FormControl();
+  favs: AddressDTO[];
 
-  constructor(private platform: Platform,
+  constructor(private platform: Platform, private favorites: Favorites,
     splashScreen: SplashScreen, private modalCtrl: ModalController,
     translateService: TranslateService, private geocodingService: GeocodingService) {
-    console.log("AppComponent#constructor", new Date());
     platform.ready().then(() => {
-      console.log("AppComponent#platformReady fired!", new Date());
       splashScreen.hide();
     });
     // Loading languages
@@ -34,7 +34,6 @@ export class MyApp {
   }
 
   ngAfterViewInit() {
-    console.log("AppComponent#ngAfterViewInit");
     // this.principal.identity(true).then(account => {
     //   this.user = account ? account : {};
     // });
@@ -46,6 +45,10 @@ export class MyApp {
 
   geoSelected(item: AddressDTO) {
     item.favLabel = item.name;
+    this.favSelected(item);
+  }
+
+  favSelected(item: AddressDTO) {
     this.nav.push('SocialSharingCallback', {
       location: item.latlng.lat + '-' + item.latlng.lng
     });
@@ -72,6 +75,7 @@ export class MyApp {
   // }
 
   menuOpened() {
+    this.favs = this.favorites.list();
     // if (this.isAuthenticated()) {
     //   this.principal.identity().then(account => {
     //     this.user = account ? account : {};

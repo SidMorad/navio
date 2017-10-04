@@ -24,7 +24,7 @@ export class GeocodingService {
       return Observable.of([]);
     }
     return this.http.get(GEOCODING_API_BASE_URL + "search?street=" + encodeURIComponent(address) +
-     "&format=json&addressdetails=0&limit=10&countrycodes=ir&accept-language=" + this.acceptLanugage(address) + this.resolveState())
+     "&format=json&addressdetails=0&limit=5&countrycodes=ir&accept-language=" + this.acceptLanugage(address) + this.resolveState())
        .map(res => res.json())
        .map(result => {
          if (!result) {

@@ -3,7 +3,7 @@
     <ion-toolbar>
       <ion-buttons left>
         <button ion-button clear (click)='dismiss()' icon-start>
-          <ion-icon name="arrow-back"></ion-icon>
+          <ion-icon name="close-circle"></ion-icon>
         </button>
       </ion-buttons>
     </ion-toolbar>
@@ -28,7 +28,7 @@
         </button>
       </ion-buttons>
     </ion-toolbar>
-    <h3>{{ address.favLabel || address.shortName }}</h3>
+    <h4>{{ address.favLabel || address.shortName }}</h4>
     <p>{{ address.shortAreaName }}</p>
     <ion-grid>
       <ion-row>

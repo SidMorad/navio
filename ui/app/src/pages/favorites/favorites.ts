@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, ModalController, AlertController, ItemSliding } from 'ionic-angular';
+import { IonicPage, ViewController, ModalController, AlertController,
+         ItemSliding, Item, Platform } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Favorites, Map } from '../../providers';
@@ -12,8 +13,9 @@ import { AddressDTO } from '../../domain/model/geocoding';
 export class FavoritesPage {
 
   favs: AddressDTO[];
+  activeItemSliding: ItemSliding = null;
 
-  constructor(private favorites: Favorites, private map: Map,
+  constructor(private favorites: Favorites, private map: Map, private platform: Platform,
               private viewCtrl: ViewController, private modalCtrl: ModalController,
               private translateService: TranslateService, private alertCtrl: AlertController) {
   }
@@ -66,13 +68,38 @@ export class FavoritesPage {
     });
   }
 
+  reorderItems(indexes) {
+    let element = this.favs[indexes.from];
+    this.favs.splice(indexes.from, 1);
+    this.favs.splice(indexes.to, 0, element);
+    this.favorites.set(this.favs);
+  }
+
   showInfoModal(address: AddressDTO) {
     this.viewCtrl.dismiss();
     this.modalCtrl.create('AddressModal', { address: address }).present();
   }
 
-  simulateClose(slidingItem: ItemSliding) {
-    slidingItem.close();
+  simulateOpen(itemSlide: ItemSliding, item: Item) {
+    if(this.activeItemSliding !== null) { //use this if only one active sliding item allowed
+      this.activeItemSliding.close();
+      this.activeItemSliding = null;
+    }
+    this.activeItemSliding = itemSlide;
+
+    let swipeAmount = -194; //set your required swipe amount
+    if (this.platform.isRTL) {
+      swipeAmount = 194;
+    }
+
+    itemSlide.startSliding(swipeAmount);
+    itemSlide.moveSliding(swipeAmount);
+
+    itemSlide.setElementClass('active-options-right', true);
+    itemSlide.setElementClass('active-swipe-right', true);
+
+    item.setElementStyle('transition', null);
+    item.setElementStyle('transform', 'translate3d('+swipeAmount+'px, 0px, 0px)');
   }
 
 }
