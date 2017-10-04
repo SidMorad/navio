@@ -41,7 +41,7 @@ export class Map {
   onActiveRouteChangeEvent = new EventEmitter;
   isInDrivingMode: boolean = false;
   lastTimeCarSpeedSent: any = moment();
-  lastTimeMapMoved: any = moment();
+  lastTimeMapInteracted: any = moment();
   destination: AddressDTO;
   showAlternatives: boolean = false;
 
@@ -152,9 +152,11 @@ export class Map {
         // this.zone.run( () => {  // Run it in Angular zone, necessary to make component creation to work, but it seems is not necessary anymore!
         this.showDestinationByLatLng(e.latlng, false, this.currentZoom);
         // });
+        this.lastTimeMapInteracted = moment();
       },
       click: () => {
         this.popupsLayerGroup.clearLayers();
+        this.lastTimeMapInteracted = moment();
       },
       zoomend: (e) => {
         this.currentZoom = e.target._zoom;
@@ -166,6 +168,7 @@ export class Map {
         } else {
           this.overpassLayerGroup.clearLayers();
         }
+        this.lastTimeMapInteracted = moment();
       },
       movestart: () => {
         if (this.isCenterToCurrentLocation) {
@@ -173,7 +176,7 @@ export class Map {
             this.isCenterToCurrentLocation = false;
           }
         }
-        this.lastTimeMapMoved = moment();
+        this.lastTimeMapInteracted = moment();
       },
       moveend: () => {
         if (this.currentZoom > 14) {
@@ -186,10 +189,10 @@ export class Map {
         else {
           this.onlineUserLayerGroup.clearLayers();
         }
-        this.lastTimeMapMoved = moment();
+        this.lastTimeMapInteracted = moment();
       },
       load: () => {
-        this.lastTimeMapMoved = moment();
+        this.lastTimeMapInteracted = moment();
       }
     });
 
@@ -227,7 +230,7 @@ export class Map {
     });
     let me = this;
     setTimeout(function() {
-      if (moment().diff(me.lastTimeMapMoved, 'seconds') >= 3) {
+      if (moment().diff(me.lastTimeMapInteracted, 'seconds') >= 3) {
         me.map.flyTo(me.currentLocation(), 16, {
           animate: true,
           duration: 1
