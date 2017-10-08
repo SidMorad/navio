@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C32F0CFF1F8A50A800FD791F /* TehranAzadiSquare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = C32F0CFE1F8A50A800FD791F /* TehranAzadiSquare.gpx */; };
 		C3551B9E1F76723D00BF70AE /* CalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3551B9D1F76723D00BF70AE /* CalloutView.swift */; };
 		C3702ACD1F74C7A600E9FBAB /* navioRasterV8.json in Resources */ = {isa = PBXBuildFile; fileRef = C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */; };
 		C3C243D21F34A75C000A9CC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243D11F34A75C000A9CC8 /* AppDelegate.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C32F0CFE1F8A50A800FD791F /* TehranAzadiSquare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TehranAzadiSquare.gpx; sourceTree = "<group>"; };
 		C3551B9D1F76723D00BF70AE /* CalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalloutView.swift; path = View/CalloutView.swift; sourceTree = "<group>"; };
 		C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = navioRasterV8.json; sourceTree = "<group>"; };
 		C3C243CE1F34A75C000A9CC8 /* Navio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navio.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 		C3C243D01F34A75C000A9CC8 /* Navio */ = {
 			isa = PBXGroup;
 			children = (
+				C32F0CFE1F8A50A800FD791F /* TehranAzadiSquare.gpx */,
 				C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */,
 				C3C243D11F34A75C000A9CC8 /* AppDelegate.swift */,
 				C3C243D31F34A75C000A9CC8 /* MapViewController.swift */,
@@ -266,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C32F0CFF1F8A50A800FD791F /* TehranAzadiSquare.gpx in Resources */,
 				C3C243DE1F34A75C000A9CC8 /* LaunchScreen.storyboard in Resources */,
 				C3C243DB1F34A75C000A9CC8 /* Assets.xcassets in Resources */,
 				C3702ACD1F74C7A600E9FBAB /* navioRasterV8.json in Resources */,

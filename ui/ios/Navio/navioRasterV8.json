@@ -4,7 +4,7 @@
 	"sources": {
 		"navioTileServer": {
 			"type": "raster",
-			"tiles": ["https://test.navio.biz/tile/{z}/{x}/{y}.png"],
+			"tiles": ["https://navio.biz/tile/{z}/{x}/{y}.png"],
 			"tileSize": 256
 		}
 	},
