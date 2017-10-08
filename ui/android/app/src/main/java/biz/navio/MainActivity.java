@@ -47,8 +47,8 @@ public class MainActivity extends MapActivity {
 
 	static final Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
-	private final static String tileUrl = "http://test.navio.biz/tile";
-	private final static String routeServiceUrl = "https://test.navio.biz/route/v1/get";
+	private final static String tileUrl = "http://navio.biz/tile";
+	private final static String routeServiceUrl = "https://navio.biz/route/v1/get";
 //	private final static String vectorTileUrl =   "http://192.168.10.100:8983/data/v3/{z}/{x}/{y}.pbf";
 //	private final static String routeServiceUrl = "http://192.168.10.100/route/v1/get";
 	private final TileSource tileSource;
