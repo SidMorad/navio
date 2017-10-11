@@ -98,9 +98,9 @@ constructor(private geolocation: Geolocation, private platform: Platform,
       if (data.coords) {
         this.map.currentLocationLayerGroup.clearLayers();
         this.map.currentLocationLayerGroup.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
-          { radius : 50}));
+          { radius : 30}));
         this.map.currentLocationLayerGroup.addLayer(L.circleMarker([data.coords.latitude, data.coords.longitude],
-          { radius : 10, color: 'white', fillColor: 'purple', fillOpacity: 0.5 }));
+          { radius : 1.5}));
         if (firstTime && this.map.map && this.map.centerToCurrentLocation()) {
           firstTime = false;
         }
@@ -166,11 +166,20 @@ constructor(private geolocation: Geolocation, private platform: Platform,
   }
 
   reRoute() {
-    this.map.reRoute();
+    this.map.reRoute(true);
   }
 
   isInDrivingMode(): boolean {
     return this.map.isInDrivingMode;
+  }
+
+  isRefreshVisiable(): boolean {
+    if (this.map.isInDrivingMode) {
+      if (!this.settings.allSettings[Settings.AUTO_REROUTE]) {
+        return true;
+      }
+    }
+    return false;
   }
 
   isAlternativeRoutesVisiable(): boolean {

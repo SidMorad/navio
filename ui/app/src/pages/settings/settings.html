@@ -84,6 +84,17 @@
         <ion-label>{{ 'USE_CACHE_FOR_MAP_TILES' | translate }}</ion-label>
         <ion-toggle formControlName="useCacheForMapTiles"></ion-toggle>
       </ion-item>
+      <ion-item text-wrap>
+        <ion-label>{{ 'CENTER_TO_POSITION_FREQUENTLY' | translate }}</ion-label>
+        <ion-select formControlName="centerToPositionFrequently">
+          <ion-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,15,30,60,300,0]"
+                      [value]="number">{{number}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item text-wrap>
+        <ion-label>{{ 'AUTO_REROUTE' | translate }}</ion-label>
+        <ion-toggle formControlName="autoReRoute"></ion-toggle>
+      </ion-item>
     </ion-list>
   </form>
 

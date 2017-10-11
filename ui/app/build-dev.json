@@ -1,9 +1,9 @@
 {
     "android": {
         "release": {
-            "keystore": "release.jks",
+            "keystore": "release-dev.keystore",
             "storePassword": "",
-            "alias": "navio",
+            "alias": "aval_viewer",
             "password" : "",
             "keystoreType": "jks"
         }

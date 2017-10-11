@@ -42,6 +42,7 @@ export class Map {
   isInDrivingMode: boolean = false;
   lastTimeCarSpeedSent: any = moment();
   lastTimeMapInteracted: any = moment();
+  lastTimeMapReRouted: any = moment();
   destination: AddressDTO;
   showAlternatives: boolean = false;
 
@@ -89,10 +90,12 @@ export class Map {
         return L.marker(waypoint.latLng, { draggable: true });
       },
       autoRoute: true,
+      useHints: true,
       show: false,
       showAlternatives: true,
       routeWhileDragging: true,
       addWaypoints: false,
+      fitSelectedRoutes: false,
       collapsible: true,
       collapseBtnClass: 'leaflet-routing-collapse-btn'
     }).addTo(this.map);
@@ -101,8 +104,8 @@ export class Map {
       routingstart: () => {
         this.reOrganizeRouterUrlParameters();
       },
-      routesfound: () => {
-        // console.log("Route found: ", e.routes[0]);
+      routesfound: (e) => {
+        console.log("Route found: ", e.routes[0]);
         // this.setActiveRoute(e.routes[0]);
       },
       routeselected: (e) => {
@@ -211,9 +214,16 @@ export class Map {
 
   checkInactivityInDrivingMode(me) {
     if (me.isInDrivingMode) {
-      if (moment().diff(me.lastTimeMapMoved, 'seconds') > 5) { // 5 seconds inactivity event
-        me.centerToCurrentLocation();
-        me.lastTimeMapMoved = moment();
+      if (me.settings.allSettings[Settings.CENTER_TO_POSITION_FREQUENTLY] != 0) {
+        if (moment().diff(me.lastTimeMapInteracted, 'seconds') > me.settings.allSettings[Settings.CENTER_TO_POSITION_FREQUENTLY]) {
+          me.centerToCurrentLocation();
+        }
+      }
+      if (me.settings.allSettings[Settings.AUTO_REROUTE]) {
+        if (moment().diff(me.lastTimeMapReRouted, 'seconds') > 30) {
+          me.reRoute(false);
+          me.lastTimeMapReRouted = moment();
+        }
       }
     }
   }
@@ -228,15 +238,17 @@ export class Map {
     this.geocodingService.reverse(route.inputWaypoints[1].latLng, this.currentZoom).subscribe((result) => {
       this.destination = result;
     });
-    let me = this;
-    setTimeout(function() {
-      if (moment().diff(me.lastTimeMapInteracted, 'seconds') >= 3) {
-        me.map.flyTo(me.currentLocation(), 16, {
-          animate: true,
-          duration: 1
-        });
-      }
-    }, 4000);
+    if (!this.settings.allSettings[Settings.AUTO_REROUTE]) {
+      let me = this;
+      setTimeout(function() {
+        if (moment().diff(me.lastTimeMapInteracted, 'seconds') >= 3) {
+          me.map.flyTo(me.currentLocation(), 16, {
+            animate: true,
+            duration: 1
+          });
+        }
+      }, 4000);
+    }
   }
 
   initCurrentZoom() {
@@ -271,6 +283,7 @@ export class Map {
 
   reOrganizeRouterUrlParameters() {
     this.routeControl.getRouter().options.urlParameters = {};
+    this.routeControl.getRouter().options.z = this.currentZoom;
     let destinationPoints = [[this.resolveStartingPoint().lat, this.resolveStartingPoint().lng], [this.destination.latlng.lat, this.destination.latlng.lng]];
     if (!this.settings.allSettings[Settings.HAS_TEHRAN_MAIN_TRAFFIC_CERTIFICATE]) {
       if (new TehranEvenOddTrafficSpecification().isAllowedToday(this.settings.allSettings[Settings.CAR_PLATE_NUMBER_EVEN_OR_ODD])) {
@@ -344,7 +357,7 @@ export class Map {
     this.popupRef = compFactory.create(this.injector);
     this.popupRef.instance.address = addressDTO;
     this.popupRef.instance.onGoButtonClicked.subscribe(() => {
-      this.navigateToAddress(addressDTO);
+      this.navigateToAddress(addressDTO, true);
     });
     this.popupRef.instance.onInfoButtonClicked.subscribe(() => {
       // this.popupsLayerGroup.clearLayers();
@@ -372,16 +385,18 @@ export class Map {
     return marker;
   }
 
-  reRoute() {
+  reRoute(fitBounds: boolean) {
     this.reOrganizeRouterUrlParameters();
-    this.navigateToAddress(this.destination);
+    this.navigateToAddress(this.destination, fitBounds);
   }
 
-  navigateToAddress(addressDTO: AddressDTO) {
+  navigateToAddress(addressDTO: AddressDTO, fitBounds: boolean) {
     this.destination = addressDTO;
     this.reOrganizeRouterUrlParameters();
     this.popupsLayerGroup.clearLayers();
-    this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
+    if (fitBounds) {
+      this.map.fitBounds([this.resolveStartingPoint(), addressDTO.latlng]);
+    }
     this.routeControl.getPlan().spliceWaypoints(0, 2, this.resolveStartingPoint(), addressDTO.latlng);
   }
 
@@ -395,7 +410,7 @@ export class Map {
 
   showAlternativeRoutes(addressDTO: AddressDTO) {
     this.showAlternatives = true;
-    this.navigateToAddress(addressDTO);
+    this.navigateToAddress(addressDTO, true);
   }
 
   setAsStartPoint(address: AddressDTO) {

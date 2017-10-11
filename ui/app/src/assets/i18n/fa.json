@@ -20,6 +20,8 @@
   "MAP_SHOW_FUEL_STATION": "نمایش جایگاهای پمپ بنزین",
   "MAP_SHOW_TRAFFIC_LIGHT": "نمایش چراغ های قرمز",
   "USE_CACHE_FOR_MAP_TILES": "لود نقشه بصورت آفلاین (با استفاده از فضای ذخیره دستگاه)",
+  "CENTER_TO_POSITION_FREQUENTLY": "تناوب حرکت دوربین نقشه به موقعیت جاری",
+  "AUTO_REROUTE": "باز مسیریابی اتوماتیک",
 
   "LOGIN": "ورود",
   "PAGE": "صفحه",

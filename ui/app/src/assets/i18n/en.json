@@ -20,6 +20,8 @@
   "MAP_SHOW_FUEL_STATION": "Show Gas Stations",
   "MAP_SHOW_TRAFFIC_LIGHT": "Show Traffic Lights",
   "USE_CACHE_FOR_MAP_TILES": "Offline support for Map tiles (uses local storage)",
+  "CENTER_TO_POSITION_FREQUENTLY": "Frequently of center Map's camera to current position",
+  "AUTO_REROUTE": "Automatic ReRouting",
 
   "LOGIN": "Login",
   "PAGE": "Page",

@@ -5,5 +5,5 @@ export let AUTH_API_BASE_URL = GATEWAY_HTTPS + '/uaa';
 export let ROUTE_API_BASE_URL = GATEWAY_HTTPS + '/route/v1';
 export let TRAFFIC_API_BASE_URL = GATEWAY_HTTPS + '/traffic/v1'
 export let TILE_API_BASE_URL = GATEWAY_HTTP + '/tile';
-export let OVERPASS_API_BASE_URL = GATEWAY_HTTP + '/overpass/';
+export let OVERPASS_API_BASE_URL = 'http://overpass-api.de/api/';
 export let GEOCODING_API_BASE_URL = GATEWAY_HTTP + '/geocoding/';

@@ -76,7 +76,9 @@ export class SettingsPage {
           overpassShowSpeedCamera: [this.options.overpassShowSpeedCamera],
           overpassShowFuelStation: [this.options.overpassShowFuelStation],
           overpassShowTrafficLight: [this.options.overpassShowTrafficLight],
-          useCacheForMapTiles: [this.options.useCacheForMapTiles]
+          useCacheForMapTiles: [this.options.useCacheForMapTiles],
+          centerToPositionFrequently: [this.options.centerToPositionFrequently],
+          autoReRoute: [this.options.autoReRoute]
         };
         break;
     }

@@ -33,7 +33,9 @@ export function provideSettings(inMemoryStorage: InMemoryStorage) {
     overpassShowSpeedCamera: true,
     overpassShowFuelStation: false,
     overpassShowTrafficLight: false,
-    useCacheForMapTiles: true
+    useCacheForMapTiles: true,
+    centerToPositionFrequently: 5,
+    autoReRoute: false
   });
 }
 

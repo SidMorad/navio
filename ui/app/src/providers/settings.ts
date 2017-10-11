@@ -24,6 +24,9 @@ export class Settings {
 
   public static readonly DEVICE_UUID = 'deviceUuid';
 
+  public static readonly CENTER_TO_POSITION_FREQUENTLY = 'centerToPositionFrequently';
+  public static readonly AUTO_REROUTE = 'autoReRoute';
+
   settings: any;
 
   _defaults: any;

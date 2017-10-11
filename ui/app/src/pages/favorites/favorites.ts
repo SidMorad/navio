@@ -31,7 +31,7 @@ export class FavoritesPage {
 
   showLocation(address: AddressDTO) {
     this.viewCtrl.dismiss();
-    this.map.navigateToAddress(address);
+    this.map.navigateToAddress(address, true);
   }
 
   deleteBookmark(address: AddressDTO) {

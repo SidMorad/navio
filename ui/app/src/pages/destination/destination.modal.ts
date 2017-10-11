@@ -38,7 +38,7 @@ export class DestinationModal {
 
   navigateToAddress() {
     this.dismiss();
-    this.map.navigateToAddress(this.address);
+    this.map.navigateToAddress(this.address, true);
   }
 
   stopTheRoute() {
