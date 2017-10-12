@@ -34,6 +34,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'org.slf4j:slf4j-android:1.7.25'
 
+    compile 'com.google.android.gms:play-services-maps:11.0.4'
 }
 
 android {
@@ -47,7 +48,7 @@ android {
 
     defaultConfig {
         applicationId "biz.navio"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 22
     }
 
