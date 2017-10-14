@@ -3,3 +3,8 @@ xcuserdata
 
 ### macOSX
 .DS_Store
+
+### cocoapods
+Pods
+Podfile.lock
+*.xcworkspace
