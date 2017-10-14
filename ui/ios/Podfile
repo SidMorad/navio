@@ -6,8 +6,13 @@ target 'Navio' do
   use_frameworks!
 
   # Pods for Navio
-  pod 'MapboxNavigation', '~> 0.8'
-
+  pod 'Mapbox-iOS-SDK'
+  pod 'MapboxCoreNavigation'
+  pod 'SDWebImage'
+  pod 'AWSPolly'
+  pod 'Pulley'
+  pod 'Solar'
+  
   target 'NavioTests' do
     inherit! :search_paths
     # Pods for testing
