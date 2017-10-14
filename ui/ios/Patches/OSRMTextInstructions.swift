@@ -287,7 +287,7 @@ public class OSRMInstructionFormatter: Formatter {
         var wayName: NSAttributedString
         switch type {
         case .takeRotary, .takeRoundabout:
-            // Special instruction types have an intermediate level keyed to “default”.
+            // Special instruction types have an intermediate level keyed to ?default?.
             let instructionsByModifier = instructions[type.description] as! [String: InstructionsByModifier]
             let defaultInstructions = instructionsByModifier["default"]!
 
