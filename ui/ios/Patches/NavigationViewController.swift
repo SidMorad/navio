@@ -22,7 +22,7 @@ public protocol NavigationViewControllerDelegate {
      Called when the user arrives at the destination.
      */
     @objc optional func navigationViewController(_ navigationViewController : NavigationViewController, didArriveAt waypoint: Waypoint)
-
+    
     /**
      Returns whether the navigation view controller should be allowed to calculate a new route.
      
@@ -31,7 +31,7 @@ public protocol NavigationViewControllerDelegate {
      - parameter navigationViewController: The navigation view controller that has detected the need to calculate a new route.
      - parameter location: The user’s current location.
      - returns: True to allow the navigation view controller to calculate a new route; false to keep tracking the current route.
-    */
+     */
     @objc(navigationViewController:shouldRerouteFromLocation:)
     optional func navigationViewController(_ navigationViewController: NavigationViewController, shouldRerouteFrom location: CLLocation) -> Bool
     
@@ -162,7 +162,7 @@ public protocol NavigationViewControllerDelegate {
 @objc(MBNavigationViewController)
 public class NavigationViewController: NavigationPulleyViewController, RouteMapViewControllerDelegate {
     
-    /** 
+    /**
      A `Route` object constructed by [MapboxDirections](https://mapbox.github.io/mapbox-navigation-ios/directions/).
      
      In cases where you need to update the route after navigation has started you can set a new `route` here and `NavigationViewController` will update its UI accordingly.
@@ -176,13 +176,14 @@ public class NavigationViewController: NavigationPulleyViewController, RouteMapV
                 routeController.routeProgress = RouteProgress(route: route)
             }
             mapViewController?.notifyDidReroute(route: route)
+            tableViewController?.tableView.reloadData()
             tableViewController?.updateETA(routeProgress: routeController.routeProgress)
         }
     }
     
-    /** 
+    /**
      An instance of `MGLAnnotation` that will be shown on on the destination of your route. The last coordinate of the route will be used if no destination is given.
-    */
+     */
     @available(*, deprecated, message: "Destination is no longer supported. A destination annotation will automatically be added to map given the route.")
     public var destination: MGLAnnotation!
     
@@ -220,7 +221,7 @@ public class NavigationViewController: NavigationPulleyViewController, RouteMapV
     
     /**
      Provides all routing logic for the user.
-
+     
      See `RouteController` for more information.
      */
     public var routeController: RouteController!
@@ -279,7 +280,7 @@ public class NavigationViewController: NavigationPulleyViewController, RouteMapV
         guard automaticallyAdjustsStyleForTimeOfDay else { return .dayStyle }
         
         guard let location = routeController.location,
-			let solar = Solar(coordinate: location.coordinate),
+            let solar = Solar(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),
             let sunrise = solar.sunrise, let sunset = solar.sunset else {
                 return .dayStyle
         }
@@ -309,13 +310,13 @@ public class NavigationViewController: NavigationPulleyViewController, RouteMapV
     
     required public init(contentViewController: UIViewController, drawerViewController: UIViewController) {
         fatalError("init(contentViewController:drawerViewController:) has not been implemented. " +
-                   "Use init(for:directions:) if you are instantiating programmatically " +
-                   "or a storyboard reference to Navigation if you are using storyboards.")
+            "Use init(for:directions:) if you are instantiating programmatically " +
+            "or a storyboard reference to Navigation if you are using storyboards.")
     }
     
     /**
      Initializes a `NavigationViewController` that provides turn by turn navigation for the given route. A optional `direction` object is needed for  potential rerouting.
-
+     
      See [Mapbox Directions](https://mapbox.github.io/mapbox-navigation-ios/directions/) for further information.
      */
     @objc(initWithRoute:directions:style:locationManager:)
@@ -348,7 +349,7 @@ public class NavigationViewController: NavigationPulleyViewController, RouteMapV
         
         tableViewController.routeController = routeController
         tableViewController.headerView.delegate = self
-
+        
         self.currentStyleType = styleTypeForTimeOfDay
         
         if !(route.routeOptions is NavigationRouteOptions) {
@@ -424,19 +425,19 @@ public class NavigationViewController: NavigationPulleyViewController, RouteMapV
         NotificationCenter.default.removeObserver(self, name: RouteControllerAlertLevelDidChange, object: routeController)
     }
     
-	@objc func progressDidChange(notification: NSNotification) {
+    @objc func progressDidChange(notification: NSNotification) {
         resetETATimer()
         
         let routeProgress = notification.userInfo![RouteControllerAlertLevelDidChangeNotificationRouteProgressKey] as! RouteProgress
         let location = notification.userInfo![RouteControllerProgressDidChangeNotificationLocationKey] as! CLLocation
         let secondsRemaining = notification.userInfo![RouteControllerProgressDidChangeNotificationSecondsRemainingOnStepKey] as! TimeInterval
-
+        
         mapViewController?.notifyDidChange(routeProgress: routeProgress, location: location, secondsRemaining: secondsRemaining)
         tableViewController?.updateETA(routeProgress: routeProgress)
         progressBar.progress = routeProgress.currentLegProgress.alertUserLevel == .arrive ? 1 : CGFloat(routeProgress.fractionTraveled)
     }
     
-	@objc func alertLevelDidChange(notification: NSNotification) {
+    @objc func alertLevelDidChange(notification: NSNotification) {
         let routeProgress = notification.userInfo![RouteControllerAlertLevelDidChangeNotificationRouteProgressKey] as! RouteProgress
         let alertLevel = routeProgress.currentLegProgress.alertUserLevel
         
@@ -473,7 +474,7 @@ public class NavigationViewController: NavigationPulleyViewController, RouteMapV
         }
     }
     
-	@objc func updateETA() {
+    @objc func updateETA() {
         tableViewController?.updateETA(routeProgress: routeController.routeProgress)
     }
     

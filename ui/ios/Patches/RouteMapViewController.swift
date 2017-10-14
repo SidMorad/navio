@@ -3,6 +3,7 @@ import Pulley
 import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
+import Turf
 
 class ArrowFillPolyline: MGLPolylineFeature {}
 class ArrowStrokePolyline: ArrowFillPolyline {}
@@ -10,7 +11,7 @@ class ArrowStrokePolyline: ArrowFillPolyline {}
 
 class RouteMapViewController: UIViewController {
     @IBOutlet weak var mapView: NavigationMapView!
-
+    
     @IBOutlet weak var overviewButton: Button!
     @IBOutlet weak var reportButton: Button!
     @IBOutlet weak var recenterButton: ResumeButton!
@@ -31,12 +32,12 @@ class RouteMapViewController: UIViewController {
     var routePageViewController: RoutePageViewController!
     var routeTableViewController: RouteTableViewController?
     let routeStepFormatter = RouteStepFormatter()
-
+    
     var route: Route { return routeController.routeProgress.route }
     var previousStep: RouteStep?
     
     var hasFinishedLoadingMap = false
-
+    
     var pendingCamera: MGLMapCamera? {
         guard let parent = parent as? NavigationViewController else {
             return nil
@@ -61,7 +62,7 @@ class RouteMapViewController: UIViewController {
     var arrowCurrentStep: RouteStep?
     var isInOverviewMode = false
     var currentLegIndexMapped = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
@@ -87,13 +88,13 @@ class RouteMapViewController: UIViewController {
     deinit {
         suspendNotifications()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         muteButton.isSelected = NavigationSettings.shared.muted
         mapView.compassView.isHidden = true
-
+        
         if let camera = pendingCamera {
             mapView.camera = camera
         } else {
@@ -134,7 +135,7 @@ class RouteMapViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: RouteControllerWillReroute, object: nil)
         NotificationCenter.default.removeObserver(self, name: RouteControllerDidReroute, object: nil)
     }
-
+    
     @IBAction func recenter(_ sender: AnyObject) {
         mapView.camera = tiltedCamera
         mapView.setUserTrackingMode(.followWithCourse, animated: true)
@@ -144,7 +145,7 @@ class RouteMapViewController: UIViewController {
         controller.step = currentStep
         routePageViewController.updateManeuverViewForStep()
     }
-
+    
     @IBAction func toggleOverview(_ sender: Any) {
         if isInOverviewMode {
             overviewButton.isHidden = false
@@ -157,7 +158,7 @@ class RouteMapViewController: UIViewController {
             mapView.logoView.isHidden = true
             updateVisibleBounds()
         }
-
+        
         isInOverviewMode = !isInOverviewMode
         
         guard let controller = routePageViewController.currentManeuverPage else { return }
@@ -197,7 +198,7 @@ class RouteMapViewController: UIViewController {
         parent.present(controller, animated: true, completion: nil)
         delegate?.mapViewControllerDidOpenFeedback(self)
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier ?? "" {
         case "RoutePageViewController":
@@ -214,7 +215,7 @@ class RouteMapViewController: UIViewController {
         guard let userLocation = self.mapView.userLocation?.coordinate else { return }
         
         let overviewContentInset = UIEdgeInsets(top: 65, left: 20, bottom: 55, right: 20)
-        let slicedLine = polyline(along: polyline(along: self.routeController.routeProgress.route.coordinates!, from: userLocation, to: self.routeController.routeProgress.route.coordinates!.last))
+        let slicedLine = Polyline(routeController.routeProgress.route.coordinates!).sliced(from: userLocation, to: routeController.routeProgress.route.coordinates!.last).coordinates
         let line = MGLPolyline(coordinates: slicedLine, count: UInt(slicedLine.count))
         
         mapView.userTrackingMode = .none
@@ -224,17 +225,17 @@ class RouteMapViewController: UIViewController {
         mapView.camera = camera
         
         // Don't keep zooming in
-        guard line.overlayBounds.ne - line.overlayBounds.sw > 200 else { return }
+        guard line.overlayBounds.ne.distance(to: line.overlayBounds.sw) > 200 else { return }
         
         mapView.setVisibleCoordinateBounds(line.overlayBounds, edgePadding: overviewContentInset, animated: true)
     }
-
+    
     func notifyDidReroute(route: Route) {
         routePageViewController.updateManeuverViewForStep()
-
+        
         mapView.addArrow(route: routeController.routeProgress.route, legIndex: routeController.routeProgress.legIndex, stepIndex: routeController.routeProgress.currentLegProgress.stepIndex + 1)
         mapView.showRoute(routeController.routeProgress.route, legIndex: routeController.routeProgress.legIndex)
-
+        
         if isInOverviewMode {
             updateVisibleBounds()
         } else {
@@ -243,12 +244,12 @@ class RouteMapViewController: UIViewController {
         }
     }
     
-	@objc func willReroute(notification: NSNotification) {
+    @objc func willReroute(notification: NSNotification) {
         let title = NSLocalizedString("REROUTING", bundle: .mapboxNavigation, value: "Rerouting…", comment: "Indicates that rerouting is in progress")
         statusView.show(title, showSpinner: true)
     }
     
-	@objc func didReroute(notification: NSNotification) {
+    @objc func didReroute(notification: NSNotification) {
         if !(routeController.locationManager is SimulatedLocationManager) {
             statusView.hide(delay: 0.5, animated: true)
         }
@@ -259,7 +260,7 @@ class RouteMapViewController: UIViewController {
             statusView.hide(delay: 5, animated: true)
         }
     }
-
+    
     func notifyAlertLevelDidChange(routeProgress: RouteProgress) {
         if routeProgress.currentLegProgress.followOnStep != nil {
             mapView.addArrow(route: routeController.routeProgress.route, legIndex: routeController.routeProgress.legIndex, stepIndex: routeController.routeProgress.currentLegProgress.stepIndex + 1)
@@ -282,7 +283,7 @@ class RouteMapViewController: UIViewController {
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         return navigationMapView(mapView, viewFor: annotation)
     }
-
+    
     func notifyDidChange(routeProgress: RouteProgress, location: CLLocation, secondsRemaining: TimeInterval) {
         guard var controller = routePageViewController.currentManeuverPage else { return }
         
@@ -310,11 +311,11 @@ class RouteMapViewController: UIViewController {
         
         controller.notifyDidChange(routeProgress: routeProgress, secondsRemaining: secondsRemaining)
         controller.roadCode = step.codes?.first ?? step.destinationCodes?.first ?? step.destinations?.first
-
+        
         guard isInOverviewMode else {
             return
         }
-
+        
         updateVisibleBounds()
     }
     
@@ -372,11 +373,11 @@ extension RouteMapViewController: NavigationMapViewDelegate {
     func navigationMapView(_ mapView: NavigationMapView, routeStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         return delegate?.navigationMapView(mapView, routeStyleLayerWithIdentifier: identifier, source: source)
     }
-
+    
     func navigationMapView(_ mapView: NavigationMapView, routeCasingStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         return delegate?.navigationMapView(mapView, routeCasingStyleLayerWithIdentifier: identifier, source: source)
     }
-
+    
     func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
         return delegate?.navigationMapView(mapView, waypointStyleLayerWithIdentifier: identifier, source: source)
     }
@@ -388,11 +389,11 @@ extension RouteMapViewController: NavigationMapViewDelegate {
     func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint]) -> MGLShape? {
         return delegate?.navigationMapView(mapView, shapeFor: waypoints)
     }
-
+    
     func navigationMapView(_ mapView: NavigationMapView, shapeDescribing route: Route) -> MGLShape? {
         return delegate?.navigationMapView(mapView, shapeDescribing: route)
     }
-
+    
     func navigationMapView(_ mapView: NavigationMapView, simplifiedShapeDescribing route: Route) -> MGLShape? {
         return delegate?.navigationMapView(mapView, simplifiedShapeDescribing: route)
     }
@@ -408,7 +409,7 @@ extension RouteMapViewController: NavigationMapViewDelegate {
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
         hasFinishedLoadingMap = true
     }
-
+    
     func navigationMapView(_ mapView: NavigationMapView, shouldUpdateTo location: CLLocation) -> CLLocation? {
         let snappedLocation = routeController.location
         labelCurrentRoad(at: snappedLocation ?? location)
@@ -424,7 +425,7 @@ extension RouteMapViewController: NavigationMapViewDelegate {
         guard let style = mapView.style,
             let stepCoordinates = routeController.routeProgress.currentLegProgress.currentStep.coordinates,
             recenterButton.isHidden && hasFinishedLoadingMap else {
-            return
+                return
         }
         
         let closestCoordinate = location.coordinate
@@ -467,15 +468,16 @@ extension RouteMapViewController: NavigationMapViewDelegate {
             
             for line in allLines {
                 let featureCoordinates =  Array(UnsafeBufferPointer(start: line.coordinates, count: Int(line.pointCount)))
-                let slicedLine = polyline(along: stepCoordinates, from: closestCoordinate)
+                let featurePolyline = Polyline(featureCoordinates)
+                let slicedLine = Polyline(stepCoordinates).sliced(from: closestCoordinate)
                 
                 let lookAheadDistance:CLLocationDistance = 10
-                guard let pointAheadFeature = coordinate(at: lookAheadDistance, fromStartOf: polyline(along: featureCoordinates, from: closestCoordinate)) else { continue }
-                guard let pointAheadUser = coordinate(at: lookAheadDistance, fromStartOf: slicedLine) else { continue }
-                guard let reversedPoint = coordinate(at: lookAheadDistance, fromStartOf: polyline(along: featureCoordinates.reversed(), from: closestCoordinate)) else { continue }
+                guard let pointAheadFeature = featurePolyline.sliced(from: closestCoordinate).coordinateFromStart(distance: lookAheadDistance) else { continue }
+                guard let pointAheadUser = slicedLine.coordinateFromStart(distance: lookAheadDistance) else { continue }
+                guard let reversedPoint = Polyline(featureCoordinates.reversed()).sliced(from: closestCoordinate).coordinateFromStart(distance: lookAheadDistance) else { continue }
                 
-                let distanceBetweenPointsAhead = pointAheadFeature - pointAheadUser
-                let distanceBetweenReversedPoint = reversedPoint - pointAheadUser
+                let distanceBetweenPointsAhead = pointAheadFeature.distance(to: pointAheadUser)
+                let distanceBetweenReversedPoint = reversedPoint.distance(to: pointAheadUser)
                 let minDistanceBetweenPoints = min(distanceBetweenPointsAhead, distanceBetweenReversedPoint)
                 
                 if minDistanceBetweenPoints < smallestLabelDistance {
@@ -526,13 +528,13 @@ extension RouteMapViewController: MGLMapViewDelegate {
             isInOverviewMode = false
         }
     }
-
+    
     func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
         if mapView.userTrackingMode == .none && !isInOverviewMode {
             wayNameView.isHidden = true
         }
     }
-
+    
     func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
         style.setImage(Bundle.mapboxNavigation.image(named: "triangle")!.withRenderingMode(.alwaysTemplate), forName: "triangle-tip-navigation")
         // This method is called before the view is added to a window
@@ -554,14 +556,14 @@ extension RouteMapViewController: MGLMapViewDelegate {
 extension RouteMapViewController: RoutePageViewControllerDelegate {
     internal func routePageViewController(_ controller: RoutePageViewController, willTransitionTo maneuverViewController: RouteManeuverViewController, didSwipe: Bool) {
         let step = maneuverViewController.step!
-
+        
         maneuverViewController.turnArrowView.step = step
         maneuverViewController.distance = step.distance > 0 ? step.distance : nil
         maneuverViewController.roadCode = step.codes?.first ?? step.destinationCodes?.first ?? step.destinations?.first
         maneuverViewController.updateStreetNameForStep()
         
         updateLaneViews(step: step, alertLevel: .high)
-
+        
         
         if !isInOverviewMode {
             if didSwipe, step != routeController.routeProgress.currentLegProgress.upComingStep {
@@ -573,8 +575,10 @@ extension RouteMapViewController: RoutePageViewControllerDelegate {
             }
         }
         
-        if let stepIndex = routeController.routeProgress.currentLeg.steps.index(where: { $0 == step }) {
+        if let stepIndex = routeController.routeProgress.currentLeg.steps.index(where: { $0 == step }), stepAfter(step) != nil {
             mapView.addArrow(route: routeController.routeProgress.route, legIndex: routeController.routeProgress.legIndex, stepIndex: stepIndex)
+        } else {
+            mapView.removeArrow()
         }
     }
     
@@ -589,17 +593,17 @@ extension RouteMapViewController: RoutePageViewControllerDelegate {
     var currentStep: RouteStep {
         return routeController.routeProgress.currentLegProgress.currentStep
     }
-
+    
     func stepBefore(_ step: RouteStep) -> RouteStep? {
         guard let legProgress = routeController.routeProgress.currentLegProgress,
             let index = legProgress.leg.steps.index(of: step),
             index - 1 > legProgress.stepIndex,
             !isInOverviewMode else {
-            return nil
+                return nil
         }
         return routeController.routeProgress.currentLegProgress.stepBefore(step)
     }
-
+    
     func stepAfter(_ step: RouteStep) -> RouteStep? {
         guard !isInOverviewMode else {
             return nil
@@ -623,3 +627,4 @@ protocol RouteMapViewControllerDelegate: class {
     func mapViewControllerDidCancelFeedback(_ mapViewController: RouteMapViewController)
     func mapViewController(_ mapViewController: RouteMapViewController, didSend feedbackId: String, feedbackType: FeedbackType)
 }
+

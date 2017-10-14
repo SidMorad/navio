@@ -6,7 +6,7 @@ target 'Navio' do
   use_frameworks!
 
   # Pods for Navio
-  pod 'MapboxNavigation', '~> 0.8.2'
+  pod 'MapboxNavigation', '~> 0.8'
 
   target 'NavioTests' do
     inherit! :search_paths

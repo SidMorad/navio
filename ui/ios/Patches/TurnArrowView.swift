@@ -2,18 +2,19 @@ import UIKit
 import MapboxDirections
 import MapboxCoreNavigation
 import SDWebImage
+import Turf
 
 @IBDesignable
 @objc(MBTurnArrowView)
 public class TurnArrowView: UIView {
     
-	@objc public dynamic var primaryColor: UIColor = .defaultTurnArrowPrimary {
+    @objc public dynamic var primaryColor: UIColor = .defaultTurnArrowPrimary {
         didSet {
             setNeedsDisplay()
         }
     }
     
-	@objc public dynamic var secondaryColor: UIColor = .defaultTurnArrowSecondary {
+    @objc public dynamic var secondaryColor: UIColor = .defaultTurnArrowSecondary {
         didSet {
             setNeedsDisplay()
         }
@@ -59,9 +60,9 @@ public class TurnArrowView: UIView {
         
         var flip: Bool = false
         let type: ManeuverType = step.maneuverType ?? .turn
-        let angle: Int = Int(wrap((step.finalHeading ?? abs(0)) - (step.initialHeading ?? abs(0)), min: -180, max: 180))
-        let direction: ManeuverDirection = step.maneuverDirection ?? ManeuverDirection(angle: angle)
-
+        let angle = ((step.finalHeading ?? 0) - (step.initialHeading ?? 0)).wrap(min: -180, max: 180)
+        let direction: ManeuverDirection = step.maneuverDirection ?? ManeuverDirection(angle: Int(angle))
+        
         switch type {
         case .merge:
             StyleKitArrows.drawMerge(primaryColor: primaryColor, secondaryColor: secondaryColor, scale: scale)
@@ -122,3 +123,4 @@ public class TurnArrowView: UIView {
         transform = CGAffineTransform(scaleX: flip ? -1 : 1, y: 1)
     }
 }
+
