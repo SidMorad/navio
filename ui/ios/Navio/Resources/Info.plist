@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1IjoiYmFiYWt0IiwiYSI6ImNqNXk0N3lhcjBkaTIzMmxoMnc0Z2k2bHEifQ.fEFu-0XQSOjcZG1WG6t_og</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDocumentTypes</key>
