@@ -7,14 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C303AA511F922BA800B0C5A6 /* Navigation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C355B5B41F922450005B2ED8 /* Navigation.storyboard */; };
 		C32F0CFF1F8A50A800FD791F /* TehranAzadiSquare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = C32F0CFE1F8A50A800FD791F /* TehranAzadiSquare.gpx */; };
 		C3551B9E1F76723D00BF70AE /* CalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3551B9D1F76723D00BF70AE /* CalloutView.swift */; };
+		C355B5B81F9225B1005B2ED8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C355B5B71F9225B1005B2ED8 /* Assets.xcassets */; };
 		C3702ACD1F74C7A600E9FBAB /* navioRasterV8.json in Resources */ = {isa = PBXBuildFile; fileRef = C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */; };
+		C3959E8F1F9210F600BE8290 /* RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E701F9210F100BE8290 /* RouteTableViewCell.swift */; };
+		C3959E901F9210F600BE8290 /* StyleKitMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E711F9210F100BE8290 /* StyleKitMarker.swift */; };
+		C3959E911F9210F600BE8290 /* RouteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E721F9210F100BE8290 /* RouteTableViewController.swift */; };
+		C3959E921F9210F600BE8290 /* RouteTableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E731F9210F100BE8290 /* RouteTableViewHeaderView.swift */; };
+		C3959E931F9210F600BE8290 /* NavigationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E741F9210F200BE8290 /* NavigationMapView.swift */; };
+		C3959E941F9210F600BE8290 /* TurnArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E751F9210F200BE8290 /* TurnArrowView.swift */; };
+		C3959E951F9210F600BE8290 /* ManeuverDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E761F9210F200BE8290 /* ManeuverDirection.swift */; };
+		C3959E961F9210F600BE8290 /* RouteMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E771F9210F200BE8290 /* RouteMapViewController.swift */; };
+		C3959E971F9210F600BE8290 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E791F9210F200BE8290 /* UIFont.swift */; };
+		C3959E981F9210F600BE8290 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E7A1F9210F300BE8290 /* DialogViewController.swift */; };
+		C3959E991F9210F600BE8290 /* DashedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E7B1F9210F300BE8290 /* DashedLineView.swift */; };
+		C3959E9A1F9210F600BE8290 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E7C1F9210F300BE8290 /* UIView.swift */; };
+		C3959E9B1F9210F600BE8290 /* StyleKitArrows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E7D1F9210F300BE8290 /* StyleKitArrows.swift */; };
+		C3959E9C1F9210F600BE8290 /* MGLMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E7E1F9210F300BE8290 /* MGLMapView.swift */; };
+		C3959E9D1F9210F600BE8290 /* MGLVectorSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E7F1F9210F300BE8290 /* MGLVectorSource.swift */; };
+		C3959E9E1F9210F600BE8290 /* RouteVoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E801F9210F300BE8290 /* RouteVoiceController.swift */; };
+		C3959E9F1F9210F600BE8290 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C3959E811F9210F400BE8290 /* Info.plist */; };
+		C3959EA01F9210F600BE8290 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E821F9210F400BE8290 /* Style.swift */; };
+		C3959EA11F9210F600BE8290 /* DayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E831F9210F400BE8290 /* DayStyle.swift */; };
+		C3959EA21F9210F600BE8290 /* PollyVoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E841F9210F400BE8290 /* PollyVoiceController.swift */; };
+		C3959EA31F9210F600BE8290 /* RouteManeuverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E851F9210F400BE8290 /* RouteManeuverViewController.swift */; };
+		C3959EA41F9210F600BE8290 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E861F9210F400BE8290 /* Settings.swift */; };
+		C3959EA51F9210F600BE8290 /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E871F9210F500BE8290 /* NavigationViewController.swift */; };
+		C3959EA61F9210F600BE8290 /* RoutePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E881F9210F500BE8290 /* RoutePageViewController.swift */; };
+		C3959EA71F9210F600BE8290 /* LaneArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E891F9210F500BE8290 /* LaneArrowView.swift */; };
+		C3959EA81F9210F600BE8290 /* LanesContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E8A1F9210F500BE8290 /* LanesContainerView.swift */; };
+		C3959EA91F9210F600BE8290 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E8B1F9210F500BE8290 /* Bundle.swift */; };
+		C3959EAA1F9210F600BE8290 /* Abbreviations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E8C1F9210F500BE8290 /* Abbreviations.swift */; };
+		C3959EAB1F9210F600BE8290 /* StyleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E8D1F9210F600BE8290 /* StyleType.swift */; };
+		C3959EAC1F9210F600BE8290 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E8E1F9210F600BE8290 /* FeedbackViewController.swift */; };
 		C3C243D21F34A75C000A9CC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243D11F34A75C000A9CC8 /* AppDelegate.swift */; };
 		C3C243D41F34A75C000A9CC8 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243D31F34A75C000A9CC8 /* MapViewController.swift */; };
 		C3C243D61F34A75C000A9CC8 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243D51F34A75C000A9CC8 /* SecondViewController.swift */; };
 		C3C243D91F34A75C000A9CC8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3C243D71F34A75C000A9CC8 /* Main.storyboard */; };
-		C3C243DB1F34A75C000A9CC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3C243DA1F34A75C000A9CC8 /* Assets.xcassets */; };
 		C3C243DE1F34A75C000A9CC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3C243DC1F34A75C000A9CC8 /* LaunchScreen.storyboard */; };
 		C3C243E91F34A75C000A9CC8 /* NavioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243E81F34A75C000A9CC8 /* NavioTests.swift */; };
 		C3C243F41F34A75C000A9CC8 /* NavioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243F31F34A75C000A9CC8 /* NavioUITests.swift */; };
@@ -53,14 +84,51 @@
 /* Begin PBXFileReference section */
 		C32F0CFE1F8A50A800FD791F /* TehranAzadiSquare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TehranAzadiSquare.gpx; sourceTree = "<group>"; };
 		C3551B9D1F76723D00BF70AE /* CalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalloutView.swift; path = View/CalloutView.swift; sourceTree = "<group>"; };
+		C355B59F1F921D79005B2ED8 /* Navio-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Navio-Bridging-Header.h"; sourceTree = "<group>"; };
+		C355B5A51F921FB1005B2ED8 /* MGLMapView+MGLNavigationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MGLMapView+MGLNavigationAdditions.h"; sourceTree = "<group>"; };
+		C355B5B11F92244F005B2ED8 /* Abbreviations.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Abbreviations.plist; sourceTree = "<group>"; };
+		C355B5B21F92244F005B2ED8 /* Navigation.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Navigation.strings; sourceTree = "<group>"; };
+		C355B5B31F92244F005B2ED8 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		C355B5B41F922450005B2ED8 /* Navigation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Navigation.storyboard; path = Base.lproj/Navigation.storyboard; sourceTree = "<group>"; };
+		C355B5B51F922450005B2ED8 /* Abbreviations.csv.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Abbreviations.csv.plist; sourceTree = "<group>"; };
+		C355B5B71F9225B1005B2ED8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = navioRasterV8.json; sourceTree = "<group>"; };
+		C3959E701F9210F100BE8290 /* RouteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
+		C3959E711F9210F100BE8290 /* StyleKitMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleKitMarker.swift; sourceTree = "<group>"; };
+		C3959E721F9210F100BE8290 /* RouteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTableViewController.swift; sourceTree = "<group>"; };
+		C3959E731F9210F100BE8290 /* RouteTableViewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTableViewHeaderView.swift; sourceTree = "<group>"; };
+		C3959E741F9210F200BE8290 /* NavigationMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationMapView.swift; sourceTree = "<group>"; };
+		C3959E751F9210F200BE8290 /* TurnArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TurnArrowView.swift; sourceTree = "<group>"; };
+		C3959E761F9210F200BE8290 /* ManeuverDirection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManeuverDirection.swift; sourceTree = "<group>"; };
+		C3959E771F9210F200BE8290 /* RouteMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMapViewController.swift; sourceTree = "<group>"; };
+		C3959E791F9210F200BE8290 /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		C3959E7A1F9210F300BE8290 /* DialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogViewController.swift; sourceTree = "<group>"; };
+		C3959E7B1F9210F300BE8290 /* DashedLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashedLineView.swift; sourceTree = "<group>"; };
+		C3959E7C1F9210F300BE8290 /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		C3959E7D1F9210F300BE8290 /* StyleKitArrows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleKitArrows.swift; sourceTree = "<group>"; };
+		C3959E7E1F9210F300BE8290 /* MGLMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLMapView.swift; sourceTree = "<group>"; };
+		C3959E7F1F9210F300BE8290 /* MGLVectorSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLVectorSource.swift; sourceTree = "<group>"; };
+		C3959E801F9210F300BE8290 /* RouteVoiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteVoiceController.swift; sourceTree = "<group>"; };
+		C3959E811F9210F400BE8290 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3959E821F9210F400BE8290 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		C3959E831F9210F400BE8290 /* DayStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayStyle.swift; sourceTree = "<group>"; };
+		C3959E841F9210F400BE8290 /* PollyVoiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollyVoiceController.swift; sourceTree = "<group>"; };
+		C3959E851F9210F400BE8290 /* RouteManeuverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteManeuverViewController.swift; sourceTree = "<group>"; };
+		C3959E861F9210F400BE8290 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		C3959E871F9210F500BE8290 /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
+		C3959E881F9210F500BE8290 /* RoutePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePageViewController.swift; sourceTree = "<group>"; };
+		C3959E891F9210F500BE8290 /* LaneArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaneArrowView.swift; sourceTree = "<group>"; };
+		C3959E8A1F9210F500BE8290 /* LanesContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanesContainerView.swift; sourceTree = "<group>"; };
+		C3959E8B1F9210F500BE8290 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		C3959E8C1F9210F500BE8290 /* Abbreviations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Abbreviations.swift; sourceTree = "<group>"; };
+		C3959E8D1F9210F600BE8290 /* StyleType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleType.swift; sourceTree = "<group>"; };
+		C3959E8E1F9210F600BE8290 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		C3C243CE1F34A75C000A9CC8 /* Navio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3C243D11F34A75C000A9CC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3C243D31F34A75C000A9CC8 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Controller/MapViewController.swift; sourceTree = "<group>"; };
 		C3C243D51F34A75C000A9CC8 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SecondViewController.swift; path = Controller/SecondViewController.swift; sourceTree = "<group>"; };
-		C3C243D81F34A75C000A9CC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		C3C243DA1F34A75C000A9CC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C3C243DD1F34A75C000A9CC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C3C243D81F34A75C000A9CC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../Resources/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C3C243DD1F34A75C000A9CC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../Resources/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C3C243DF1F34A75C000A9CC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C3C243E41F34A75C000A9CC8 /* NavioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3C243E81F34A75C000A9CC8 /* NavioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavioTests.swift; sourceTree = "<group>"; };
@@ -95,6 +163,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C355B5B01F92244E005B2ED8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C32F0CFE1F8A50A800FD791F /* TehranAzadiSquare.gpx */,
+				C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */,
+				C3C243DF1F34A75C000A9CC8 /* Info.plist */,
+				C355B5B71F9225B1005B2ED8 /* Assets.xcassets */,
+				C355B5B51F922450005B2ED8 /* Abbreviations.csv.plist */,
+				C355B5B11F92244F005B2ED8 /* Abbreviations.plist */,
+				C355B5B31F92244F005B2ED8 /* Localizable.strings */,
+				C355B5B41F922450005B2ED8 /* Navigation.storyboard */,
+				C355B5B21F92244F005B2ED8 /* Navigation.strings */,
+				C3C243D71F34A75C000A9CC8 /* Main.storyboard */,
+				C3C243DC1F34A75C000A9CC8 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C3959E6E1F92105900BE8290 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				C355B5A51F921FB1005B2ED8 /* MGLMapView+MGLNavigationAdditions.h */,
+				C3959E8C1F9210F500BE8290 /* Abbreviations.swift */,
+				C3959E8B1F9210F500BE8290 /* Bundle.swift */,
+				C3959E7B1F9210F300BE8290 /* DashedLineView.swift */,
+				C3959E831F9210F400BE8290 /* DayStyle.swift */,
+				C3959E7A1F9210F300BE8290 /* DialogViewController.swift */,
+				C3959E8E1F9210F600BE8290 /* FeedbackViewController.swift */,
+				C3959E811F9210F400BE8290 /* Info.plist */,
+				C3959E891F9210F500BE8290 /* LaneArrowView.swift */,
+				C3959E8A1F9210F500BE8290 /* LanesContainerView.swift */,
+				C3959E761F9210F200BE8290 /* ManeuverDirection.swift */,
+				C3959E7E1F9210F300BE8290 /* MGLMapView.swift */,
+				C3959E7F1F9210F300BE8290 /* MGLVectorSource.swift */,
+				C3959E741F9210F200BE8290 /* NavigationMapView.swift */,
+				C3959E871F9210F500BE8290 /* NavigationViewController.swift */,
+				C3959E841F9210F400BE8290 /* PollyVoiceController.swift */,
+				C3959E851F9210F400BE8290 /* RouteManeuverViewController.swift */,
+				C3959E771F9210F200BE8290 /* RouteMapViewController.swift */,
+				C3959E881F9210F500BE8290 /* RoutePageViewController.swift */,
+				C3959E701F9210F100BE8290 /* RouteTableViewCell.swift */,
+				C3959E721F9210F100BE8290 /* RouteTableViewController.swift */,
+				C3959E731F9210F100BE8290 /* RouteTableViewHeaderView.swift */,
+				C3959E801F9210F300BE8290 /* RouteVoiceController.swift */,
+				C3959E861F9210F400BE8290 /* Settings.swift */,
+				C3959E821F9210F400BE8290 /* Style.swift */,
+				C3959E7D1F9210F300BE8290 /* StyleKitArrows.swift */,
+				C3959E711F9210F100BE8290 /* StyleKitMarker.swift */,
+				C3959E8D1F9210F600BE8290 /* StyleType.swift */,
+				C3959E751F9210F200BE8290 /* TurnArrowView.swift */,
+				C3959E791F9210F200BE8290 /* UIFont.swift */,
+				C3959E7C1F9210F300BE8290 /* UIView.swift */,
+				C355B59F1F921D79005B2ED8 /* Navio-Bridging-Header.h */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		C3C243C51F34A75C000A9CC8 = {
 			isa = PBXGroup;
 			children = (
@@ -118,15 +243,11 @@
 		C3C243D01F34A75C000A9CC8 /* Navio */ = {
 			isa = PBXGroup;
 			children = (
-				C32F0CFE1F8A50A800FD791F /* TehranAzadiSquare.gpx */,
-				C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */,
+				C355B5B01F92244E005B2ED8 /* Resources */,
+				C3959E6E1F92105900BE8290 /* Navigation */,
 				C3C243D11F34A75C000A9CC8 /* AppDelegate.swift */,
 				C3C243D31F34A75C000A9CC8 /* MapViewController.swift */,
 				C3C243D51F34A75C000A9CC8 /* SecondViewController.swift */,
-				C3C243D71F34A75C000A9CC8 /* Main.storyboard */,
-				C3C243DA1F34A75C000A9CC8 /* Assets.xcassets */,
-				C3C243DC1F34A75C000A9CC8 /* LaunchScreen.storyboard */,
-				C3C243DF1F34A75C000A9CC8 /* Info.plist */,
 				C3551B9D1F76723D00BF70AE /* CalloutView.swift */,
 			);
 			path = Navio;
@@ -269,10 +390,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C303AA511F922BA800B0C5A6 /* Navigation.storyboard in Resources */,
 				C32F0CFF1F8A50A800FD791F /* TehranAzadiSquare.gpx in Resources */,
 				C3C243DE1F34A75C000A9CC8 /* LaunchScreen.storyboard in Resources */,
-				C3C243DB1F34A75C000A9CC8 /* Assets.xcassets in Resources */,
+				C3959E9F1F9210F600BE8290 /* Info.plist in Resources */,
 				C3702ACD1F74C7A600E9FBAB /* navioRasterV8.json in Resources */,
+				C355B5B81F9225B1005B2ED8 /* Assets.xcassets in Resources */,
 				C3C243D91F34A75C000A9CC8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,10 +421,39 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3959E9A1F9210F600BE8290 /* UIView.swift in Sources */,
+				C3959E8F1F9210F600BE8290 /* RouteTableViewCell.swift in Sources */,
 				C3551B9E1F76723D00BF70AE /* CalloutView.swift in Sources */,
+				C3959E901F9210F600BE8290 /* StyleKitMarker.swift in Sources */,
+				C3959E991F9210F600BE8290 /* DashedLineView.swift in Sources */,
+				C3959E951F9210F600BE8290 /* ManeuverDirection.swift in Sources */,
+				C3959E9E1F9210F600BE8290 /* RouteVoiceController.swift in Sources */,
+				C3959E9C1F9210F600BE8290 /* MGLMapView.swift in Sources */,
+				C3959E941F9210F600BE8290 /* TurnArrowView.swift in Sources */,
+				C3959EA41F9210F600BE8290 /* Settings.swift in Sources */,
+				C3959EA61F9210F600BE8290 /* RoutePageViewController.swift in Sources */,
 				C3C243D61F34A75C000A9CC8 /* SecondViewController.swift in Sources */,
+				C3959EAA1F9210F600BE8290 /* Abbreviations.swift in Sources */,
+				C3959EAC1F9210F600BE8290 /* FeedbackViewController.swift in Sources */,
+				C3959E981F9210F600BE8290 /* DialogViewController.swift in Sources */,
+				C3959EA91F9210F600BE8290 /* Bundle.swift in Sources */,
+				C3959EA21F9210F600BE8290 /* PollyVoiceController.swift in Sources */,
+				C3959E911F9210F600BE8290 /* RouteTableViewController.swift in Sources */,
+				C3959EA81F9210F600BE8290 /* LanesContainerView.swift in Sources */,
+				C3959EA51F9210F600BE8290 /* NavigationViewController.swift in Sources */,
+				C3959E961F9210F600BE8290 /* RouteMapViewController.swift in Sources */,
+				C3959E931F9210F600BE8290 /* NavigationMapView.swift in Sources */,
+				C3959EA31F9210F600BE8290 /* RouteManeuverViewController.swift in Sources */,
+				C3959EA11F9210F600BE8290 /* DayStyle.swift in Sources */,
+				C3959EA71F9210F600BE8290 /* LaneArrowView.swift in Sources */,
+				C3959E9D1F9210F600BE8290 /* MGLVectorSource.swift in Sources */,
+				C3959E971F9210F600BE8290 /* UIFont.swift in Sources */,
 				C3C243D21F34A75C000A9CC8 /* AppDelegate.swift in Sources */,
+				C3959E9B1F9210F600BE8290 /* StyleKitArrows.swift in Sources */,
 				C3C243D41F34A75C000A9CC8 /* MapViewController.swift in Sources */,
+				C3959EAB1F9210F600BE8290 /* StyleType.swift in Sources */,
+				C3959EA01F9210F600BE8290 /* Style.swift in Sources */,
+				C3959E921F9210F600BE8290 /* RouteTableViewHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,16 +617,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 3KENS3YSE9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Navio/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Navio/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = biz.navio.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Navio/Navigation/Navio-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};
@@ -484,16 +639,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 3KENS3YSE9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = Navio/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Navio/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = biz.navio.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Navio/Navigation/Navio-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};
