@@ -18,28 +18,35 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
     var currentDestinationWaypoint = Waypoint(coordinate: CLLocationCoordinate2D())
     var destinationSet = false
     var originSet = false
-    
+
+
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		requestLocationAccess()
+	}
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        requestLocationAccess()
-        
+
         let styleURL = URL(string: "navioRasterV8.json")
         mapView = MGLMapView(frame: view.bounds, styleURL: styleURL)
         
         mapView.delegate = self
-        
-        mapView.setCenter(locationManager.location!.coordinate, zoomLevel: 8, animated: false)
-        
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.showsUserLocation = true
         mapView.compassView.isHidden = false
         
         // TODO: add Mapbox and OSM appreciation somewhere else
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
-        
+
+		if let location = locationManager.location {
+			mapView.setCenter(location.coordinate, zoomLevel: 8, animated: false)
+		}
+
         view.addSubview(mapView)
         
         // Add a long press gesture recognizer to the map
