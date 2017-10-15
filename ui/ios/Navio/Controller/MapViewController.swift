@@ -7,6 +7,7 @@
 //
 
 import MapboxDirections
+import MapboxCoreNavigation
 
 class MapViewController: UIViewController, MGLMapViewDelegate {
     
@@ -165,9 +166,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
             ]
         }
         
-        let options = RouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
-        
-        options.includesSteps = true
+        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
+        options.routeShapeResolution = .full
+		options.includesSteps = true
         
         let directions = Directions.shared
         _ = directions.calculate(options) { (waypoints, routes, error) in
@@ -175,9 +176,22 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
                 print("Error calculating directions: \(error!)")
                 return
             }
-            
-            let viewController = NavigationViewController(for: routes!.first!)
-            self.present(viewController, animated: true, completion: nil)
+
+			if let route = routes?.first {
+				if route.coordinateCount > 0 {
+
+//					// Convert the route’s coordinates into a polyline.
+//					var routeCoordinates = route.coordinates!
+//					let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+//
+//					// Add the polyline to the map and fit the viewport to the polyline.
+//					self.mapView.addAnnotation(routeLine)
+//					self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
+
+					let navigationviewController = NavigationViewController(for: route, styles:[NavioStyle()])
+					self.present(navigationviewController, animated: true, completion: nil)
+				}
+			}
         }
     }
     
@@ -207,4 +221,14 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+}
+
+
+class NavioStyle: DayStyle {
+
+	required init() {
+		super.init()
+		mapStyleURL = URL(string: "navioRasterV8.json")!
+		styleType = .dayStyle
+	}
 }
