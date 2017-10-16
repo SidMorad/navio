@@ -2,16 +2,16 @@
 	"version": 8,
 	"name": "Raster Tiles",
 	"sources": {
-		"navioTileServer": {
+		"navioTilesServer": {
 			"type": "raster",
 			"tiles": ["https://navio.biz/tile/{z}/{x}/{y}.png"],
 			"tileSize": 256
 		}
 	},
 	"layers": [{
-		"id": "navioTileServer",
+		"id": "navioTilesLayer",
 		"type": "raster",
-		"source": "navioTileServer",
+		"source": "navioTilesServer",
 		"paint": {
 			   "raster-fade-duration": 100
 		}

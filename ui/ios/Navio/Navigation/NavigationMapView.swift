@@ -133,7 +133,7 @@ open class NavigationMapView: MGLMapView {
 			for layer in style.layers.reversed() {
 				if !(layer is MGLSymbolStyleLayer) &&
 					layer.identifier != arrowLayerIdentifier && layer.identifier != arrowSymbolLayerIdentifier && layer.identifier != arrowCasingSymbolLayerIdentifier && layer.identifier != arrowLayerStrokeIdentifier && layer.identifier != waypointCircleIdentifier {
-					style.insertLayer(line, below: layer)
+					style.insertLayer(line, above: layer)
 					style.insertLayer(lineCasing, below: line)
 					return
 				}
