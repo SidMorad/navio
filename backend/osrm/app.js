@@ -26,11 +26,11 @@
  * THE SOFTWARE.
  */
 
-const secret         = 'f268f655d7238f80210281922b1db24f';
-let navioRequestURL  = 'https://navio.biz/route/v1/get'; // can be a local ip
-const SSLPrivateKey  = 'sslcert/server.key'; // SSL Private key local address
-const SSLCertificate = 'sslcert/server.crt'; // SSL certificate local address
-const portNumber     = 443; // change it if 443 is not free
+const secret          = 'f268f655d7238f80210281922b1db24f';
+const navioRoutingURL = 'https://navio.biz/route/v1/get'; // can be a local ip
+const SSLPrivateKey   = 'sslcert/server.key'; // SSL Private key local address
+const SSLCertificate  = 'sslcert/server.crt'; // SSL certificate local address
+const portNumber      = 443; // change it if 443 is not free
 
 const https      = require('https');
 const express    = require('express');
@@ -43,19 +43,18 @@ const app        = express();
 
 app.use(logger('dev'));
 
-app.use('/directions/v5/mapbox/driving-traffic/', function (request, response, next) {
+app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
 
     const coordinates = request.url.split('.json?')[0].replace('/', '').split('%3B');
     const origin      = coordinates[0].split(',');
     const destiny     = coordinates[1].split(',');
+    const accessToken = sha256(secret + origin[1] + origin[0] + destiny[1] + destiny[0]);
     let result        = {};
 
-    if (request.query.access_token === sha256(secret + origin[1] + origin[0] + destiny[1] + destiny[0])) {
+    if (request.query.access_token === accessToken) {
 
-        navioRequestURL += '?encode=false&point=' + origin[1] + ',' + origin[0] + '&point=' + destiny[1] + ','
-            + destiny[0];
-
-        requestLib(navioRequestURL, (error, res, body) => {
+        requestLib(navioRoutingURL + '?encode=false&point=' + origin[1] + ',' + origin[0] + '&point=' + destiny[1] + ','
+            + destiny[0], (error, res, body) => {
 
             if (error) {
                 result.code    = error.code;
@@ -63,113 +62,143 @@ app.use('/directions/v5/mapbox/driving-traffic/', function (request, response, n
                 response.json(result);
 
             } else {
-                body       = JSON.parse(body);
-                let points = polyline.decode(body.paths[0].points);
+                let bodyJSON = null;
+                try {
+                    bodyJSON = JSON.parse(body);
+                } catch (e) {
+                    console.log(e.toString());
+                }
 
-                result = {
-                    waypoints: [
-                        {name: '', location: [Number(origin[1]), Number(origin[0])]},
-                        {name: '', location: [Number(destiny[1]), Number(destiny[0])]}
-                    ],
-                    routes   : [{
-                        legs       : [{
-                            steps   : [],
-                            weight  : body.paths[0].weight,
-                            distance: body.paths[0].distance,
-                            summary : '',
-                            duration: body.paths[0].time
+                if (!bodyJSON || body.indexOf('error') !== -1) {
+                    result.code    = 500;
+                    result.message = body;
+                    response.json(result);
+
+                } else {
+                    let points = polyline.decode(bodyJSON.paths[0].points);
+
+                    result = {
+                        waypoints: [
+                            {name: '', location: [Number(origin[1]), Number(origin[0])]},
+                            {name: '', location: [Number(destiny[1]), Number(destiny[0])]}
+                        ],
+                        routes   : [{
+                            legs       : [{
+                                steps   : [],
+                                weight  : bodyJSON.paths[0].weight,
+                                distance: bodyJSON.paths[0].distance,
+                                summary : '',
+                                duration: bodyJSON.paths[0].time
+                            }],
+                            weight_name: 'routability',
+                            geometry   : bodyJSON.paths[0].points,
+                            weight     : bodyJSON.paths[0].weight,
+                            distance   : bodyJSON.paths[0].distance,
+                            duration   : bodyJSON.paths[0].time
                         }],
-                        weight_name: 'routability',
-                        geometry   : body.paths[0].points,
-                        weight     : body.paths[0].weight,
-                        distance   : body.paths[0].distance,
-                        duration   : body.paths[0].time
-                    }],
-                    code     : 'Ok',
-                    uuid     : secret
-                };
+                        code     : 'Ok',
+                        uuid     : accessToken
+                    };
 
-                const signsMap = {
-                    '-3': 'Turn sharp left onto ',
-                    '-2': 'Turn left onto ',
-                    '-1': 'Turn slight left onto ',
-                    '0' : 'Continue onto ',
-                    '1' : 'Turn slight right onto ',
-                    '2' : 'Turn right onto ',
-                    '3' : 'Turn sharp right onto ',
-                    '4' : 'Finish',
-                    '5' : 'VIA REACHED',
-                    '6' : 'USE ROUNDABOUT'
-                };
+                    const map = {
+                        '-3': {
+                            sign    : 'Turn sharp left onto ',
+                            maneuver: 'turn',
+                            modifier: 'sharp left'
+                        },
+                        '-2': {
+                            sign    : 'Turn left onto ',
+                            maneuver: 'turn',
+                            modifier: 'left'
+                        },
+                        '-1': {
+                            sign    : 'Turn slight left onto ',
+                            maneuver: 'turn',
+                            modifier: 'left'
+                        },
+                        '0' : {
+                            sign    : 'Continue onto ',
+                            maneuver: 'continue',
+                            modifier: 'straight'
+                        },
+                        '1' : {
+                            sign    : 'Turn slight right onto ',
+                            maneuver: 'turn',
+                            modifier: 'slight right'
+                        },
+                        '2' : {
+                            sign    : 'Turn right onto ',
+                            maneuver: 'turn',
+                            modifier: 'right'
+                        },
+                        '3' : {
+                            sign    : 'Turn sharp right onto ',
+                            maneuver: 'turn',
+                            modifier: 'sharp right'
+                        },
+                        '4' : {
+                            sign    : 'Finish ',
+                            maneuver: 'arrive',
+                            modifier: 'arrive'
+                        },
+                        '5' : {
+                            sign    : 'VIA REACHED ',
+                            maneuver: 'arrive',
+                            modifier: 'arrive'
+                        },
+                        '6' : {
+                            sign    : 'USE ROUNDABOUT ',
+                            maneuver: 'roundabout',
+                            modifier: 'depart'
+                        }
+                    };
 
-                const maneuverMap = {
-                    '-3': 'turn',
-                    '-2': 'turn',
-                    '-1': 'turn',
-                    '0' : 'continue',
-                    '1' : 'turn',
-                    '2' : 'turn',
-                    '3' : 'turn',
-                    '4' : 'arrive',
-                    '6' : 'roundabout'
-                };
+                    bodyJSON.paths[0].instructions.forEach(function (instruction, instructionIndex) {
 
-                const modifierMap = {
-                    '-3': 'sharp left',
-                    '-2': 'left',
-                    '-1': 'slight left',
-                    '0' : 'straight',
-                    '1' : 'slight right',
-                    '2' : 'right',
-                    '3' : 'sharp right',
-                    '4' : 'arrive',
-                    '5' : 'arrive',
-                    '6' : 'depart'
-                };
+                        if (points[instruction.interval[0]]) {
+                            let step = {
+                                intersections: [],
+                                maneuver     : {}
+                            };
 
-                body.paths[0].instructions.forEach(function (instruction, instructionIndex) {
+                            let stepPoints = [];
 
-                    if (points[instruction.interval[0]]) {
-                        let step = {
-                            intersections: [],
-                            maneuver     : {}
-                        };
+                            for (let i = instruction.interval[0]; i <= instruction.interval[1]; i++) {
+                                if (points[i] !== undefined) {
+                                    step.intersections.push({
+                                        entry   : [],
+                                        location: points[i],
+                                        bearings: []
+                                    });
+                                    stepPoints.push(points[i]);
+                                }
+                            }
 
-                        let stepPoints = [];
+                            step.geometry             = polyline.encode(stepPoints);
+                            step.duration             = instruction.time;
+                            step.distance             = instruction.distance;
+                            step.name                 = instruction.text.toLocaleLowerCase().replace(
+                                map[instruction.sign].sign.toLowerCase(), '');
+                            step.mode                 = 'driving';
+                            step.maneuver.location    = points[instruction.interval[0]];
+                            step.maneuver.type        = (instructionIndex === 0) ? 'depart' :
+                                map[instruction.sign].maneuver;
+                            step.maneuver.modifier    = map[instruction.sign].modifier;
+                            step.maneuver.instruction = instruction.text;
 
-                        for (let i = instruction.interval[0]; i <= instruction.interval[1]; i++) {
-                            if (points[i] !== undefined) {
-                                step.intersections.push({
-                                    entry   : [],
-                                    location: points[i],
-                                    bearings: []
-                                });
-                                stepPoints.push(points[i]);
+                            result.routes[0].legs[0].steps.push(step);
+
+                            if (instructionIndex === 0) result.waypoints[0].name = step.name;
+                            if (instructionIndex === instruction.length - 1) {
+                                result.waypoints[1].name         = step.name;
+                                result.routes[0].legs[0].summary = result.waypoints[0].name + ' ' + step.name;
                             }
                         }
+                    });
 
-                        step.geometry             = polyline.encode(stepPoints);
-                        step.duration             = instruction.time;
-                        step.distance             = instruction.distance;
-                        step.name                 = instruction.text.toLocaleLowerCase().replace(
-                            signsMap[instruction.sign].toLowerCase(), '');
-                        step.mode                 = 'driving';
-                        step.maneuver.location    = points[instruction.interval[0]];
-                        step.maneuver.type        = (instructionIndex === 0) ? 'depart' : maneuverMap[instruction.sign];
-                        step.maneuver.modifier    = modifierMap[instruction.sign];
-                        step.maneuver.instruction = instruction.text;
-
-                        result.routes[0].legs[0].steps.push(step);
-
-                        if (instructionIndex === 0) result.waypoints[0].name = step.name;
-                        if (instructionIndex === instruction.length - 1) {
-                            result.waypoints[1].name         = step.name;
-                            result.routes[0].legs[0].summary = result.waypoints[0].name + ' ' + step.name;
-                        }
-                    }
-                });
-
-                response.json(result);
+                    console.log(JSON.stringify(result));
+                    response.json(result);
+                }
             }
         });
 
