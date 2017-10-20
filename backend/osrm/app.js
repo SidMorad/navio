@@ -53,7 +53,7 @@ app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
 
     if (request.query.access_token === accessToken) {
 
-        requestLib(navioRoutingURL + '?encode=false&point=' + origin[1] + ',' + origin[0] + '&point=' + destiny[1] + ','
+        requestLib(navioRoutingURL + '?point=' + origin[1] + ',' + origin[0] + '&point=' + destiny[1] + ','
             + destiny[0], (error, res, body) => {
 
             if (error) {
