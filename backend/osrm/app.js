@@ -28,22 +28,19 @@
 
 const secret          = 'f268f655d7238f80210281922b1db24f';
 const navioRoutingURL = 'https://navio.biz/route/v1/get'; // can be a local ip
-const SSLPrivateKey   = 'sslcert/server.key'; // SSL Private key local address
-const SSLCertificate  = 'sslcert/server.crt'; // SSL certificate local address
-const portNumber      = 443; // change it if 443 is not free
+const portNumber      = 3000; // change it if 3000 is not free
 
-const https      = require('https');
+const http       = require('http');
 const express    = require('express');
 const logger     = require('morgan');
 const requestLib = require('request');
 const sha256     = require('sha256');
-const polyline   = require('polyline');
-const fs         = require('fs');
+const polyLine   = require('@mapbox/polyline');
 const app        = express();
 
 app.use(logger('dev'));
 
-app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
+app.use('/directions/v5/mapbox/driving/', (request, response, next) => {
 
     const coordinates = request.url.split('.json?')[0].replace('/', '').split('%3B');
     const origin      = coordinates[0].split(',');
@@ -75,7 +72,7 @@ app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
                     response.json(result);
 
                 } else {
-                    let points = polyline.decode(bodyJSON.paths[0].points);
+                    let points = polyLine.decode(bodyJSON.paths[0].points);
 
                     result = {
                         waypoints: [
@@ -88,13 +85,13 @@ app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
                                 weight  : bodyJSON.paths[0].weight,
                                 distance: bodyJSON.paths[0].distance,
                                 summary : '',
-                                duration: bodyJSON.paths[0].time
+                                duration: bodyJSON.paths[0].time * 0.001
                             }],
                             weight_name: 'routability',
                             geometry   : bodyJSON.paths[0].points,
                             weight     : bodyJSON.paths[0].weight,
                             distance   : bodyJSON.paths[0].distance,
-                            duration   : bodyJSON.paths[0].time
+                            duration   : bodyJSON.paths[0].time * 0.001
                         }],
                         code     : 'Ok',
                         uuid     : accessToken
@@ -102,42 +99,42 @@ app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
 
                     const map = {
                         '-3': {
-                            sign    : 'Turn sharp left onto ',
+                            sign    : 'turn sharp left',
                             maneuver: 'turn',
                             modifier: 'sharp left'
                         },
                         '-2': {
-                            sign    : 'Turn left onto ',
+                            sign    : 'turn left',
                             maneuver: 'turn',
                             modifier: 'left'
                         },
                         '-1': {
-                            sign    : 'Turn slight left onto ',
+                            sign    : 'turn slight left',
                             maneuver: 'turn',
                             modifier: 'left'
                         },
                         '0' : {
-                            sign    : 'Continue onto ',
+                            sign    : 'continue',
                             maneuver: 'continue',
                             modifier: 'straight'
                         },
                         '1' : {
-                            sign    : 'Turn slight right onto ',
+                            sign    : 'turn slight right',
                             maneuver: 'turn',
                             modifier: 'slight right'
                         },
                         '2' : {
-                            sign    : 'Turn right onto ',
+                            sign    : 'turn right',
                             maneuver: 'turn',
                             modifier: 'right'
                         },
                         '3' : {
-                            sign    : 'Turn sharp right onto ',
+                            sign    : 'turn sharp right',
                             maneuver: 'turn',
                             modifier: 'sharp right'
                         },
                         '4' : {
-                            sign    : 'Finish ',
+                            sign    : 'arrive at destination',
                             maneuver: 'arrive',
                             modifier: 'arrive'
                         },
@@ -147,56 +144,56 @@ app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
                             modifier: 'arrive'
                         },
                         '6' : {
-                            sign    : 'USE ROUNDABOUT ',
+                            sign    : 'at roundabout, take exit ?',
                             maneuver: 'roundabout',
-                            modifier: 'depart'
+                            modifier: 'straight'
                         }
                     };
 
                     bodyJSON.paths[0].instructions.forEach(function (instruction, instructionIndex) {
+                        let step       = {mode: 'driving', maneuver: {}};
+                        let stepPoints = [];
 
                         if (points[instruction.interval[0]]) {
-                            let step = {
-                                intersections: [],
-                                maneuver     : {}
-                            };
 
-                            let stepPoints = [];
-
-                            for (let i = instruction.interval[0]; i <= instruction.interval[1]; i++) {
-                                if (points[i] !== undefined) {
-                                    step.intersections.push({
-                                        entry   : [],
-                                        location: points[i],
-                                        bearings: []
-                                    });
+                            for (let i = instruction.interval[0]; i <= instruction.interval[1]; i++)
+                                if (points[i] !== undefined)
                                     stepPoints.push(points[i]);
-                                }
-                            }
 
-                            step.geometry             = polyline.encode(stepPoints);
-                            step.duration             = instruction.time;
-                            step.distance             = instruction.distance;
-                            step.name                 = instruction.text.toLocaleLowerCase().replace(
-                                map[instruction.sign].sign.toLowerCase(), '');
-                            step.mode                 = 'driving';
-                            step.maneuver.location    = points[instruction.interval[0]];
-                            step.maneuver.type        = (instructionIndex === 0) ? 'depart' :
-                                map[instruction.sign].maneuver;
-                            step.maneuver.modifier    = map[instruction.sign].modifier;
-                            step.maneuver.instruction = instruction.text;
+                            step.maneuver.location = points[instruction.interval[0]];
 
-                            result.routes[0].legs[0].steps.push(step);
+                            if (instruction.sign === 6 && instruction.exit_number !== undefined) {
+                                step.name = instruction.text.toLocaleLowerCase().replace(
+                                    map[instruction.sign].sign.replace('?', instruction.exit_number), '');
+                                step.exit = instruction.exit_number;
+                            } else
+                                step.name = instruction.text.toLocaleLowerCase().replace(
+                                    map[instruction.sign].sign, '');
+
+                            step.name = step.name.replace('onto', '');
 
                             if (instructionIndex === 0) result.waypoints[0].name = step.name;
-                            if (instructionIndex === instruction.length - 1) {
-                                result.waypoints[1].name         = step.name;
-                                result.routes[0].legs[0].summary = result.waypoints[0].name + ' ' + step.name;
-                            }
+                            result.waypoints[1].name         = step.name;
+                            result.routes[0].legs[0].summary = result.waypoints[0].name + ' ' + step.name;
+
+                        } else {
+                            let destinationPoint = [Number(destiny[1]), Number(destiny[0])];
+                            stepPoints.push(destinationPoint);
+
+                            step.maneuver.location = destinationPoint;
+                            step.name              = '';
                         }
+
+                        step.geometry          = polyLine.encode(stepPoints);
+                        step.duration          = instruction.time * 0.001;
+                        step.distance          = instruction.distance;
+                        step.maneuver.type     = map[instruction.sign].maneuver;
+                        step.maneuver.modifier = map[instruction.sign].modifier;
+
+                        result.routes[0].legs[0].steps.push(step);
+
                     });
 
-                    console.log(JSON.stringify(result));
                     response.json(result);
                 }
             }
@@ -211,11 +208,10 @@ app.use('/directions/v5/mapbox/driving-traffic/', (request, response, next) => {
 
 
 /**
- * HTTPS server
+ * HTTP server
  */
 
-const credentials = {key: fs.readFileSync(SSLPrivateKey, 'utf8'), cert: fs.readFileSync(SSLCertificate, 'utf8')};
-const server      = https.createServer(credentials, app);
+const server = http.createServer(app);
 
 server.listen(portNumber);
 server.on('error', (error) => {
