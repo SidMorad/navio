@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  osrm:
+    build: .
+    container_name: rahpey-osrm-standalone
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+networks:
+  default:
+    external:
+      name: docker_default

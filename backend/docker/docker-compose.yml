@@ -18,6 +18,15 @@ services:
       service: graphhopper
     restart: unless-stopped
   #=============================================================================
+  # OSRM (a converter service for convert Graphhopper response to OSRM)
+  #=============================================================================
+  osrm:
+    container_name: rahpey-osrm
+    extends:
+      file: ../osrm/docker-compose.yml
+      service: osrm
+    restart: unless-stopped
+  #=============================================================================
   # OpenTileServer (tile server)
   #=============================================================================
   opentileserver:

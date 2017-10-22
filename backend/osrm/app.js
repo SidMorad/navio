@@ -27,7 +27,7 @@
  */
 
 const secret          = 'f268f655d7238f80210281922b1db24f';
-const navioRoutingURL = 'https://navio.biz/route/v1/get'; // can be a local ip
+const navioRoutingURL = 'http://nginx/route/v1/get'; // can be a local ip
 const portNumber      = 3000; // change it if 3000 is not free
 
 const http       = require('http');
@@ -42,7 +42,7 @@ app.use(logger('dev'));
 
 app.use('/directions/v5/mapbox/driving/', (request, response, next) => {
 
-    const coordinates = request.url.split('.json?')[0].replace('/', '').split('%3B');
+    const coordinates = request.url.split('.json?')[0].replace('/', '').split(/%3B|;/);
     const origin      = coordinates[0].split(',');
     const destiny     = coordinates[1].split(',');
     const accessToken = sha256(secret + origin[1] + origin[0] + destiny[1] + destiny[0]);
