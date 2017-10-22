@@ -27,8 +27,8 @@
  */
 
 const secret          = 'f268f655d7238f80210281922b1db24f';
-const navioRoutingURL = 'http://nginx/route/v1/get'; // can be a local ip
-const portNumber      = 3000; // change it if 3000 is not free
+const navioRoutingURL = 'http://nginx/route/v1/get';
+const portNumber      = 3000;
 
 const http       = require('http');
 const express    = require('express');
@@ -42,167 +42,188 @@ app.use(logger('dev'));
 
 app.use('/directions/v5/mapbox/driving/', (request, response, next) => {
 
-    const coordinates = request.url.split('.json?')[0].replace('/', '').split(/%3B|;/);
-    const origin      = coordinates[0].split(',');
-    const destiny     = coordinates[1].split(',');
-    const accessToken = sha256(secret + origin[1] + origin[0] + destiny[1] + destiny[0]);
-    let result        = {};
+    let result      = {};
+    let coordinates = null;
+    let origin      = null;
+    let destiny     = null;
+    try {
+        coordinates = request.url.split('.json?')[0].replace('/', '').split(/%3B|;/);
+        origin      = coordinates[0].split(',');
+        destiny     = coordinates[1].split(',');
+    } catch (e) {
+        console.log('Error', e.toString());
+    }
 
-    if (request.query.access_token === accessToken) {
+    if (!Array.isArray(origin) || !Array.isArray(destiny)) {
+        result.code    = 400;
+        result.message = 'Bad Request';
+        response.json(result);
 
-        requestLib(navioRoutingURL + '?point=' + origin[1] + ',' + origin[0] + '&point=' + destiny[1] + ','
-            + destiny[0], (error, res, body) => {
+    } else {
+        const accessToken = sha256(secret + origin[1] + origin[0] + destiny[1] + destiny[0]);
 
-            if (error) {
-                result.code    = error.code;
-                result.message = error.toString();
-                response.json(result);
+        if (request.query.access_token === accessToken) {
 
-            } else {
-                let bodyJSON = null;
-                try {
-                    bodyJSON = JSON.parse(body);
-                } catch (e) {
-                    console.log(e.toString());
-                }
+            requestLib(navioRoutingURL + '?point=' + origin[1] + ',' + origin[0] + '&point=' + destiny[1] + ','
+                + destiny[0], (error, res, body) => {
 
-                if (!bodyJSON || body.indexOf('error') !== -1) {
+                if (error) {
+                    console.log('Could not reach the server', error.toString());
                     result.code    = 500;
-                    result.message = body;
+                    result.message = 'Internal server error';
                     response.json(result);
 
                 } else {
-                    let points = polyLine.decode(bodyJSON.paths[0].points);
+                    let bodyJSON = null;
+                    try {
+                        bodyJSON = JSON.parse(body);
+                    } catch (e) {
+                        console.log(e.toString());
+                    }
 
-                    result = {
-                        waypoints: [
-                            {name: '', location: [Number(origin[1]), Number(origin[0])]},
-                            {name: '', location: [Number(destiny[1]), Number(destiny[0])]}
-                        ],
-                        routes   : [{
-                            legs       : [{
-                                steps   : [],
-                                weight  : bodyJSON.paths[0].weight,
-                                distance: bodyJSON.paths[0].distance,
-                                summary : '',
-                                duration: bodyJSON.paths[0].time * 0.001
+                    if (!bodyJSON || body.indexOf('error') !== -1) {
+                        console.log('Could not parse the server response', body);
+                        result.code    = 500;
+                        result.message = 'Internal server error';
+                        response.json(result);
+
+                    } else {
+
+                        //TODO: Move this logic to a separate class once more routing profiles is supported
+                        // e.g. driving-traffic
+
+                        let points = polyLine.decode(bodyJSON.paths[0].points);
+
+                        result = {
+                            waypoints: [
+                                {name: '', location: [Number(origin[1]), Number(origin[0])]},
+                                {name: '', location: [Number(destiny[1]), Number(destiny[0])]}
+                            ],
+                            routes   : [{
+                                legs       : [{
+                                    steps   : [],
+                                    weight  : bodyJSON.paths[0].weight,
+                                    distance: bodyJSON.paths[0].distance,
+                                    summary : '',
+                                    duration: bodyJSON.paths[0].time * 0.001
+                                }],
+                                weight_name: 'routability',
+                                geometry   : bodyJSON.paths[0].points,
+                                weight     : bodyJSON.paths[0].weight,
+                                distance   : bodyJSON.paths[0].distance,
+                                duration   : bodyJSON.paths[0].time * 0.001
                             }],
-                            weight_name: 'routability',
-                            geometry   : bodyJSON.paths[0].points,
-                            weight     : bodyJSON.paths[0].weight,
-                            distance   : bodyJSON.paths[0].distance,
-                            duration   : bodyJSON.paths[0].time * 0.001
-                        }],
-                        code     : 'Ok',
-                        uuid     : accessToken
-                    };
+                            code     : 'Ok',
+                            uuid     : accessToken
+                        };
 
-                    const map = {
-                        '-3': {
-                            sign    : 'turn sharp left',
-                            maneuver: 'turn',
-                            modifier: 'sharp left'
-                        },
-                        '-2': {
-                            sign    : 'turn left',
-                            maneuver: 'turn',
-                            modifier: 'left'
-                        },
-                        '-1': {
-                            sign    : 'turn slight left',
-                            maneuver: 'turn',
-                            modifier: 'left'
-                        },
-                        '0' : {
-                            sign    : 'continue',
-                            maneuver: 'continue',
-                            modifier: 'straight'
-                        },
-                        '1' : {
-                            sign    : 'turn slight right',
-                            maneuver: 'turn',
-                            modifier: 'slight right'
-                        },
-                        '2' : {
-                            sign    : 'turn right',
-                            maneuver: 'turn',
-                            modifier: 'right'
-                        },
-                        '3' : {
-                            sign    : 'turn sharp right',
-                            maneuver: 'turn',
-                            modifier: 'sharp right'
-                        },
-                        '4' : {
-                            sign    : 'arrive at destination',
-                            maneuver: 'arrive',
-                            modifier: 'arrive'
-                        },
-                        '5' : {
-                            sign    : 'VIA REACHED ',
-                            maneuver: 'arrive',
-                            modifier: 'arrive'
-                        },
-                        '6' : {
-                            sign    : 'at roundabout, take exit ?',
-                            maneuver: 'roundabout',
-                            modifier: 'straight'
-                        }
-                    };
+                        const map = {
+                            '-3': {
+                                sign    : 'turn sharp left',
+                                maneuver: 'turn',
+                                modifier: 'sharp left'
+                            },
+                            '-2': {
+                                sign    : 'turn left',
+                                maneuver: 'turn',
+                                modifier: 'left'
+                            },
+                            '-1': {
+                                sign    : 'turn slight left',
+                                maneuver: 'turn',
+                                modifier: 'left'
+                            },
+                            '0' : {
+                                sign    : 'continue',
+                                maneuver: 'continue',
+                                modifier: 'straight'
+                            },
+                            '1' : {
+                                sign    : 'turn slight right',
+                                maneuver: 'turn',
+                                modifier: 'slight right'
+                            },
+                            '2' : {
+                                sign    : 'turn right',
+                                maneuver: 'turn',
+                                modifier: 'right'
+                            },
+                            '3' : {
+                                sign    : 'turn sharp right',
+                                maneuver: 'turn',
+                                modifier: 'sharp right'
+                            },
+                            '4' : {
+                                sign    : 'arrive at destination',
+                                maneuver: 'arrive',
+                                modifier: 'arrive'
+                            },
+                            '5' : {
+                                sign    : 'VIA REACHED ',
+                                maneuver: 'arrive',
+                                modifier: 'arrive'
+                            },
+                            '6' : {
+                                sign    : 'at roundabout, take exit ?',
+                                maneuver: 'roundabout',
+                                modifier: 'straight'
+                            }
+                        };
 
-                    bodyJSON.paths[0].instructions.forEach(function (instruction, instructionIndex) {
-                        let step       = {mode: 'driving', maneuver: {}};
-                        let stepPoints = [];
+                        bodyJSON.paths[0].instructions.forEach(function (instruction, instructionIndex) {
+                            let step       = {mode: 'driving', maneuver: {}};
+                            let stepPoints = [];
 
-                        if (points[instruction.interval[0]]) {
+                            if (points[instruction.interval[0]]) {
 
-                            for (let i = instruction.interval[0]; i <= instruction.interval[1]; i++)
-                                if (points[i] !== undefined)
-                                    stepPoints.push(points[i]);
+                                for (let i = instruction.interval[0]; i <= instruction.interval[1]; i++)
+                                    if (points[i] !== undefined)
+                                        stepPoints.push(points[i]);
 
-                            step.maneuver.location = points[instruction.interval[0]];
+                                step.maneuver.location = points[instruction.interval[0]];
 
-                            if (instruction.sign === 6 && instruction.exit_number !== undefined) {
-                                step.name = instruction.text.toLocaleLowerCase().replace(
-                                    map[instruction.sign].sign.replace('?', instruction.exit_number), '');
-                                step.exit = instruction.exit_number;
-                            } else
-                                step.name = instruction.text.toLocaleLowerCase().replace(
-                                    map[instruction.sign].sign, '');
+                                if (instruction.sign === 6 && instruction.exit_number !== undefined) {
+                                    step.name = instruction.text.toLocaleLowerCase().replace(
+                                        map[instruction.sign].sign.replace('?', instruction.exit_number), '');
+                                    step.exit = instruction.exit_number;
+                                } else
+                                    step.name = instruction.text.toLocaleLowerCase().replace(
+                                        map[instruction.sign].sign, '');
 
-                            step.name = step.name.replace('onto', '');
+                                step.name = step.name.replace('onto', '');
 
-                            if (instructionIndex === 0) result.waypoints[0].name = step.name;
-                            result.waypoints[1].name         = step.name;
-                            result.routes[0].legs[0].summary = result.waypoints[0].name + ' ' + step.name;
+                                if (instructionIndex === 0) result.waypoints[0].name = step.name;
+                                result.waypoints[1].name         = step.name;
+                                result.routes[0].legs[0].summary = result.waypoints[0].name + ' ' + step.name;
 
-                        } else {
-                            let destinationPoint = [Number(destiny[1]), Number(destiny[0])];
-                            stepPoints.push(destinationPoint);
+                            } else {
+                                let destinationPoint = [Number(destiny[1]), Number(destiny[0])];
+                                stepPoints.push(destinationPoint);
 
-                            step.maneuver.location = destinationPoint;
-                            step.name              = '';
-                        }
+                                step.maneuver.location = destinationPoint;
+                                step.name              = '';
+                            }
 
-                        step.geometry          = polyLine.encode(stepPoints);
-                        step.duration          = instruction.time * 0.001;
-                        step.distance          = instruction.distance;
-                        step.maneuver.type     = map[instruction.sign].maneuver;
-                        step.maneuver.modifier = map[instruction.sign].modifier;
+                            step.geometry          = polyLine.encode(stepPoints);
+                            step.duration          = instruction.time * 0.001;
+                            step.distance          = instruction.distance;
+                            step.maneuver.type     = map[instruction.sign].maneuver;
+                            step.maneuver.modifier = map[instruction.sign].modifier;
 
-                        result.routes[0].legs[0].steps.push(step);
+                            result.routes[0].legs[0].steps.push(step);
 
-                    });
+                        });
 
-                    response.json(result);
+                        response.json(result);
+                    }
                 }
-            }
-        });
+            });
 
-    } else {
-        result.code    = 403;
-        result.message = 'Access denied';
-        response.json(result);
+        } else {
+            result.code    = 403;
+            result.message = 'Access denied';
+            response.json(result);
+        }
     }
 });
 
