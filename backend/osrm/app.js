@@ -40,7 +40,7 @@ const app        = express();
 
 app.use(logger('dev'));
 
-app.use('/v5/mapbox/driving/', (request, response, next) => {
+app.use('/directions/v5/mapbox/driving/', (request, response, next) => {
 
     let result      = {};
     let coordinates = null;
