@@ -151,7 +151,7 @@ export class Map {
     this.map.on({
       contextmenu: (e) => {     // Long press event
         console.log("Contextmenu event triggered, event: ", e);
-        this.loadingBarService.startLoading();
+        this.loadingBarService.start();
         // this.zone.run( () => {  // Run it in Angular zone, necessary to make component creation to work, but it seems is not necessary anymore!
         this.showDestinationByLatLng(e.latlng, false, this.currentZoom);
         // });
@@ -381,7 +381,7 @@ export class Map {
     });
 
     popup.openPopup();
-    this.loadingBarService.endLoading();
+    this.loadingBarService.complete();
     return marker;
   }
 

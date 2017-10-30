@@ -1,20 +1,31 @@
 cli packages:
-    @ionic/cli-utils  : 1.13.0
-    ionic (Ionic CLI) : 3.13.0
-
+[2K[G
+    @ionic/cli-utils  : 1.15.2
+    ionic (Ionic CLI) : 3.15.2
+[2K[G
 global packages:
-    cordova (Cordova CLI) : 7.0.1
-
+[2K[G
+    cordova (Cordova CLI) : 7.1.0
+[2K[G
 local packages:
+[2K[G
     @ionic/app-scripts : 3.0.0
     Cordova Platforms  : android 6.2.3
     Ionic Framework    : ionic-angular 3.7.1
-
+[2K[G
 System:
-    Android SDK Tools : 26.0.2
+[2K[G
+    Android SDK Tools : 26.0.1
     Node              : v6.9.5
     npm               : 4.6.1
     OS                : Linux 4.4
-
+[2K[G
+Environment Variables:
+[2K[G
+    ANDROID_HOME : /i/program/android-sdk
+[2K[G
 Misc:
+[2K[G
     backend : legacy
+[2K[G
+[2K[G
