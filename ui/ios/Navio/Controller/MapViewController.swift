@@ -44,7 +44,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
         mapView.attributionButton.isHidden = true
 
 		if let location = locationManager.location {
-			mapView.setCenter(location.coordinate, zoomLevel: 8, animated: false)
+			mapView.setCenter(location.coordinate, zoomLevel: 9, animated: false)
 		}
 
         view.addSubview(mapView)
@@ -133,7 +133,7 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, tapOnCalloutFor annotation: MGLAnnotation) {
         
         // Hide the callout.
-        //        mapView.deselectAnnotation(annotation, animated: true)
+        // mapView.deselectAnnotation(annotation, animated: true)
         
         let alertController = UIAlertController(title: annotation.title!, message: "به عنوان مبدا یا مقصد انتخاب کنید", preferredStyle: .actionSheet)
         
@@ -143,11 +143,11 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
             self.showNavigationView()
         }))
         
-        alertController.addAction(UIAlertAction(title: "از اینجا برو به...", style: .default, handler: { (action) -> Void in
-            self.currentOriginWaypoint = Waypoint(coordinate:annotation.coordinate, name: annotation.title!)
-            self.originSet =  true
-            self.showNavigationView()
-        }))
+//        alertController.addAction(UIAlertAction(title: "از اینجا برو به...", style: .default, handler: { (action) -> Void in
+//            self.currentOriginWaypoint = Waypoint(coordinate:annotation.coordinate, name: annotation.title!)
+//            self.originSet =  true
+//            self.showNavigationView()
+//        }))
         
         alertController.addAction(UIAlertAction(title: "بازگشت", style: .cancel, handler: nil))
         
@@ -173,11 +173,19 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
             ]
         }
         
-        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .automobileAvoidingTraffic)
+        let options = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .automobile)
         options.routeShapeResolution = .full
 		options.includesSteps = true
         
-        let directions = Directions.shared
+        var accessToken = Bundle.main.object(forInfoDictionaryKey: "MGLMapboxAccessToken") as! String
+        accessToken.append(waypoints[0].coordinate.latitude.description)
+        accessToken.append(waypoints[0].coordinate.longitude.description)
+        accessToken.append(waypoints[1].coordinate.latitude.description)
+        accessToken.append(waypoints[1].coordinate.longitude.description)
+        
+        let navioHost = Bundle.main.object(forInfoDictionaryKey: "NavioHost") as! String
+        
+		let directions = Directions(accessToken: accessToken.sha256(), host: navioHost)
         _ = directions.calculate(options) { (waypoints, routes, error) in
             guard error == nil else {
                 print("Error calculating directions: \(error!)")
@@ -187,15 +195,15 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 			if let route = routes?.first {
 				if route.coordinateCount > 0 {
 
-//					// Convert the route’s coordinates into a polyline.
-//					var routeCoordinates = route.coordinates!
-//					let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
+//                    // Convert the route’s coordinates into a polyline.
+//                    var routeCoordinates = route.coordinates!
+//                    let routeLine = MGLPolyline(coordinates: &routeCoordinates, count: route.coordinateCount)
 //
-//					// Add the polyline to the map and fit the viewport to the polyline.
-//					self.mapView.addAnnotation(routeLine)
-//					self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
+//                    // Add the polyline to the map and fit the viewport to the polyline.
+//                    self.mapView.addAnnotation(routeLine)
+//                    self.mapView.setVisibleCoordinates(&routeCoordinates, count: route.coordinateCount, edgePadding: .zero, animated: true)
 
-					let navigationviewController = NavigationViewController(for: route, styles:[NavioStyle()])
+                    let navigationviewController = NavigationViewController(for: route, directions: directions, styles:[NavioStyle()])
 					self.present(navigationviewController, animated: true, completion: nil)
 				}
 			}
@@ -231,6 +239,9 @@ class MapViewController: UIViewController, MGLMapViewDelegate {
 }
 
 
+
+
+
 class NavioStyle: DayStyle {
 
 	required init() {
@@ -238,4 +249,8 @@ class NavioStyle: DayStyle {
 		mapStyleURL = URL(string: "navioRasterV8.json")!
 		styleType = .dayStyle
 	}
+    
+    override func apply() {
+        super.apply()
+    }
 }

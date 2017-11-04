@@ -137,7 +137,7 @@ class CalloutView: UIView, MGLCalloutView {
 	@objc func calloutTapped() {
 		if isCalloutTappable() && delegate!.responds(to: #selector(MGLCalloutViewDelegate.calloutViewTapped)) {
 			delegate!.calloutViewTapped!(self)
-			print("tapped");
+//			print("tapped");
 		}
 	}
 

@@ -2,12 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NavioHost</key>
+	<string>navio.biz</string>
+	<key>MGLMapboxAccessToken</key>
+	<string>f268f655d7238f80210281922b1db24f</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost:3000</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<string>YES</string>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<string>YES</string>
+			</dict>
+		</dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 	</array>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoiYmFiYWt0IiwiYSI6ImNqNXk0N3lhcjBkaTIzMmxoMnc0Z2k2bHEifQ.fEFu-0XQSOjcZG1WG6t_og</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDocumentTypes</key>

@@ -12,6 +12,7 @@
 		C3551B9E1F76723D00BF70AE /* CalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3551B9D1F76723D00BF70AE /* CalloutView.swift */; };
 		C355B5B81F9225B1005B2ED8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C355B5B71F9225B1005B2ED8 /* Assets.xcassets */; };
 		C3702ACD1F74C7A600E9FBAB /* navioRasterV8.json in Resources */ = {isa = PBXBuildFile; fileRef = C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */; };
+		C38B8F991F9A241200849DAD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38B8F981F9A241200849DAD /* String.swift */; };
 		C3959E8F1F9210F600BE8290 /* RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E701F9210F100BE8290 /* RouteTableViewCell.swift */; };
 		C3959E901F9210F600BE8290 /* StyleKitMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E711F9210F100BE8290 /* StyleKitMarker.swift */; };
 		C3959E911F9210F600BE8290 /* RouteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3959E721F9210F100BE8290 /* RouteTableViewController.swift */; };
@@ -49,6 +50,8 @@
 		C3C243DE1F34A75C000A9CC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3C243DC1F34A75C000A9CC8 /* LaunchScreen.storyboard */; };
 		C3C243E91F34A75C000A9CC8 /* NavioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243E81F34A75C000A9CC8 /* NavioTests.swift */; };
 		C3C243F41F34A75C000A9CC8 /* NavioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C243F31F34A75C000A9CC8 /* NavioUITests.swift */; };
+		C3EE78891F9B6BE80028F2F2 /* Abbreviations.plist in Resources */ = {isa = PBXBuildFile; fileRef = C355B5B11F92244F005B2ED8 /* Abbreviations.plist */; };
+		C3EE788A1F9B6C260028F2F2 /* Abbreviations.csv.plist in Resources */ = {isa = PBXBuildFile; fileRef = C355B5B51F922450005B2ED8 /* Abbreviations.csv.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +96,7 @@
 		C355B5B51F922450005B2ED8 /* Abbreviations.csv.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Abbreviations.csv.plist; sourceTree = "<group>"; };
 		C355B5B71F9225B1005B2ED8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C3702ACC1F74C7A600E9FBAB /* navioRasterV8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = navioRasterV8.json; sourceTree = "<group>"; };
+		C38B8F981F9A241200849DAD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		C3959E701F9210F100BE8290 /* RouteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
 		C3959E711F9210F100BE8290 /* StyleKitMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleKitMarker.swift; sourceTree = "<group>"; };
 		C3959E721F9210F100BE8290 /* RouteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTableViewController.swift; sourceTree = "<group>"; };
@@ -215,7 +219,6 @@
 				C3959E751F9210F200BE8290 /* TurnArrowView.swift */,
 				C3959E791F9210F200BE8290 /* UIFont.swift */,
 				C3959E7C1F9210F300BE8290 /* UIView.swift */,
-				C355B59F1F921D79005B2ED8 /* Navio-Bridging-Header.h */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -246,9 +249,11 @@
 				C355B5B01F92244E005B2ED8 /* Resources */,
 				C3959E6E1F92105900BE8290 /* Navigation */,
 				C3C243D11F34A75C000A9CC8 /* AppDelegate.swift */,
+				C355B59F1F921D79005B2ED8 /* Navio-Bridging-Header.h */,
 				C3C243D31F34A75C000A9CC8 /* MapViewController.swift */,
 				C3C243D51F34A75C000A9CC8 /* SecondViewController.swift */,
 				C3551B9D1F76723D00BF70AE /* CalloutView.swift */,
+				C38B8F981F9A241200849DAD /* String.swift */,
 			);
 			path = Navio;
 			sourceTree = "<group>";
@@ -392,10 +397,12 @@
 			files = (
 				C303AA511F922BA800B0C5A6 /* Navigation.storyboard in Resources */,
 				C32F0CFF1F8A50A800FD791F /* TehranAzadiSquare.gpx in Resources */,
+				C3EE788A1F9B6C260028F2F2 /* Abbreviations.csv.plist in Resources */,
 				C3C243DE1F34A75C000A9CC8 /* LaunchScreen.storyboard in Resources */,
 				C3959E9F1F9210F600BE8290 /* Info.plist in Resources */,
 				C3702ACD1F74C7A600E9FBAB /* navioRasterV8.json in Resources */,
 				C355B5B81F9225B1005B2ED8 /* Assets.xcassets in Resources */,
+				C3EE78891F9B6BE80028F2F2 /* Abbreviations.plist in Resources */,
 				C3C243D91F34A75C000A9CC8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -435,6 +442,7 @@
 				C3C243D61F34A75C000A9CC8 /* SecondViewController.swift in Sources */,
 				C3959EAA1F9210F600BE8290 /* Abbreviations.swift in Sources */,
 				C3959EAC1F9210F600BE8290 /* FeedbackViewController.swift in Sources */,
+				C38B8F991F9A241200849DAD /* String.swift in Sources */,
 				C3959E981F9210F600BE8290 /* DialogViewController.swift in Sources */,
 				C3959EA91F9210F600BE8290 /* Bundle.swift in Sources */,
 				C3959EA21F9210F600BE8290 /* PollyVoiceController.swift in Sources */,
@@ -628,7 +636,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = biz.navio.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Navio/Navigation/Navio-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Navio/Navio-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -650,7 +658,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = biz.navio.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Navio/Navigation/Navio-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Navio/Navio-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};

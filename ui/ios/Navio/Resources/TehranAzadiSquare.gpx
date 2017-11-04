@@ -6,7 +6,7 @@
      waypoint, Xcode will simulate that specific location. If you provide multiple waypoints,
      Xcode will simulate a route visiting each waypoint.
      -->
-    <wpt lat="35.698694" lon="51.336809">
+    <wpt lat="35.699532" lon="51.331322">
         <name>Tehran Azadi Square</name>
         
         <!--
@@ -18,19 +18,38 @@
          -->
 		<time>2016-09-24T14:00:00Z</time>
     </wpt>
-	<wpt lat="35.698694" lon="51.336809">
-		<time>2016-09-24T14:00:02Z</time>
+	<wpt lat="35.699541" lon="51.332985">
+		<time>2016-09-24T14:00:05Z</time>
 	</wpt>
-	<wpt lat="35.698809" lon="51.338653">
-		<time>2016-09-24T14:00:12Z</time>
+	<wpt lat="35.699532" lon="51.334358">
+		<time>2016-09-24T14:00:10Z</time>
 	</wpt>
-	<wpt lat="35.699584" lon="51.339919">
-		<time>2016-09-24T14:00:23Z</time>
+	<wpt lat="35.699218" lon="51.335356">
+		<time>2016-09-24T14:00:15Z</time>
 	</wpt>
-	<wpt lat="35.699680" lon="51.341496">
-		<time>2016-09-24T14:00:33Z</time>
+	<wpt lat="35.698782" lon="51.336289">
+		<time>2016-09-24T14:00:20Z</time>
 	</wpt>
-	<wpt lat="35.699741" lon="51.343062">
-		<time>2016-09-24T14:00:39Z</time>
+	<wpt lat="35.698782" lon="51.336289">
+		<time>2016-09-24T14:00:25Z</time>
 	</wpt>
+    <wpt lat="35.698965" lon="51.339154">
+        <time>2016-09-24T14:00:30Z</time>
+    </wpt>
+    <wpt lat="35.699662" lon="51.340259">
+        <time>2016-09-24T14:00:35Z</time>
+    </wpt>
+    <wpt lat="35.699706" lon="51.341407">
+        <time>2016-09-24T14:00:40Z</time>
+    </wpt>
+    <wpt lat="35.699750" lon="51.342576">
+        <time>2016-09-24T14:00:45Z</time>
+    </wpt>
+    <wpt lat="35.699741" lon="51.344046">
+        <time>2016-09-24T14:00:50Z</time>
+    </wpt>
+    <wpt lat="35.699114" lon="51.343960">
+        <time>2016-09-24T14:00:55Z</time>
+    </wpt>
+    
 </gpx>
