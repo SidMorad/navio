@@ -28,8 +28,8 @@
     <preference name="cordova-custom-config-stoponerror" value="true" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <preference name="android-installLocation" value="auto" />
-        <preference name="android-manifest/@android:installLocation" value="auto" />
+        <preference name="android-installLocation" value="preferExternal" />
+        <preference name="android-manifest/@android:installLocation" value="preferExternal" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />

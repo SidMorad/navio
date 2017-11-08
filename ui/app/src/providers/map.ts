@@ -235,7 +235,7 @@ export class Map {
     this.activeRoute.distance = (this.activeRoute.summary.totalDistance / 1000).toFixed(1) + ' km';
     this.isInDrivingMode = true;
     this.onActiveRouteChangeEvent.emit();
-    this.geocodingService.reverse(route.inputWaypoints[1].latLng, this.currentZoom).subscribe((result) => {
+    this.geocodingService.reverse(route.inputWaypoints[1].latLng, 18).subscribe((result) => {
       this.destination = result;
     });
     if (!this.settings.allSettings[Settings.AUTO_REROUTE]) {
