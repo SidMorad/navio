@@ -1,4 +1,4 @@
-package biz.navio;
+/*package biz.navio;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import org.oscim.map.Map;
  * <p/>
  * A subclass my create a MapView either via one of the MapView constructores or
  * by inflating an XML layout file.
- */
+ *
 public abstract class MapActivity extends Activity {
 
 	protected Map map;
@@ -59,3 +59,4 @@ public abstract class MapActivity extends Activity {
 	}
 
 }
+*/

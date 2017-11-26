@@ -1,4 +1,4 @@
-package biz.navio;
+/*package biz.navio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,3 +256,4 @@ public class MainActivity extends MapActivity {
     }
 
 }
+*/

@@ -2,5 +2,13 @@
 
     <string name="app_name">Navio</string>
     <string name="title_activity_main">Navio</string>
+    <string name="MapboxAccessToken">pk.eyJ1Ijoic2lkbW9yYWQiLCJhIjoiY2phZHJ1bDI3MG1uNDJ3b2lzZ29wbWc4aSJ9.T5ttSj6tWZbAHZP_8Rv8Fg</string>
+    <string name="MGLMapboxAccessToken">f268f655d7238f80210281922b1db24f</string>
+
+    <string name="origin_title_test">Origin test</string>
+    <string name="origin_snippet_test">Origin snippet</string>
+    <string name="destination_title_test">Destination test</string>
+    <string name="destination_snippet_test">Destination snippet</string>
+    <string name="directions_toast_message">Route is %1$f meters long.</string>
 
 </resources>

@@ -1,0 +1,19 @@
+{
+  "version": 8,
+  "name": "Raster Tiles",
+  "sources": {
+    "navioTilesServer": {
+      "type": "raster",
+      "tiles": ["https://navio.biz/tile/{z}/{x}/{y}.png"],
+      "tileSize": 256
+    }
+  },
+  "layers": [{
+    "id": "navioTilesLayer",
+    "type": "raster",
+    "source": "navioTilesServer",
+    "paint": {
+      "raster-fade-duration": 100
+    }
+  }]
+}
