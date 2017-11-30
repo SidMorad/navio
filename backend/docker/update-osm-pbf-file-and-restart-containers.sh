@@ -17,7 +17,9 @@ if [ ! -d "${osm_dir}" ]; then
 fi
 
 if [ ! -f "${osm_file}" ]; then
-    wget -O "${osm_file}" http://download.geofabrik.de/asia/iran-latest.osm.pbf
+    wget -O "${osm_dir}/iran.pbf" http://download.geofabrik.de/asia/iran-latest.osm.pbf
+    wget -O "${osm_dir}/malaysia.pbf" http://download.geofabrik.de/asia/malaysia-singapore-brunei-latest.osm.pbf
+    osmconvert "${osm_dir}/iran.pbf" --out-o5m | osmconvert - "${osm_dir}/malaysia.pbf" -o="${osm_dir}/import.osm.pbf"
 fi
 
 echo "Graphhopper is updating... ${osm_file}"
