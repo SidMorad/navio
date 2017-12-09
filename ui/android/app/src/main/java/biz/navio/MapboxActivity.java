@@ -21,6 +21,7 @@ import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigationOptions;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.mapbox.services.android.telemetry.MapboxTelemetry;
 import com.mapbox.services.android.telemetry.location.LocationEngine;
 import com.mapbox.services.android.telemetry.location.LostLocationEngine;
 import com.mapbox.services.commons.geojson.LineString;
@@ -51,6 +52,7 @@ public class MapboxActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.MapboxAccessToken));
+        MapboxTelemetry.getInstance().setTelemetryEnabled(false);
         setContentView(R.layout.activity_mapbox);
 
         final Point origin = Point.fromLngLat(51.4231, 35.6961);
@@ -84,11 +86,11 @@ Log.e("NV", "It did got here");
 
     private void getRoute(Point origin, Point destination) {
         String accessToken = getString(R.string.MGLMapboxAccessToken) +
-                origin.latitude() + origin.longitude() +
-                destination.latitude() + destination.longitude();
+            origin.latitude() + origin.longitude() +
+            destination.latitude() + destination.longitude();
         NavigationRoute client = NavigationRoute.builder()
-//            .baseUrl("https://navio.biz")
-            .accessToken(getString(R.string.MapboxAccessToken))
+            .baseUrl("https://navio.biz/")
+            .accessToken("pk." + sha256(accessToken))
             .origin(origin)
             .destination(destination)
             .profile(DirectionsCriteria.PROFILE_DRIVING)

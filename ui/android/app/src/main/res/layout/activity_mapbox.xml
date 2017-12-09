@@ -12,7 +12,9 @@
         mapbox:mapbox_cameraTargetLat="35.6961"
         mapbox:mapbox_cameraTargetLng="51.4231"
         mapbox:mapbox_styleUrl="asset://navio_raster_v8.json"
-        mapbox:mapbox_cameraZoom="12">
+        mapbox:mapbox_cameraZoom="12"
+        mapbox:mapbox_uiLogo="false"
+        mapbox:mapbox_uiAttribution="false">
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
