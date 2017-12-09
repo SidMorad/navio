@@ -85,7 +85,7 @@ Log.e("NV", "It did got here");
     private void getRoute(Point origin, Point destination) {
         String accessToken = getString(R.string.MGLMapboxAccessToken) +
                 origin.latitude() + origin.longitude() +
-                destination.latitude() + origin.longitude();
+                destination.latitude() + destination.longitude();
         NavigationRoute client = NavigationRoute.builder()
 //            .baseUrl("https://navio.biz")
             .accessToken(getString(R.string.MapboxAccessToken))
