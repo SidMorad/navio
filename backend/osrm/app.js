@@ -47,7 +47,7 @@ app.use('/directions/v5/mapbox/driving/', (request, response, next) => {
     let origin      = null;
     let destiny     = null;
     try {
-        coordinates = request.url.split('.json?')[0].replace('/', '').split(/%3B|;/);
+        coordinates = request.url.replace('.json', '').split('?')[0].replace('/', '').split(/%3B|;/);
         origin      = coordinates[0].split(',');
         destiny     = coordinates[1].split(',');
     } catch (e) {
@@ -62,7 +62,7 @@ app.use('/directions/v5/mapbox/driving/', (request, response, next) => {
     } else {
         const accessToken = sha256(secret + origin[1] + origin[0] + destiny[1] + destiny[0]);
 
-        if (request.query.access_token === accessToken) {
+        if (request.query.access_token === 'pk.' + accessToken) {
 
             requestLib(navioRoutingURL + '?point=' + origin[1] + ',' + origin[0] + '&point=' + destiny[1] + ','
                 + destiny[0], (error, res, body) => {
