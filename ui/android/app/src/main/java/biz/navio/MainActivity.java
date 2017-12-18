@@ -241,12 +241,12 @@ public class MainActivity extends MapActivity {
 	}
 
     private void log(String str) {
-        Log.d("NV", str);
+        Log.d(TAG, str);
         logger.debug(str);
     }
 
     private void log(String str, Throwable t) {
-        Log.d("NV", str, t);
+        Log.d(TAG, str, t);
         logger.debug(str, t);
     }
 

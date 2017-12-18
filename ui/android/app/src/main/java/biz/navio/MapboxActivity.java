@@ -1,13 +1,20 @@
 package biz.navio;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.mapbox.directions.v5.DirectionsCriteria;
-import com.mapbox.directions.v5.models.DirectionsRoute;
+import com.mapbox.api.directions.v5.DirectionsCriteria;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -17,6 +24,7 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.ui.v5.NavigationViewOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigationOptions;
@@ -47,13 +55,16 @@ public class MapboxActivity extends AppCompatActivity {
 //    private MapboxDirections client;
     private MapboxNavigation navigation;
     private NavigationMapRoute navigationMapRoute;
+    private static final String TAG = MapboxActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, getString(R.string.MapboxAccessToken));
+        Mapbox.getInstance(getApplicationContext(), getString(R.string.MapboxAccessToken));
         MapboxTelemetry.getInstance().setTelemetryEnabled(false);
         setContentView(R.layout.activity_mapbox);
+
+        checkLocationPermissionGranted();
 
         final Point origin = Point.fromLngLat(51.4231, 35.6961);
         final Point destination = Point.fromLngLat(51.3231, 35.6266);
@@ -75,13 +86,14 @@ public class MapboxActivity extends AppCompatActivity {
                 mapboxMap.addMarker(new MarkerOptions().position(new LatLng(destination.latitude(), destination.longitude()))
                     .title(getString(R.string.destination_title_test))
                     .snippet(getString(R.string.destination_snippet_test)));
-Log.e("NV", "It did got here");
+
                 // Get route from AP
                 getRoute(origin, destination);
             }
         });
-//        LocationEngine locationEngine = LostLocationEngine.getLocationEngine(this);
-//        navigation.setLocationEngine(locationEngine);
+        LocationEngine locationEngine = LostLocationEngine.getLocationEngine(this);
+        navigation.setLocationEngine(locationEngine);
+
     }
 
     private void getRoute(Point origin, Point destination) {
@@ -91,40 +103,45 @@ Log.e("NV", "It did got here");
         NavigationRoute client = NavigationRoute.builder()
             .baseUrl("https://navio.biz/")
             .accessToken("pk." + sha256(accessToken))
+//            .accessToken(getString(R.string.MapboxAccessToken))
             .origin(origin)
             .destination(destination)
             .profile(DirectionsCriteria.PROFILE_DRIVING)
             .build();
 
-        client.getRoute(new Callback<com.mapbox.directions.v5.models.DirectionsResponse>() {
+        client.getRoute(new Callback<DirectionsResponse>() {
             @Override
-            public void onResponse(Call<com.mapbox.directions.v5.models.DirectionsResponse> call, Response<com.mapbox.directions.v5.models.DirectionsResponse> response) {
-                Log.e("NV", "##################" + call.request().url().toString());
-                Log.d("NV", "Response code: " + response.code());
+            public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                Log.i(TAG, "##################" + call.request().url().toString());
+                Log.d(TAG, "Response code: " + response.code());
 
-                com.mapbox.directions.v5.models.DirectionsResponse resp = response.body();
+                DirectionsResponse resp = response.body();
                 if (resp == null) {
-                    Log.e("NV", "No routes found, make sure you set the right user and access token.");
+                    Log.e(TAG, "No routes found, make sure you set the right user and access token.");
                     return;
                 } else if (resp.routes().size() < 1) {
-                    Log.e("NV", "No routes found");
+                    Log.e(TAG, "No routes found");
                     return;
                 }
 
                 // print some info about the route
                 currentRoute = resp.routes().get(0);
-                Log.d("NV", "Distance: " + currentRoute.distance());
+                Log.d(TAG, "Distance: " + currentRoute.distance());
                 Toast.makeText(MapboxActivity.this, String.format(getString(R.string.directions_toast_message), currentRoute.distance()), Toast.LENGTH_SHORT).show();
 
                 // Draw the route on the map
 //              navigation.startNavigation(currentRoute);
-                NavigationLauncher.startNavigation(MapboxActivity.this, currentRoute, "your_cognito_pool_id", true);
+                NavigationViewOptions navigationViewOptions = NavigationViewOptions.builder()
+                        .directionsRoute(currentRoute)
+                        .shouldSimulateRoute(true)
+                        .build();
+                NavigationLauncher.startNavigation(MapboxActivity.this, navigationViewOptions);
 
             }
 
             @Override
-            public void onFailure(Call<com.mapbox.directions.v5.models.DirectionsResponse> call, Throwable throwable) {
-                Log.e("NV", "onFailure: ", throwable);
+            public void onFailure(Call<DirectionsResponse> call, Throwable throwable) {
+                Log.e(TAG, "onFailure: ", throwable);
             }
         });
 
@@ -194,4 +211,38 @@ Log.e("NV", "It did got here");
             throw new RuntimeException(ex);
         }
     }
+
+    public void onRequestPermissionResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Location permission granted.");
+            }
+            else {
+                checkLocationPermissionGranted();
+            }
+        }
+    }
+
+
+    private static final int PERMISSION_REQUEST_LOCATION = 2;
+
+    public void checkLocationPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Android Marshmello(6) permission check
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("This app needs Location access");
+                builder.setMessage("Please grant location access to this app.");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @TargetApi(Build.VERSION_CODES.M)
+                    public void onDismiss(DialogInterface dialog) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_LOCATION);
+                    }
+                });
+                builder.show();
+            }
+        }
+    }
+
 }
