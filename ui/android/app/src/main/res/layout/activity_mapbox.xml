@@ -18,4 +18,25 @@
 
     </com.mapbox.mapboxsdk.maps.MapView>
 
+    <Button
+        android:id="@+id/start_navigation_button"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:padding="5px"
+        android:layout_margin="20px"
+        android:text="Start navigation"
+        android:background="@color/mapboxGrayLight"
+        android:textColor="@color/mapboxWhite"
+        android:enabled="false"/>
+
+    <Button
+        android:id="@+id/select_location_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Select a location"
+        android:textColor="@android:color/white"/>
+
 </RelativeLayout>

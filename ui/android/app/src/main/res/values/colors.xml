@@ -1,0 +1,11 @@
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="mapboxPink">#ee4e8b</color>
+    <color name="mapboxYellow">#d9d838</color>
+    <color name="mapboxRed">#b43b71</color>
+    <color name="mapboxBlue">@color/mapbox_blue</color>
+    <color name="mapboxWhite">#ffffff</color>
+    <color name="mapboxGrayLight">#d3d3d3</color>
+</resources>
