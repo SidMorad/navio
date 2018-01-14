@@ -13,7 +13,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AddressPopup } from '../pages';
-import { TILE_API_BASE_URL, ROUTE_API_BASE_URL, OVERPASS_API_BASE_URL } from '../app/config';
+import { TILE_API_BASE_URL, ROUTE_API_KEY, OVERPASS_API_BASE_URL } from '../app/config';
 import { GeocodingService } from '../services/geocoding.service';
 import { Settings, GeoUtil, OverpassUtil } from '../providers';
 import { TehranMainTrafficSpecification,
@@ -69,11 +69,12 @@ export class Map {
     }));
 
     this.routeControl = L.Routing.control({
-      router: L.Routing.graphHopper('', {
-        serviceUrl: ROUTE_API_BASE_URL + '/get',
-        urlParameters: {
-        }
-      }),
+      router: new L.Routing.graphHopper(ROUTE_API_KEY),
+      // router: L.Routing.graphHopper('', {
+      //   serviceUrl: ROUTE_API_BASE_URL + '/get',
+      //   urlParameters: {
+      //   }
+      // }),
       // geocoder: L.Control.Geocoder.nominatim({
       //   serviceUrl: GEOCODING_API_BASE_URL
       // }),
@@ -93,7 +94,7 @@ export class Map {
       useHints: true,
       show: false,
       showAlternatives: true,
-      routeWhileDragging: true,
+      routeWhileDragging: false,
       addWaypoints: false,
       fitSelectedRoutes: false,
       collapsible: true,
