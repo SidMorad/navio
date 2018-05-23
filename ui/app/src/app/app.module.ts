@@ -26,7 +26,7 @@ export function provideSettings(inMemoryStorage: InMemoryStorage) {
     city: 'THR',
     highlightTehranMainTrafficZone: true,
     highlightTehranEvenOddTrafficZone: true,
-    hasTehranMainTrafficCertificate: false,
+    hasTehranMainTrafficCertificate: true,
     carPlateNumberEvenOrOdd: 'notset',
     lastZoomLevel: 18,
     userGoInvisible: false,
