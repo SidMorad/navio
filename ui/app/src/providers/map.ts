@@ -95,7 +95,7 @@ export class Map {
       useHints: true,
       show: false,
       showAlternatives: true,
-      routeWhileDragging: false,
+      routeWhileDragging: true,
       addWaypoints: false,
       fitSelectedRoutes: false,
       collapsible: true,
@@ -128,6 +128,9 @@ export class Map {
             cssClass: 'white-space-pre-line'
           }).present();
         });
+      },
+      waypointschanged: (e) => {
+        this.lastTimeMapInteracted = moment();
       }
     });
 
@@ -315,6 +318,7 @@ export class Map {
       this.routeControl.getRouter().options.urlParameters['alternative_route.max_paths'] = 3;
     }
     console.log("Route params are set: ", this.routeControl.getRouter().options.urlParameters);
+    this.lastTimeMapInteracted = moment();
   }
 
   removeAlternativeRoutes() {
