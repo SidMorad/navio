@@ -1,5 +1,5 @@
 package biz.navio;
-import java.security.MessageDigest;
+//import java.security.MessageDigest;
 import java.util.List;
 
 import android.graphics.PointF;
@@ -104,7 +104,7 @@ public class MapboxActivity extends AppCompatActivity implements LocationEngineL
                 enableLocationPlugin();
                 originCoord = new LatLng(originLocation.getLatitude(), originLocation.getLongitude());
 
-/*  // Following section doesn't work as expected - (feature: click on the map for adding destination)
+/*  // Following section didn't work as expected - (feature: click on the map for adding destination)
     // It may start to work in next Mapbox SDK version.
                 mapboxMap.setOnMapClickListener(new MapboxMap.OnMapClickListener() {
                     @Override
@@ -386,22 +386,22 @@ public class MapboxActivity extends AppCompatActivity implements LocationEngineL
         // TODO
     }
 
-    public static String sha256(String base) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(base.getBytes("UTF-8"));
-            StringBuilder hexString = new StringBuilder();
-
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+//    public static String sha256(String base) {
+//        try {
+//            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//            byte[] hash = digest.digest(base.getBytes("UTF-8"));
+//            StringBuilder hexString = new StringBuilder();
+//
+//            for (int i = 0; i < hash.length; i++) {
+//                String hex = Integer.toHexString(0xff & hash[i]);
+//                if (hex.length() == 1) hexString.append('0');
+//                hexString.append(hex);
+//            }
+//
+//            return hexString.toString();
+//        } catch (Exception ex) {
+//            throw new RuntimeException(ex);
+//        }
+//    }
 
 }

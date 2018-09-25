@@ -127,7 +127,7 @@ constructor(private geolocation: Geolocation, private platform: Platform,
     }, (error) => {
       console.log("watchPosition throw error: ", error);
     });
-    console.log("Geolocaion Watch position initalized.");
+    console.log("Geolocation Watch position initalized.");
   }
 
   checkIfLocationServiceIsEnabled() {

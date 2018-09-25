@@ -1,8 +1,8 @@
 {
   "name": "Navio",
-  "app_id": "a160dfe5",
-  "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "ionic-angular",
+  "pro_id": "a160dfe5"
 }
